@@ -22,8 +22,11 @@
     "express": "~4.13.1",
     "jade": "~1.11.0",
     "morgan": "~1.6.1",
+    "pg": "^4.4.3",
+    "pg-hstore": "^2.3.2",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",
+    "sequelize": "^3.13.0",
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
