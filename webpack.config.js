@@ -15,13 +15,11 @@ const config = {
     debug: true,
     devtool: 'eval-source-map',
     module: {
-        loaders: [
-            {
-                test: /\.jsx?$/,
-                exclude: /node_modules/,
-                loader: 'babel'
-            }
-        ]
+        loaders: [{
+            test: /\.jsx?$/,
+            exclude: /node_modules/,
+            loader: 'babel'
+        }]
     }
 };
 

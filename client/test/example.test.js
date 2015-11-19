@@ -1,3 +1,5 @@
+/* global describe, it */
+
 import React from 'react';
 import ReactTestUtils from 'react-addons-test-utils';
 import chai from 'chai';
@@ -5,7 +7,7 @@ import chai from 'chai';
 const expect = chai.expect;
 
 class HelloWorld extends React.Component {
-    render() { 
+    render() {
         return <div><strong>Hello, world.</strong></div>;
     }
 }
