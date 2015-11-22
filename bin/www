@@ -7,7 +7,6 @@
 var app = require('../server/app');
 var debug = require('debug')('snippet-hero:server');
 var http = require('http');
-var models = require('../server/models');
 
 /**
  * Get port from environment and store in Express.
@@ -25,11 +24,9 @@ var server = http.createServer(app);
 /**
  * Listen on provided port, on all network interfaces.
  */
-models.sequelize.sync().then(function(){
-  server.listen(port);
-  server.on('error', onError);
-  server.on('listening', onListening);
-});
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
