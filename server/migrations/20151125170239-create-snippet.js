@@ -1,23 +1,24 @@
 'use strict';
 module.exports = {
   up: function(queryInterface, Sequelize) {
-    return queryInterface.createTable('Users', {
+    return queryInterface.createTable('Snippets', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      email: {
-        type: Sequelize.STRING
-      },
-      authToken: {
-        type: Sequelize.STRING
-      },
       name: {
         type: Sequelize.STRING
       },
-      meerkatUserId: {
+      description: {
+        type: Sequelize.TEXT
+      },
+      language: {
+        type: Sequelize.ENUM,
+        values: ['ruby', 'javascript', 'coffeescript', 'html', 'haml', 'slim', 'css', 'scss']
+      },
+      UserId: {
         type: Sequelize.INTEGER
       },
       createdAt: {
@@ -31,6 +32,6 @@ module.exports = {
     });
   },
   down: function(queryInterface, Sequelize) {
-    return queryInterface.dropTable('Users');
+    return queryInterface.dropTable('Snippets');
   }
 };

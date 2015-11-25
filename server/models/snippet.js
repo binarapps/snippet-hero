@@ -1,19 +1,19 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
-  var User = sequelize.define('User', {
-    email: DataTypes.STRING,
+  var Snippet = sequelize.define('Snippet', {
     name: DataTypes.STRING,
-    authToken: DataTypes.STRING,
-    meerkatUserId: DataTypes.INTEGER
+    description: DataTypes.TEXT,
+    language: DataTypes.STRING,
+    UserId: DataTypes.INTEGER
   }, {
     classMethods: {
       associate: function(models) {
-        this.hasMany(models.Snippet);
+        this.belongsTo(models.User);
+        this.hasMany(models.SnippetVersion);
         this.hasMany(models.Rating);
         this.hasMany(models.Comment);
-        this.hasMany(models.LineComment);
       }
     }
   });
-  return User;
+  return Snippet;
 };
