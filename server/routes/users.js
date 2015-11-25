@@ -6,7 +6,7 @@ var models = require('../models');
 /* GET users listing. */
 router.get('/', function(req, res) {
   models.User.findAll().then(function(users) {
-    mappedUsers = users.map(function(user) {
+    var mappedUsers = users.map(function(user) {
       return ({ id: user.id, name: user.name, email: user.email });
     });
 
@@ -22,7 +22,7 @@ router.get('/:id', function(req, res) {
 
 router.get('/:id/snippets', function(req, res) {
   models.Snippet.findAll({ where: { UserId: req.params.id } }).then(function(snippets) {
-    snippet_ids = snippets.map(function(snippet) {
+    var snippet_ids = snippets.map(function(snippet) {
       return snippet.id;
     });
 
