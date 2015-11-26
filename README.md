@@ -22,6 +22,10 @@ To setup app database configuration copy example file and overwrite it with your
 ```
 cp server/config/config.json.example server/config/config.json
 ```
+To run migrations
+```
+cd server; ../node_modules/.bin/sequelize db:migrate
+```
 
 ## Run dev server
 ```
