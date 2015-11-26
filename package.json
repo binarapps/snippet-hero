@@ -15,7 +15,8 @@
     "livereload": "live-reload build/ --port=9091 --delay=700",
     "test:client": "karma start",
     "server": "node ./bin/www",
-    "start": "npm-run-all build --parallel watch server livereload"
+    "start": "npm-run-all build --parallel watch server livereload",
+    "sequalize": "cd server && sequelize"
   },
   "dependencies": {
     "body-parser": "~1.13.2",

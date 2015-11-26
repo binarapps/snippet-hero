@@ -24,7 +24,7 @@ cp server/config/config.json.example server/config/config.json
 ```
 To run migrations
 ```
-cd server; ../node_modules/.bin/sequelize db:migrate
+npm run sequalize -- db:migrate
 ```
 
 ## Run dev server
