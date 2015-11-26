@@ -3,7 +3,7 @@ import React from 'react';
 /*eslint-enable no-unused-vars*/
 import ReactDOM from 'react-dom';
 
-let CommentBox = require('./comment');
+// let CommentBox = require('./comment');
 
 main();
 
@@ -11,9 +11,9 @@ main();
 function main () {
   const app = document.createElement('div');
   document.body.appendChild(app);
-  // ReactDOM.render(<div>Hello world!</div>, app);
-  ReactDOM.render(
-    <CommentBox />,
-    app
-  );
+  ReactDOM.render(<div>Hello world!</div>, app);
+  // ReactDOM.render(
+  //   <CommentBox />,
+  //   app
+  // );
 }
