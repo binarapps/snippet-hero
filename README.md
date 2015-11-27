@@ -1,4 +1,5 @@
 # snippet-hero
+[![Build Status](https://travis-ci.org/binarapps/snippet-hero.svg?branch=master)](https://travis-ci.org/binarapps/snippet-hero)
 It is example node js project
 
 ## Prerequisites
