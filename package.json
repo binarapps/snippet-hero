@@ -14,8 +14,9 @@
     "watch": "npm-run-all --parallel watch:css watch:js",
     "livereload": "live-reload build/ --port=9091 --delay=700",
     "test:client": "karma start",
+    "test:client:firefox": "karma start --browsers Firefox",
     "test:server": "NODE_ENV=test mocha server/test --opts server/test/mocha.opts",
-    "test": "npm run test:client && npm run test:server",
+    "test": "npm run test:client:firefox && npm run test:server",
     "server": "node ./bin/www",
     "start": "npm-run-all build --parallel watch server livereload",
     "sequalize": "cd server && sequelize"
@@ -49,6 +50,7 @@
     "karma-chai-plugins": "^0.6.1",
     "karma-chrome-launcher": "^0.2.1",
     "karma-cli": "^0.1.1",
+    "karma-firefox-launcher": "^0.1.7",
     "karma-mocha": "^0.2.1",
     "karma-sourcemap-loader": "^0.3.6",
     "karma-webpack": "^1.7.0",

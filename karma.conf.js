@@ -11,6 +11,7 @@ module.exports = function (config) {
     frameworks: [ 'chai', 'mocha' ],
     plugins: [
       'karma-chrome-launcher',
+      'karma-firefox-launcher',
       'karma-chai',
       'karma-mocha',
       'karma-sourcemap-loader',
@@ -22,6 +23,7 @@ module.exports = function (config) {
     },
     reporters: [ 'dots' ],
     singleRun: true,
+    browserNoActivityTimeout: 30000,
     webpack: webpackConfig,
     webpackMiddleware: {
       noInfo: true
