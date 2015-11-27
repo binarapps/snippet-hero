@@ -16,7 +16,9 @@ npm install
 ### Database
 To create database run:
 ```
-psql -c "CREATE DATABASE snippethero_development WITH ENCODING 'UTF8'
+psql -c "CREATE DATABASE snippethero_development WITH ENCODING 'UTF8'"
+or
+createdb -E UTF8 snippethero_development
 ```
 To setup app database configuration copy example file and overwrite it with your username and password to database:
 ```
@@ -33,10 +35,24 @@ npm start
 ```
 
 ## Tests
+First create test database
 ```
-// TODO
+createdb -E UTF8 snippethero_test
+```
+Then to run backend tests:
+```
+npm run test:server
 ```
 
+To run frontend test simply (keep in mind that you need chrome browser to be able to do it):
+```
+npm run test:client
+```
+
+To fire all tests:
+```
+npm test
+```
 
 ## Deploy
 ```
