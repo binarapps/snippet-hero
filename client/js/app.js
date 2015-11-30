@@ -12,7 +12,7 @@ function main () {
   document.body.appendChild(app);
   // ReactDOM.render(<div>Hello world!</div>, app);
   ReactDOM.render(
-    <SnippetForm />,
+    <SnippetForm languages={[{value: 0, label: '---'}, {value: 1, label: 'JavaScript'}]}/>,
     app
   );
 }
