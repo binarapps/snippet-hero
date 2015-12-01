@@ -1,5 +1,8 @@
 import React from 'react';
-import classNames from 'classnames';
+import RaisedButton from 'material-ui/lib/raised-button';
+import TextField from 'material-ui/lib/text-field';
+import SelectField from 'material-ui/lib/select-field';
+
 import SnippetActions from '../actions/snippet-actions.js';
 
 // TODO create tests
@@ -44,60 +47,52 @@ export default class SnippetForm extends React.Component {
     });
   }
   render() {
-    let contentClasses = classNames({
-      'field': true,
-      'has-error': this.state.hasErrors
-    });
-
-    let langs = [];
-    (this.props.languages || []).forEach(l => langs.push(<option value={l.value} key={l.value}>{l.label}</option>));
-
     return (
       <form className="snippet-form" onSubmit={this.handleSubmit}>
-        <div className="field">
-          <label htmlFor="name">Enter snippet title (optional): </label>
-          <input
-            type="text"
-            name="name"
-            placeholder="Snippet Title."
+        <div>
+          <TextField
+            hintText="Title"
+            floatingLabelText="Enter snippet titile (optional):"
             value={this.state.name}
             onChange={this.handleNameChange}
+            type="text"
           />
         </div>
 
-        <div className={contentClasses}>
-          <label htmlFor="content">Enter snippet code: </label>
-          <textarea
-            name="content"
-            placeholder="Place your code here."
-            value={this.state.content}
-            onChange={this.handleContentChange}
+        <div>
+          <SelectField
+            floatingLabelText="Programming language"
+            value={this.state.language}
+            valueMember="value"
+            displayMember="label"
+            menuItems={this.props.languages}
+            onChange={this.handleLanguageChange}
           />
         </div>
 
-        <div className="field">
-          <label htmlFor="description">Enter snippet description (optional): </label>
-          <input type="text"
-            name="description"
-            placeholder="Anything to add?"
-            value={this.state.description}
-            onChange={this.handleDescriptionChange}
-          />
-        </div>
+        <TextField
+          floatingLabelText="Enter snippet code:"
+          value={this.state.content}
+          onChange={this.handleContentChange}
+          fullWidth={true}
+          multiLine={true}
+          rows={8}
+          type="text"
+          errorText={this.state.hasErrors ? 'Snippet without code? That doesnt make sense.' : ''}
+        />
 
-        <div className="field">
-          <label htmlFor="language">Choose snippet programming language (optional): </label>
-          <select name="language" onChange={this.handleLanguageChange}>
-            {langs}
-          </select>
-        </div>
+        <TextField
+          floatingLabelText="Enter snippet description (optional):"
+          value={this.state.description}
+          onChange={this.handleDescriptionChange}
+          fullWidth={true}
+          multiLine={true}
+          rows={2}
+          type="text"
+        />
 
-        <div className="field">
-          <input
-            type="submit"
-            value="Publish!"
-          />
-        </div>
+        <RaisedButton label="Publish!" secondary={true} type="submit" />
+
       </form>
     );
   }

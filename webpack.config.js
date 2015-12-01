@@ -8,6 +8,9 @@ const BUILD_PATH = path.resolve(ROOT_PATH, 'build');
 
 const config = {
   entry: path.resolve(APP_PATH, 'app.js'),
+  resolve: {
+    extensions: ['', '.jsx', '.js']
+  },
   output: {
     path: BUILD_PATH,
     filename: 'app.js'
@@ -17,8 +20,8 @@ const config = {
   module: {
     loaders: [{
       test: /\.jsx?$/,
-      exclude: /node_modules/,
-      loader: 'babel'
+      exclude: [path.resolve(__dirname, 'node_modules')],
+      loader: 'babel-loader'
     }]
   }
 };
