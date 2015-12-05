@@ -5,11 +5,15 @@ let path = require('path');
 const ROOT_PATH = path.resolve(__dirname);
 const APP_PATH = path.resolve(ROOT_PATH, 'client', 'js');
 const BUILD_PATH = path.resolve(ROOT_PATH, 'build');
+const NODE_MODULES_PATH = path.resolve(__dirname, 'node_modules');
 
 const config = {
   entry: path.resolve(APP_PATH, 'app.js'),
   resolve: {
-    extensions: ['', '.jsx', '.js']
+    extensions: ['', '.jsx', '.js'],
+    alias: {
+      codemirror: path.resolve(NODE_MODULES_PATH, 'react-codemirror/node_modules/codemirror')
+    }
   },
   output: {
     path: BUILD_PATH,
@@ -20,7 +24,7 @@ const config = {
   module: {
     loaders: [{
       test: /\.jsx?$/,
-      exclude: [path.resolve(__dirname, 'node_modules')],
+      exclude: [NODE_MODULES_PATH],
       loader: 'babel-loader'
     }]
   }

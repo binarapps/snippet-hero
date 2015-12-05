@@ -2,6 +2,12 @@ import React from 'react';
 import RaisedButton from 'material-ui/lib/raised-button';
 import TextField from 'material-ui/lib/text-field';
 import SelectField from 'material-ui/lib/select-field';
+import Snackbar from 'material-ui/lib/snackbar';
+import Codemirror from 'react-codemirror';
+// import 'codemirror/mode/javascript/javascript';
+// import 'codemirror/mode/xml/xml';
+// import 'codemirror/mode/gfm/gfm';
+import 'codemirror/mode/markdown/markdown';
 
 import SnippetActions from '../actions/snippet-actions.js';
 
@@ -9,7 +15,7 @@ import SnippetActions from '../actions/snippet-actions.js';
 export default class SnippetForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {name: '', content: '', description: '', language: 0, hasErrors: false};
+    this.state = {name: '', content: '', description: '', language: 0};
 
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleContentChange = this.handleContentChange.bind(this);
@@ -23,8 +29,8 @@ export default class SnippetForm extends React.Component {
   handleNameChange(e) {
     this.setState({name: e.target.value});
   }
-  handleContentChange(e) {
-    this.setState({content: e.target.value, hasErrors: e.target.value === 0});
+  handleContentChange(code) {
+    this.setState({content: code});
   }
   handleDescriptionChange(e) {
     this.setState({description: e.target.value});
@@ -36,7 +42,7 @@ export default class SnippetForm extends React.Component {
     e.preventDefault();
 
     if (!this.isValid()) {
-      this.setState({hasErrors: true});
+      this.refs.error.show();
       return;
     }
     SnippetActions.create({
@@ -47,6 +53,7 @@ export default class SnippetForm extends React.Component {
     });
   }
   render() {
+    let codeOptions = {readOnly: false, mode: 'markdown', lineNumbers: true};
     return (
       <form className="snippet-form" onSubmit={this.handleSubmit}>
         <div>
@@ -70,16 +77,7 @@ export default class SnippetForm extends React.Component {
           />
         </div>
 
-        <TextField
-          floatingLabelText="Enter snippet code:"
-          value={this.state.content}
-          onChange={this.handleContentChange}
-          fullWidth={true}
-          multiLine={true}
-          rows={8}
-          type="text"
-          errorText={this.state.hasErrors ? 'Snippet without code? That doesnt make sense.' : ''}
-        />
+        <Codemirror ref="editor" value={this.state.content} onChange={this.handleContentChange} options={codeOptions} />
 
         <TextField
           floatingLabelText="Enter snippet description (optional):"
@@ -89,6 +87,12 @@ export default class SnippetForm extends React.Component {
           multiLine={true}
           rows={2}
           type="text"
+        />
+
+        <Snackbar
+          ref="error"
+          message="Are you sure you want to omit code section?"
+          autoHideDuration={3000}
         />
 
         <RaisedButton label="Publish!" secondary={true} type="submit" />
