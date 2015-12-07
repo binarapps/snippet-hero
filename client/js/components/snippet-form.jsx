@@ -1,67 +1,49 @@
 import React from 'react';
-import RaisedButton from 'material-ui/lib/raised-button';
 import TextField from 'material-ui/lib/text-field';
 import SelectField from 'material-ui/lib/select-field';
 import Snackbar from 'material-ui/lib/snackbar';
 import Codemirror from 'react-codemirror';
-// import 'codemirror/mode/javascript/javascript';
-// import 'codemirror/mode/xml/xml';
-// import 'codemirror/mode/gfm/gfm';
-import 'codemirror/mode/markdown/markdown';
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/mode/xml/xml';
+import 'codemirror/mode/gfm/gfm';
 
-import SnippetActions from '../actions/snippet-actions.js';
 
 // TODO create tests
 export default class SnippetForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {name: '', content: '', description: '', language: 0};
 
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleContentChange = this.handleContentChange.bind(this);
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-    this.handleLanguageChange = this.handleLanguageChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this._handleNameChange = this._handleNameChange.bind(this);
+    this._handleContentChange = this._handleContentChange.bind(this);
+    this._handleDescriptionChange = this._handleDescriptionChange.bind(this);
+    this._handleLanguageChange = this._handleLanguageChange.bind(this);
   }
-  isValid() {
-    return this.state.content.length > 0;
+  _handleNameChange(e) {
+    this.props.onChange({name: e.target.value});
   }
-  handleNameChange(e) {
-    this.setState({name: e.target.value});
+  _handleContentChange(code) {
+    this.props.onChange({content: code});
   }
-  handleContentChange(code) {
-    this.setState({content: code});
+  _handleDescriptionChange(e) {
+    this.props.onChange({description: e.target.value});
   }
-  handleDescriptionChange(e) {
-    this.setState({description: e.target.value});
+  _handleLanguageChange(e) {
+    this.props.onChange({language: e.target.value});
   }
-  handleLanguageChange(e) {
-    this.setState({language: e.target.value});
-  }
-  handleSubmit(e) {
-    e.preventDefault();
-
-    if (!this.isValid()) {
-      this.refs.error.show();
-      return;
-    }
-    SnippetActions.create({
-      name: this.state.name,
-      content: this.state.content,
-      description: this.state.description,
-      language: this.state.language
-    });
+  showError(message) {
+    this.refs.error.message = message;
+    this.refs.error.show();
   }
   render() {
-    let codeOptions = {readOnly: false, mode: 'markdown', lineNumbers: true};
+    let codeOptions = {readOnly: false, mode: 'gfm', lineNumbers: true};
     return (
-      <form className="snippet-form" onSubmit={this.handleSubmit}>
+      <form className="snippet-form">
         <div>
           <TextField
             hintText="Title"
             floatingLabelText="Enter snippet titile (optional):"
-            value={this.state.name}
-            onChange={this.handleNameChange}
+            value={this.props.name}
+            onChange={this._handleNameChange}
             type="text"
           />
         </div>
@@ -69,20 +51,20 @@ export default class SnippetForm extends React.Component {
         <div>
           <SelectField
             floatingLabelText="Programming language"
-            value={this.state.language}
+            value={this.props.language}
             valueMember="value"
             displayMember="label"
             menuItems={this.props.languages}
-            onChange={this.handleLanguageChange}
+            onChange={this._handleLanguageChange}
           />
         </div>
 
-        <Codemirror ref="editor" value={this.state.content} onChange={this.handleContentChange} options={codeOptions} />
+        <Codemirror ref="editor" value={this.props.content} onChange={this._handleContentChange} options={codeOptions} />
 
         <TextField
           floatingLabelText="Enter snippet description (optional):"
-          value={this.state.description}
-          onChange={this.handleDescriptionChange}
+          value={this.props.description}
+          onChange={this._handleDescriptionChange}
           fullWidth={true}
           multiLine={true}
           rows={2}
@@ -91,12 +73,9 @@ export default class SnippetForm extends React.Component {
 
         <Snackbar
           ref="error"
-          message="Are you sure you want to omit code section?"
+          message="Are you sure you want to publish snippet without code?"
           autoHideDuration={3000}
         />
-
-        <RaisedButton label="Publish!" secondary={true} type="submit" />
-
       </form>
     );
   }

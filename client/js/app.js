@@ -4,7 +4,7 @@ import SnippetStore from './stores/snippet-store';
 /*eslint-enable no-unused-vars*/
 import ReactTapPlugin from 'react-tap-event-plugin';
 import ReactDOM from 'react-dom';
-import SnippetForm from './components/snippet-form.jsx';
+import SnippetFormDialog from './components/snippet-form-dialog';
 
 main();
 
@@ -17,7 +17,7 @@ function main () {
 
   document.body.appendChild(app);
   ReactDOM.render(
-    <SnippetForm languages={languages} />,
+    <SnippetFormDialog languages={languages} />,
     app
   );
 }

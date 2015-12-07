@@ -22,11 +22,14 @@ const config = {
   debug: true,
   devtool: 'eval-source-map',
   module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      exclude: [NODE_MODULES_PATH],
-      loader: 'babel-loader'
-    }]
+    loaders: [
+      { test: /\.json$/, loader: 'json' },
+      {
+        test: /\.jsx?$/,
+        exclude: [NODE_MODULES_PATH],
+        loader: 'babel-loader'
+      }
+    ]
   }
 };
 

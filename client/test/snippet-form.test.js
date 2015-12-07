@@ -1,12 +1,11 @@
 /*eslint-disable no-unused-vars*/
 import React from 'react';
 import ReactDOM from 'react-dom';
-import sinon from 'sinon';
 /*eslint-enable no-unused-vars*/
 import TestUtils from 'react-addons-test-utils';
+import sinon from 'sinon';
 import chai from 'chai';
 
-// import TextField from 'material-ui/lib/text-field';
 import SnippetForm from '../js/components/snippet-form.jsx';
 
 const expect = chai.expect;
