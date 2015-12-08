@@ -17,7 +17,7 @@
     "test:client:firefox": "karma start --browsers Firefox",
     "test:server": "NODE_ENV=test mocha server/test --opts server/test/mocha.opts",
     "test": "npm run test:client:firefox && npm run test:server",
-    "server": "node ./bin/www",
+    "server": "nodemon ./bin/www",
     "start": "npm-run-all build --parallel watch server livereload",
     "sequalize": "cd server && sequelize"
   },
@@ -57,6 +57,7 @@
     "live-reload": "^1.1.0",
     "mocha": "^2.3.4",
     "node-sass": "^3.4.2",
+    "nodemon": "^1.8.1",
     "npm-run-all": "^1.2.13",
     "react-addons-test-utils": "^0.14.2",
     "watch": "^0.16.0",
