@@ -7,7 +7,11 @@ var models = require('../models');
 router.get('/', function (req, res) {
   models.Snippet.findAll().then(function (snippets) {
     var mappedSnippets = snippets.map(function (s) {
-      return ({ id: s.id, name: s.name, email: s.email });
+      return ({ content: s.content,
+                name: s.name,
+                description: s.description,
+                language: s.language
+      });
     });
 
     res.send(mappedSnippets);
@@ -23,7 +27,21 @@ router.get('/:id', function (req, res) {
 
 /* POST new snippet  */
 router.post('/', function (req, res) {
-  res.send('ok');
+  var attributes = {
+    content: req.body.content,
+    description: req.body.description,
+    language: 'javascript',
+    name: req.body.name,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  };
+
+  var snippet = models.Snippet.build(attributes);
+  snippet.save({validate: false, logging: true}).then(function () {
+    res.status(201).send('ok');
+  }).catch(function () {
+    res.status(422).send('error');
+  });
 });
 
 module.exports = router;
