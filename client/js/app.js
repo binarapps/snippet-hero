@@ -13,11 +13,12 @@ function main () {
   ReactTapPlugin();
 
   const languages = [{value: 0, label: ''}, {value: 1, label: 'JavaScript'}];
-  const app = document.createElement('div');
 
+  const app = document.createElement('div');
   document.body.appendChild(app);
+
   ReactDOM.render(
-    <SnippetFormDialog languages={languages} />,
+    <SnippetFormDialog defaultOpen={true} languages={languages} />,
     app
   );
 }

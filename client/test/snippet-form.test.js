@@ -21,11 +21,11 @@ describe('SnippetForm', () => {
       let errorSnackbar = snippetForm.refs.error;
       errorSnackbar.show = sinon.spy();
 
-      let formElement = TestUtils.findRenderedDOMComponentWithTag(snippetForm, 'form');
-      TestUtils.Simulate.submit(formElement);
+      const errorMessage = 'Are you sure you want to publish snippet without code?';
+      snippetForm.showError(errorMessage);
 
       expect(errorSnackbar.show.calledOnce).to.be.true;
-      expect(errorSnackbar.props.message).to.be.equal('Are you sure you want to omit code section?');
+      expect(errorSnackbar.props.message).to.be.equal(errorMessage);
     });
   });
 });
