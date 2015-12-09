@@ -30,8 +30,8 @@ export default class SnippetForm extends React.Component {
   _handleLanguageChange(e) {
     this.props.onChange({language: e.target.value});
   }
-  showError(message) {
-    this.refs.error.message = message;
+  showError() {
+    // TODO change message
     this.refs.error.show();
   }
   render() {

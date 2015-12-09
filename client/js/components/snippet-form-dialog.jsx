@@ -53,7 +53,7 @@ export default class SnippetFormDialog extends React.Component {
         ref="dialog"
         title={this.props.title || 'Snippet Form'}
         actions={actions}
-        defaultOpen={true}
+        defaultOpen={this.props.defaultOpen}
       >
         <Tabs>
           <Tab label="Form">

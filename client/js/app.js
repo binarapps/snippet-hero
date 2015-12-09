@@ -14,6 +14,7 @@ function main () {
   ReactTapPlugin();
 
   const languages = [{value: 0, label: ''}, {value: 1, label: 'JavaScript'}];
+
   const app = document.createElement('div');
   const nav = document.getElementById('nav');
 
@@ -25,7 +26,7 @@ function main () {
   );
 
   ReactDOM.render(
-    <SnippetFormDialog languages={languages} />,
+    <SnippetFormDialog defaultOpen={true} languages={languages} />,
     app
   );
 }
