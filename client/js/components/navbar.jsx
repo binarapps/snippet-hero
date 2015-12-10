@@ -1,22 +1,24 @@
 import React from 'react';
 const AppBar = require('material-ui/lib/app-bar');
 const LeftNav = require('material-ui/lib/left-nav');
-const MenuItem = require('material-ui/lib/menu/menu-item');
 
 let menuItems = [
   { route: '/', text: 'Dashboard' },
-  { route: 'about', text: 'My snippets' },
-  { route: 'about', text: 'All snippets' },
-  { route: 'contact', text: 'Settings' },
+  { route: 'snippets', text: 'All snippets' }
 ];
 
 
-export default class Navbar extends React.Component {
+class Navbar extends React.Component {
 
   constructor() {
     super();
 
     this.handleClick = this.handleClick.bind(this);
+    this.onLeftNavChange = this.onLeftNavChange.bind(this);
+  }
+
+  onLeftNavChange(e, key, payload) {
+    this.props.history.pushState(null, payload.route);
   }
 
   handleClick (e) {
@@ -30,11 +32,15 @@ export default class Navbar extends React.Component {
         <LeftNav
             ref="leftNav"
             docked={false}
+            onChange={this.onLeftNavChange}
             menuItems={menuItems}/>
         <header>
           <AppBar title='Snippet-hero' onLeftIconButtonTouchTap={this.handleClick} />
         </header>
       </div>
-    )
+    );
   }
+
 }
+
+module.exports = Navbar;
