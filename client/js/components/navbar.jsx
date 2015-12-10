@@ -1,12 +1,11 @@
 import React from 'react';
-const AppBar = require('material-ui/lib/app-bar');
-const LeftNav = require('material-ui/lib/left-nav');
+import AppBar from 'material-ui/lib/app-bar';
+import LeftNav from 'material-ui/lib/left-nav';
 
 let menuItems = [
   { route: '/', text: 'Dashboard' },
   { route: 'snippets', text: 'All snippets' }
 ];
-
 
 class Navbar extends React.Component {
 
@@ -40,7 +39,6 @@ class Navbar extends React.Component {
       </div>
     );
   }
-
 }
 
 module.exports = Navbar;

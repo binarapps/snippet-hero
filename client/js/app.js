@@ -31,9 +31,4 @@ function main () {
     </Router>,
     app
   );
-
-  // ReactDOM.render(
-  //   <SnippetFormDialog defaultOpen={true} languages={languages} />,
-  //   app
-  // );
 }

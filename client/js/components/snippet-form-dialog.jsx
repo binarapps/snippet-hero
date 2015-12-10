@@ -16,13 +16,17 @@ export default class SnippetFormDialog extends React.Component {
     this._handleFormChange = this._handleFormChange.bind(this);
     this._handleCancel = this._handleCancel.bind(this);
     this._handleSubmit = this._handleSubmit.bind(this);
+    this.show = this.open.bind(this);
   }
+
   _handleFormChange(value) {
     this.setState(value);
   }
+
   _handleCancel() {
     this.refs.dialog.dismiss();
   }
+
   _handleSubmit() {
     if (this.state.content.length < 1) {
       this.refs.form.showError();
@@ -35,6 +39,11 @@ export default class SnippetFormDialog extends React.Component {
       language: this.state.language
     });
   }
+
+  open () {
+    this.refs.dialog.setState({open: true});
+  }
+
   render() {
     let actions = [
       <FlatButton
