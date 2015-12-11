@@ -1,5 +1,3 @@
-/* global describe, it */
-
 import React from 'react';
 import ReactTestUtils from 'react-addons-test-utils';
 import chai from 'chai';

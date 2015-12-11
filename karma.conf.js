@@ -1,5 +1,8 @@
+var path = require('path');
 var webpackConfig = require('./webpack.config.js');
 webpackConfig.devtool = 'inline-source-map';
+webpackConfig.module.noParse = [/node_modules\/sinon\//];
+webpackConfig.resolve.alias.sinon = path.resolve(__dirname, './node_modules/sinon/pkg/sinon.js');
 
 module.exports = function (config) {
   config.set({
