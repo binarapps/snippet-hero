@@ -5,12 +5,14 @@ import SnippetActions from '../actions/snippet-actions';
 class SnippetStore {
   constructor() {
     this.bindActions(SnippetActions);
-    this.snippets = [];
+    this.state = {
+      snippets: []
+    };
   }
 
   getAll (data) {
     if (data.ok) {
-      const snippets = this.snippets;
+      const snippets = this.state.snippets;
 
       this.setState({
         snippets: snippets.concat(data.snippets)

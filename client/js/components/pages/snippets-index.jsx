@@ -1,23 +1,28 @@
 import React from 'react';
-import axios from 'axios';
+import connectToStores from 'alt/utils/connectToStores';
 import RaisedButton from 'material-ui/lib/raised-button';
 import PageWrapper from '../page-wrapper';
 import SnippetsList from '../snippets/snippets-list';
 import SnippetFormDialog from '../snippets/snippet-form-dialog';
 import SnippetStore from '../../stores/snippet-store';
+import SnippetActions from '../../actions/snippet-actions';
 
-export default class SnippetsIndex extends React.Component {
+class SnippetsIndex extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {dialogOpen: false, items: []};
+    this.state = {dialogOpen: false};
+  }
+
+  static getStores() {
+    return [SnippetStore];
+  }
+
+  static getPropsFromStores() {
+    return SnippetStore.getState();
   }
 
   componentDidMount () {
-    axios.get('/snippets').then((res) => {
-      this.setState({
-        items: res.data
-      });
-    });
+    SnippetActions.getAll();
   }
 
   render() {
@@ -26,7 +31,7 @@ export default class SnippetsIndex extends React.Component {
     return (
       <PageWrapper>
         <RaisedButton onClick={ () => this.setState({dialogOpen: true})} label="Add new snippet" primary={true} ref='button' />
-        <SnippetsList items={this.state.items}></SnippetsList>
+        <SnippetsList items={this.props.snippets}></SnippetsList>
         <SnippetFormDialog ref={(ref) => this.snippetDialog = ref}
                            dialogOpen={this.state.dialogOpen}
                            languages={languages}
@@ -35,3 +40,5 @@ export default class SnippetsIndex extends React.Component {
     );
   }
 }
+
+export default connectToStores(SnippetsIndex);
