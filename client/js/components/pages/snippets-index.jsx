@@ -7,21 +7,26 @@ import RaisedButton from 'material-ui/lib/raised-button';
 export default class SnippetsIndex extends React.Component {
   constructor(props) {
     super(props);
-    this._openSnippetDialog = this._openSnippetDialog.bind(this);
-  }
-
-  _openSnippetDialog () {
-    this.dialog.open();
+    this.state = {dialogOpen: false};
   }
 
   render() {
     const languages = [{value: 0, label: ''}, {value: 1, label: 'JavaScript'}];
+    let items = [{
+      name: 'test',
+      content: 'content',
+      description: 'description',
+      language: 'javascript'
+    }];
 
     return (
-      <PageWrapper style={{padding: 0}}>
-        <RaisedButton onClick={this._openSnippetDialog} label="Add new snippet" primary={true} />
-        <SnippetsList></SnippetsList>
-        <SnippetFormDialog ref={(ref) => this.dialog = ref} defaultOpen={false} languages={languages} />
+      <PageWrapper>
+        <RaisedButton onClick={ () => this.setState({dialogOpen: true})} label="Add new snippet" primary={true} ref='button' />
+        <SnippetsList items={items}></SnippetsList>
+        <SnippetFormDialog ref={(ref) => this.snippetDialog = ref}
+                           dialogOpen={this.state.dialogOpen}
+                           languages={languages}
+                           handleCancel={() => this.setState({dialogOpen: false})} />
       </PageWrapper>
     );
   }

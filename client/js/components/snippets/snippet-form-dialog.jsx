@@ -14,17 +14,11 @@ export default class SnippetFormDialog extends React.Component {
     this.state = {name: '', content: '', description: '', language: 0};
 
     this._handleFormChange = this._handleFormChange.bind(this);
-    this._handleCancel = this._handleCancel.bind(this);
     this._handleSubmit = this._handleSubmit.bind(this);
-    this.show = this.open.bind(this);
   }
 
   _handleFormChange(value) {
     this.setState(value);
-  }
-
-  _handleCancel() {
-    this.refs.dialog.dismiss();
   }
 
   _handleSubmit() {
@@ -40,17 +34,13 @@ export default class SnippetFormDialog extends React.Component {
     });
   }
 
-  open () {
-    this.refs.dialog.setState({open: true});
-  }
-
   render() {
     let actions = [
       <FlatButton
         label="Cancel"
         secondary={true}
         ref="cancel"
-        onTouchTap={this._handleCancel} />,
+        onTouchTap={this.props.handleCancel} />,
       <FlatButton
         label="Submit"
         ref="submit"
@@ -58,12 +48,11 @@ export default class SnippetFormDialog extends React.Component {
         onTouchTap={this._handleSubmit} />
     ];
     return (
-      <Dialog
-        ref="dialog"
-        title={this.props.title || 'Snippet Form'}
-        actions={actions}
-        defaultOpen={this.props.defaultOpen}
-      >
+      <Dialog ref={(ref) => this.dialog = ref}
+              title={this.props.title || 'Snippet Form'}
+              actions={actions}
+              defaultOpen={this.props.defaultOpen}
+              open={this.props.dialogOpen} >
         <Tabs>
           <Tab label="Form">
             <SnippetForm {...this.state} languages={this.props.languages} onChange={this._handleFormChange} ref="form" />
