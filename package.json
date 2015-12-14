@@ -70,6 +70,7 @@
     "live-reload": "^1.1.0",
     "mocha": "^2.3.4",
     "node-sass": "^3.4.2",
+    "nodemon": "^1.8.1",
     "npm-run-all": "^1.2.13",
     "react-addons-test-utils": "^0.14.2",
     "sinon": "^1.17.2",
