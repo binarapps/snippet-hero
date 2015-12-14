@@ -1,28 +1,32 @@
 import React from 'react';
+import axios from 'axios';
+import RaisedButton from 'material-ui/lib/raised-button';
 import PageWrapper from '../page-wrapper';
 import SnippetsList from '../snippets/snippets-list';
 import SnippetFormDialog from '../snippets/snippet-form-dialog';
-import RaisedButton from 'material-ui/lib/raised-button';
+import SnippetStore from '../../stores/snippet-store';
 
 export default class SnippetsIndex extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {dialogOpen: false};
+    this.state = {dialogOpen: false, items: []};
+  }
+
+  componentDidMount () {
+    axios.get('/snippets').then((res) => {
+      this.setState({
+        items: res.data
+      });
+    });
   }
 
   render() {
     const languages = [{value: 0, label: ''}, {value: 1, label: 'JavaScript'}];
-    let items = [{
-      name: 'test',
-      content: 'content',
-      description: 'description',
-      language: 'javascript'
-    }];
 
     return (
       <PageWrapper>
         <RaisedButton onClick={ () => this.setState({dialogOpen: true})} label="Add new snippet" primary={true} ref='button' />
-        <SnippetsList items={items}></SnippetsList>
+        <SnippetsList items={this.state.items}></SnippetsList>
         <SnippetFormDialog ref={(ref) => this.snippetDialog = ref}
                            dialogOpen={this.state.dialogOpen}
                            languages={languages}

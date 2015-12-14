@@ -17,8 +17,9 @@ export default class Snippet extends React.Component {
       lineNumbers: true,
       mode: this.props.language
     };
+    let { style, ...props } = this.props;
     return (
-      <Paper>
+      <Paper style={style}>
         <div>{this.props.name}</div>
         <Codemirror value={this.props.content} options={codeOptions} />
         <Markdown text={this.props.description}/>

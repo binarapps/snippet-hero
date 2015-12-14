@@ -15,7 +15,7 @@ export default class SnippetsIndex extends React.Component {
             return (
               <li style={{position: 'relative', paddingLeft: '30px'}}>
                 <span style={{position: 'absolute', left: 0}}>#{index+1}</span>
-                <Snippet {...item} key={index}/>
+                <Snippet {...item} style={{marginBottom: '15px'}} key={index}/>
               </li>
             );
           })}

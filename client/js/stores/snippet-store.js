@@ -8,6 +8,19 @@ class SnippetStore {
     this.snippets = [];
   }
 
+  getAll (data) {
+    if (data.ok) {
+      const snippets = this.snippets;
+
+      this.setState({
+        snippets: snippets.concat(data.snippets)
+      });
+    } else {
+      // TODO react to errors
+      // console.log(data.error.message)
+    }
+  }
+
   create(data) {
     if (data.ok) {
       const snippets = this.snippets;
