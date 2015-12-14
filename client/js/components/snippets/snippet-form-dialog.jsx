@@ -5,7 +5,7 @@ import Tab from 'material-ui/lib/tabs/tab';
 import FlatButton from 'material-ui/lib/flat-button';
 import Snippet from './snippet';
 import SnippetForm from './snippet-form';
-import SnippetActions from '../actions/snippet-actions.js';
+import SnippetActions from '../../actions/snippet-actions.js';
 
 // TODO create tests
 export default class SnippetFormDialog extends React.Component {

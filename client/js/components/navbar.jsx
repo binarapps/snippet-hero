@@ -2,21 +2,15 @@ import React from 'react';
 import AppBar from 'material-ui/lib/app-bar';
 import LeftNav from 'material-ui/lib/left-nav';
 
-let menuItems = [
-  { route: '/', text: 'Dashboard' },
-  { route: 'snippets', text: 'All snippets' }
-];
-
 class Navbar extends React.Component {
 
   constructor() {
     super();
-
     this.handleClick = this.handleClick.bind(this);
     this.onLeftNavChange = this.onLeftNavChange.bind(this);
   }
 
-  onLeftNavChange(e, key, payload) {
+  onLeftNavChange (e, key, payload) {
     this.props.history.pushState(null, payload.route);
   }
 
@@ -32,7 +26,7 @@ class Navbar extends React.Component {
             ref="leftNav"
             docked={false}
             onChange={this.onLeftNavChange}
-            menuItems={menuItems}/>
+            menuItems={this.props.menuItems}/>
         <header>
           <AppBar title='Snippet-hero' onLeftIconButtonTouchTap={this.handleClick} />
         </header>

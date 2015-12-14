@@ -1,5 +1,7 @@
 import React from 'react';
-import SnippetFormDialog from './snippet-form-dialog';
+import PageWrapper from '../page-wrapper';
+import SnippetsList from '../snippets/snippets-list';
+import SnippetFormDialog from '../snippets/snippet-form-dialog';
 import RaisedButton from 'material-ui/lib/raised-button';
 
 export default class SnippetsIndex extends React.Component {
@@ -16,16 +18,11 @@ export default class SnippetsIndex extends React.Component {
     const languages = [{value: 0, label: ''}, {value: 1, label: 'JavaScript'}];
 
     return (
-      <div>
+      <PageWrapper style={{padding: 0}}>
         <RaisedButton onClick={this._openSnippetDialog} label="Add new snippet" primary={true} />
-        <ul>
-          <li>pierwszy</li>
-          <li>drugi</li>
-          <li>trzeci</li>
-          <li>czwarty</li>
-        </ul>
+        <SnippetsList></SnippetsList>
         <SnippetFormDialog ref={(ref) => this.dialog = ref} defaultOpen={false} languages={languages} />
-      </div>
+      </PageWrapper>
     );
   }
 }

@@ -5,7 +5,7 @@ import { Router, Route } from 'react-router';
 import ReactTapPlugin from 'react-tap-event-plugin';
 import ReactDOM from 'react-dom';
 import App from './components/app';
-import SnippetsIndex from './components/snippets-index';
+import SnippetsIndex from './components/pages/snippets-index';
 
 
 main();
