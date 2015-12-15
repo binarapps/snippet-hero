@@ -25,7 +25,7 @@ class SnippetStore {
 
   create(data) {
     if (data.ok) {
-      const snippets = this.snippets;
+      const snippets = this.state.snippets;
 
       this.setState({
         snippets: snippets.concat(data.snippet)
