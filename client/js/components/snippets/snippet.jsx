@@ -17,7 +17,7 @@ export default class Snippet extends React.Component {
       lineNumbers: true,
       mode: this.props.language
     };
-    let { style, ...props } = this.props;
+    let { style } = this.props;
     return (
       <Paper style={style}>
         <div>{this.props.name}</div>
