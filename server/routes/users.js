@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models');
-
+var passport = require('passport');
 
 /* GET users listing. */
 router.get('/', function(req, res) {
@@ -13,6 +13,10 @@ router.get('/', function(req, res) {
     res.send(mappedUsers);
   });
 });
+
+app.post('/login', passport.authenticate('local', { successRedirect: '/',
+                                                    failureRedirect: '/login',
+                                                    failureFlash: true });
 
 router.get('/:id', function(req, res) {
   models.User.findById(req.params.id).then(function(user) {

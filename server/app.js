@@ -9,6 +9,8 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var snippets = require('./routes/snippets');
 
+require('./config/passport_configuration');
+
 var app = express();
 
 // view engine setup
