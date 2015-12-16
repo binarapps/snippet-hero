@@ -14,9 +14,12 @@ router.get('/', function(req, res) {
   });
 });
 
-app.post('/login', passport.authenticate('local', { successRedirect: '/',
-                                                    failureRedirect: '/login',
-                                                    failureFlash: true });
+router.post('/login',
+  passport.authenticate('local'),
+  function(req, res) {
+    res.send({ user: req.user });
+  }
+);
 
 router.get('/:id', function(req, res) {
   models.User.findById(req.params.id).then(function(user) {
