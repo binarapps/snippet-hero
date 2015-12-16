@@ -10,7 +10,6 @@ import SnippetActions from '../../actions/snippet-actions';
 class SnippetsIndex extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {dialogOpen: false};
   }
 
   componentDidMount () {
@@ -22,13 +21,12 @@ class SnippetsIndex extends React.Component {
 
     return (
       <PageWrapper>
-        <RaisedButton onClick={ () => this.setState({dialogOpen: true})} label="Add new snippet" primary={true}/>
+        <RaisedButton onClick={ () => this.refs.dialog.open()} label="Add new snippet" primary={true}/>
         <AltContainer store={SnippetStore}>
           <SnippetsList />
         </AltContainer>
-        <SnippetFormDialog dialogOpen={this.state.dialogOpen}
-          languages={languages}
-          handleCancel={() => this.setState({dialogOpen: false})} />
+        <SnippetFormDialog ref="dialog"
+                           languages={languages} />
       </PageWrapper>
     );
   }

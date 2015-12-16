@@ -8,14 +8,15 @@ class SnippetActions {
     //   'create'
     // );
   }
+
   getAll () {
-    axios.get('/snippets')
+    return axios.get('/snippets')
       .then(res => this.dispatch({ok: true, snippets: res.data}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
   create (snippet) {
-    axios.post('/snippets', snippet)
+    return axios.post('/snippets', snippet)
       .then(res => this.dispatch({ok: true, snippet: res.data}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }

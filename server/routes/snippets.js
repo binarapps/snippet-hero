@@ -38,8 +38,8 @@ router.post('/', function (req, res) {
   };
 
   var snippet = models.Snippet.build(attributes);
-  snippet.save({validate: false, logging: true}).then(function () {
-    res.status(201).send('ok');
+  snippet.save({logging: true}).then(function () {
+    res.status(201).send(snippet);
   }).catch(function () {
     res.status(422).send('error');
   });

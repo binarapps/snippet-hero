@@ -3,6 +3,7 @@ import Dialog from 'material-ui/lib/dialog';
 import Tabs from 'material-ui/lib/tabs/tabs';
 import Tab from 'material-ui/lib/tabs/tab';
 import FlatButton from 'material-ui/lib/flat-button';
+import Snackbar from 'material-ui/lib/snackbar';
 import Snippet from './snippet';
 import SnippetForm from './snippet-form';
 import SnippetActions from '../../actions/snippet-actions.js';
@@ -11,10 +12,15 @@ import SnippetActions from '../../actions/snippet-actions.js';
 export default class SnippetFormDialog extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {name: '', content: '', description: '', language: 0};
+    this.state = {name: '', content: '', description: '', language: 0, isOpen: props.dialogOpen};
 
     this._handleFormChange = this._handleFormChange.bind(this);
     this._handleSubmit = this._handleSubmit.bind(this);
+    this._handleCancel = this._handleCancel.bind(this);
+  }
+
+  _resetForm () {
+    this.setState({name: '', content: '', description: '', language: 0});
   }
 
   _handleFormChange(value) {
@@ -31,7 +37,23 @@ export default class SnippetFormDialog extends React.Component {
       content: this.state.content,
       description: this.state.description,
       language: this.state.language
+    }).then(() => {
+      this.setState({isOpen:false});
+      this.refs.snackbar.show();
+      this._resetForm();
     });
+  }
+
+  _handleCancel () {
+    this.close();
+  }
+
+  open () {
+    this.setState({isOpen: true});
+  }
+
+  close () {
+    this.setState({isOpen: false});
   }
 
   render() {
@@ -40,7 +62,7 @@ export default class SnippetFormDialog extends React.Component {
         label="Cancel"
         secondary={true}
         ref="cancel"
-        onTouchTap={this.props.handleCancel} />,
+        onTouchTap={this._handleCancel} />,
       <FlatButton
         label="Submit"
         ref="submit"
@@ -48,20 +70,25 @@ export default class SnippetFormDialog extends React.Component {
         onTouchTap={this._handleSubmit} />
     ];
     return (
-      <Dialog ref={(ref) => this.dialog = ref}
-              title={this.props.title || 'Snippet Form'}
-              actions={actions}
-              defaultOpen={this.props.defaultOpen}
-              open={this.props.dialogOpen} >
-        <Tabs>
-          <Tab label="Form">
-            <SnippetForm {...this.state} languages={this.props.languages} onChange={this._handleFormChange} ref="form" />
-          </Tab>
-          <Tab label="Preview">
-            <Snippet {...this.state} />
-          </Tab>
-        </Tabs>
-      </Dialog>
+      <div>
+        <Dialog ref={(ref) => this.dialog = ref}
+          title={this.props.title || 'Snippet Form'}
+          actions={actions}
+          defaultOpen={this.props.defaultOpen}
+          open={this.state.isOpen} >
+          <Tabs>
+            <Tab label="Form">
+              <SnippetForm {...this.state} languages={this.props.languages} onChange={this._handleFormChange} ref="form" />
+            </Tab>
+            <Tab label="Preview">
+              <Snippet {...this.state} />
+            </Tab>
+          </Tabs>
+        </Dialog>
+        <Snackbar message="Snippet created successfuly!"
+                  ref="snackbar"
+                  autoHideDuration={5000}/>
+      </div>
     );
   }
 }
