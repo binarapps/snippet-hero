@@ -25,6 +25,20 @@ router.get('/:id', function (req, res) {
   });
 });
 
+/* GET snippet's ratings */
+router.get('/:id/ratings', function (req, res) {
+  models.Rating.findAll({ where : { SnippetId: req.params.id } }).then(function (ratings) {
+    var mappedRatings = ratings.map(function (rating) {
+      return ({ value: rating.value,
+                Id: rating.id,
+                UserId: rating.UserId
+      });
+    });
+    
+    res.send(mappedRatings);
+  });
+});
+
 /* POST new snippet  */
 router.post('/', function (req, res) {
   var attributes = {
