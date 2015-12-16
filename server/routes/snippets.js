@@ -7,7 +7,8 @@ var models = require('../models');
 router.get('/', function (req, res) {
   models.Snippet.findAll().then(function (snippets) {
     var mappedSnippets = snippets.map(function (s) {
-      return ({ content: s.content,
+      return ({ id: s.id,
+                content: s.content,
                 name: s.name,
                 description: s.description,
                 language: s.language

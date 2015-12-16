@@ -15,6 +15,11 @@ export default class App extends React.Component {
   }
 
   render() {
+    let menuItems = [
+      { route: '/', text: 'Dashboard' },
+      { route: 'snippets', text: 'All snippets' }
+    ];
+
     if(!this.currentUser) {
       return (
         <div>
@@ -24,10 +29,8 @@ export default class App extends React.Component {
     } else {
       return (
         <div>
-          <Navbar history={this.props.history}/>
-          <div className="page-wrapper" style={{padding: '20px 10px'}}>
-            {this.props.children}
-          </div>
+          <Navbar history={this.props.history} menuItems={menuItems}/>
+          {this.props.children}
         </div>
       );
     }
