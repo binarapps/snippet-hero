@@ -1,5 +1,5 @@
 import React from 'react';
-import connectToStores from 'alt/utils/connectToStores';
+import AltContainer from 'alt/AltContainer.js';
 import RaisedButton from 'material-ui/lib/raised-button';
 import PageWrapper from '../page-wrapper';
 import SnippetsList from '../snippets/snippets-list';
@@ -13,14 +13,6 @@ class SnippetsIndex extends React.Component {
     this.state = {dialogOpen: false};
   }
 
-  static getStores() {
-    return [SnippetStore];
-  }
-
-  static getPropsFromStores() {
-    return SnippetStore.getState();
-  }
-
   componentDidMount () {
     SnippetActions.getAll();
   }
@@ -30,15 +22,16 @@ class SnippetsIndex extends React.Component {
 
     return (
       <PageWrapper>
-        <RaisedButton onClick={ () => this.setState({dialogOpen: true})} label="Add new snippet" primary={true} ref='button' />
-        <SnippetsList items={this.props.snippets}></SnippetsList>
-        <SnippetFormDialog ref={(ref) => this.snippetDialog = ref}
-                           dialogOpen={this.state.dialogOpen}
-                           languages={languages}
-                           handleCancel={() => this.setState({dialogOpen: false})} />
+        <RaisedButton onClick={ () => this.setState({dialogOpen: true})} label="Add new snippet" primary={true}/>
+        <AltContainer store={SnippetStore}>
+          <SnippetsList />
+        </AltContainer>
+        <SnippetFormDialog dialogOpen={this.state.dialogOpen}
+          languages={languages}
+          handleCancel={() => this.setState({dialogOpen: false})} />
       </PageWrapper>
     );
   }
 }
 
-export default connectToStores(SnippetsIndex);
+export default SnippetsIndex;
