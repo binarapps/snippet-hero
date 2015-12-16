@@ -1,4 +1,5 @@
 import React from 'react';
+import lodash from 'lodash';
 
 // TODO create tests
 export default class PageWrapper extends React.Component {
@@ -11,7 +12,7 @@ export default class PageWrapper extends React.Component {
 
   render() {
     let { style, ...props } = this.props;
-    Object.assign(this.style, style);
+    lodash.assign(this.style, style);
     return (
       <div className="page-wrapper" style={this.style} {...props}>
         {this.props.children}
