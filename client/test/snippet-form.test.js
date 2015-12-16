@@ -6,7 +6,7 @@ import TestUtils from 'react-addons-test-utils';
 import sinon from 'sinon';
 import chai from 'chai';
 
-import SnippetForm from '../js/components/snippet-form.jsx';
+import SnippetForm from '../js/components/snippets/snippet-form.jsx';
 
 const expect = chai.expect;
 const languages = [{value: 0, label: ''}, {value: 1, label: 'JavaScript'}];
