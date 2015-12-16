@@ -1,11 +1,21 @@
 import React from 'react';
 import Navbar from './navbar';
 import RegistrationForm from './registration-form';
+import UserStore from '../stores/user-store';
 
 export default class App extends React.Component {
 
+
+  componentDidMount() {
+    UserStore.addChangeListener(this._onChange);
+  }
+
+  _onChange() {
+    this.setState({currentUser: UserStore.currentUser});
+  }
+
   render() {
-    if(true) {
+    if(!this.currentUser) {
       return (
         <div>
           <RegistrationForm />

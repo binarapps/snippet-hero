@@ -4,8 +4,6 @@ import alt from '../libs/alt';
 // TODO create tests
 class UserActions {
 
-  constructor() {}
-
   login(userData) {
     axios.post('/users/login', userData)
       .then(res => this.dispatch({ok: true, user: res.data}))
