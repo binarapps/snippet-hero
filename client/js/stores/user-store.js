@@ -4,7 +4,7 @@ import UserActions from '../actions/user-actions';
 // TODO create tests
 class UserStore {
   constructor() {
-    this.state = { currentUser: [] };
+    this.state = { currentUser: false };
 
     this.bindListeners({
       login: UserActions.LOGIN,
