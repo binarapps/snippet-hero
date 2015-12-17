@@ -12,8 +12,8 @@ class UserActions {
 
   logout() {
     axios.delete('/users/logout')
-      .then(res => this.dispatch({ ok: true }))
-      .catch(err => this.dispatch({ ok: false }));
+      .then(() => { this.dispatch({ ok: true }); })
+      .catch(() => { this.dispatch({ ok: false }); });
   }
 }
 export default alt.createActions(UserActions);

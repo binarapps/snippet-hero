@@ -25,18 +25,19 @@ export default class App extends React.Component {
   }
 
   _onChange(data, locationData) {
+    var newPath;
     this.setState({ currentUser: UserStore.state.currentUser });
 
     if(locationData && locationData.location) {
-      var newPath = locationData.location.pathname;
+      newPath = locationData.location.pathname;
     } else {
-      var newPath = '/'
+      newPath = '/';
     }
 
     if(!this.state.currentUser && newPath != '/login') {
-      this.props.history.pushState(null, '/login')
+      this.props.history.pushState(null, '/login');
     } else if(this.state.currentUser && newPath === '/login') {
-      this.props.history.pushState(null, '/')
+      this.props.history.pushState(null, '/');
     }
   }
 
