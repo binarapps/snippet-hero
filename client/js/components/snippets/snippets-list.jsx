@@ -1,6 +1,6 @@
 import React from 'react';
 import Snippet from './snippet';
-import RaisedButton from 'material-ui/lib/raised-button';
+import RatingForm from '../ratings/rating-form';
 
 export default class SnippetsIndex extends React.Component {
   constructor(props) {
@@ -15,10 +15,10 @@ export default class SnippetsIndex extends React.Component {
         <ul>
           {this.props.snippets.map(function(item, index) {
             return (
-              <li style={{position: 'relative', paddingLeft: '30px'}}>
+              <li style={{position: 'relative', paddingLeft: '30px', display: 'inline-flex'}}>
                 <span style={{position: 'absolute', left: 0}}>#{index+1}</span>
-                <Snippet {...item} style={{marginBottom: '15px'}} key={index}/>
-                <RaisedButton onClick={ () => this.setState({rateDialogOpen: true})} label="Rate this snippet" secondary={true}/>
+                <RatingForm />
+                <Snippet {...item} style={{marginBottom: '15px', width: '80vw'}} key={index}/>
                 <br /><br /><br />
               </li>
             );
