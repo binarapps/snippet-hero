@@ -19,6 +19,25 @@ router.get('/', function (req, res) {
   });
 });
 
+router.get('/search', function (req, res) {
+  var options = {};
+  if (req.query.name) {
+    options.where = { name: req.query.name };
+  }
+  models.Snippet.findAll(options).then(function (snippets) {
+    var mappedSnippets = snippets.map(function (s) {
+      return ({ id: s.id,
+                content: s.content,
+                name: s.name,
+                description: s.description,
+                language: s.language
+      });
+    });
+
+    res.send(mappedSnippets);
+  });
+});
+
 /* GET snippet by id */
 router.get('/:id', function (req, res) {
   models.Snippet.findById(req.params.id).then(function (s) {

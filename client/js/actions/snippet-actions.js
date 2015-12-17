@@ -15,6 +15,12 @@ class SnippetActions {
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
+  search (name) {
+    return axios.get('/snippets/search?name=' + name)
+      .then(res => this.dispatch({ok: true, snippets: res.data}))
+      .catch(err => this.dispatch({ok: false, error: err}));
+  }
+
   create (snippet) {
     return axios.post('/snippets', snippet)
       .then(res => this.dispatch({ok: true, snippet: res.data}))
