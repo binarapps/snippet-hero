@@ -11,7 +11,7 @@ import SnippetFormDialog from '../../js/components/snippets/snippet-form-dialog'
 const expect = chai.expect;
 
 describe('SnippetsIndex', () => {
-  var snippetsIndex;
+  let snippetsIndex;
   before(function() {
     snippetsIndex = TestUtils.renderIntoDocument(
       <SnippetsIndex snippets={[]}/>
@@ -20,10 +20,11 @@ describe('SnippetsIndex', () => {
 
   describe('open new snippet dialog', () => {
     it('should open new snippet dialog on click', () => {
-      var dialog = TestUtils.findRenderedComponentWithType(snippetsIndex, SnippetFormDialog);
-      expect(dialog.dialog.isOpen()).to.be.false;
-      snippetsIndex.setState({dialogOpen: true});
-      expect(dialog.dialog.isOpen()).to.be.true;
+      const dialog = TestUtils.findRenderedComponentWithType(snippetsIndex, SnippetFormDialog);
+      const button = TestUtils.findRenderedDOMComponentWithClass(snippetsIndex, 'openDialog');
+      expect(dialog.refs.dialog.isOpen()).to.be.false;
+      TestUtils.Simulate.click(button);
+      expect(dialog.refs.dialog.isOpen()).to.be.true;
     });
   });
 });
