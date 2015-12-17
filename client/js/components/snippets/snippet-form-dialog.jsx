@@ -7,6 +7,7 @@ import Snackbar from 'material-ui/lib/snackbar';
 import Snippet from './snippet';
 import SnippetForm from './snippet-form';
 import SnippetActions from '../../actions/snippet-actions.js';
+// import SnippetStore from '../../stores/snippet-store.js';
 
 // TODO create tests
 export default class SnippetFormDialog extends React.Component {
@@ -37,11 +38,10 @@ export default class SnippetFormDialog extends React.Component {
       content: this.state.content,
       description: this.state.description,
       language: this.state.language
-    }).then(() => {
-      this.setState({isOpen:false});
-      this.refs.snackbar.show();
-      this._resetForm();
     });
+    this.refs.snackbar.show();
+    this.setState({isOpen:false});
+    this._resetForm();
   }
 
   _handleCancel () {
