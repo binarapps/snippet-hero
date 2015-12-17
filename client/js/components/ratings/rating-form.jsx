@@ -4,6 +4,9 @@ import ActionGrade from 'material-ui/lib/svg-icons/action/grade';
 export default class RatingForm extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {starsClicked: 0}; //TODO get stars clicked from user's rating for this snippet
+    this.handleHover = this.handleHover.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   handleHover(e){

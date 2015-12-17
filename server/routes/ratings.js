@@ -23,6 +23,34 @@ router.get('/:id', function (res, req) {
   });
 });
 
+/* GET snippet's rating from user*/
+router.get('/snippets/:snippet_id/users/:user_id', function (res, req) {
+  models.Rating.findAll({ where: { UserId: req.params.user_id, SnippetId: req.params.snippet_id } }).then(function (ratings){
+    var mappedRatings = ratings.map(function (rating) {
+      return ({ value: rating.value,
+                userdId: rating.UserId,
+                snippetId: rating.SnippetId
+      });
+    });
+
+    res.send(mappedRatings);
+  });
+});
+
+/* UPDATE user's rating for snippet*/
+router.put('/:id', function (res, req) {
+  models.Rating.findById(req.params.id).then( function (rating) {
+    rating.value = req.body.value;
+    rating.save({ validate: false, logging: true}).then(function () {
+      res.status(200).send('ok');
+    }).catch(function () {
+      res.status(422).send('error');
+    });
+  }).catch(function () {
+    res.status(422).send('error');
+  });
+});
+
 /* POST new rating */
 router.post('/', function (res, req) {
   var attributes = {
