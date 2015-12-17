@@ -4,20 +4,23 @@ import UserActions from '../actions/user-actions';
 // TODO create tests
 class UserStore {
   constructor() {
-    this.bindActions(UserActions);
-    this.currentUser = [];
+    this.state = { currentUser: [] };
+
+    this.bindListeners({
+      login: UserActions.LOGIN,
+      logout: UserActions.LOGOUT
+    });
   }
 
   login(data) {
     if (data.ok) {
-      const snippets = this.snippets;
+      this.setState({ currentUser: data.user });
+    }
+  }
 
-      this.setState({
-        currentUser: data.user
-      });
-    } else {
-      // TODO react to errors
-      // console.log(data.error.message)
+  logout(data) {
+    if (data.ok) {
+      this.setState({ currentUser: false });
     }
   }
 }

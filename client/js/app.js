@@ -6,7 +6,8 @@ import ReactTapPlugin from 'react-tap-event-plugin';
 import ReactDOM from 'react-dom';
 import App from './components/app';
 import SnippetsIndex from './components/pages/snippets-index';
-
+import Logout from './components/pages/logout';
+import Login from './components/pages/login';
 
 main();
 
@@ -26,7 +27,9 @@ function main () {
   ReactDOM.render(
     <Router>
       <Route path="/" component={App}>
-        <Route path="snippets" component={SnippetsIndex}/>
+        <Route path="/snippets" component={SnippetsIndex}/>
+        <Route path="/logout" component={Logout}/>
+        <Route path="/login" component={Login}/>
       </Route>
     </Router>,
     app

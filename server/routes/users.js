@@ -21,6 +21,11 @@ router.post('/login',
   }
 );
 
+router.delete('/logout', function(req, res) {
+  req.logout();
+  res.send(true);
+});
+
 router.get('/:id', function(req, res) {
   models.User.findById(req.params.id).then(function(user) {
     res.send(user);

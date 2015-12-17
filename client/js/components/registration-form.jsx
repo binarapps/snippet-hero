@@ -2,10 +2,8 @@ import React from 'react';
 import TextField from 'material-ui/lib/text-field';
 import Dialog from 'material-ui/lib/dialog';
 import RaisedButton from 'material-ui/lib/raised-button';
-import FlatButton from 'material-ui/lib/flat-button';
 import UserActions from '../actions/user-actions';
 
-// TODO create tests
 export default class RegistrationForm extends React.Component {
   constructor(props) {
     super(props);
@@ -14,11 +12,11 @@ export default class RegistrationForm extends React.Component {
     this._onSignInRequest = this._onSignInRequest.bind(this);
   }
 
-  _onRequestClose(button) {
+  _onRequestClose() {
     this.refs.dialog.setState({open: true});
   }
 
-  _onSignInRequest(e) {
+  _onSignInRequest() {
     var userData = { email: this.refs.emailInput.getValue(),
                      password: this.refs.passwordInput.getValue() };
     UserActions.login(userData);
