@@ -7,6 +7,7 @@ export default class SnippetsIndex extends React.Component {
   }
 
   render() {
+    console.log('render list', this.props.snippets.length);
     return (
       <ul>
         {this.props.snippets.map(function(item, index) {

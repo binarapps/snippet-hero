@@ -6,6 +6,7 @@ import SnippetsList from '../snippets/snippets-list';
 import SnippetFormDialog from '../snippets/snippet-form-dialog';
 import SnippetActions from '../../actions/snippet-actions';
 import SnippetStore from '../../stores/snippet-store';
+import SnippetSearchStore from '../../stores/snippet-search-store';
 
 class SnippetsIndex extends React.Component {
   constructor(props) {
@@ -16,15 +17,22 @@ class SnippetsIndex extends React.Component {
     this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
     this.componentWillUnmount = this.componentWillUnmount.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onSearch = this.onSearch.bind(this);
   }
 
   componentDidMount () {
-    SnippetStore.listen(this.onChange);
+    this.storeListeners = [];
+    this.storeListeners.push(SnippetStore.listen(this.onChange));
+    this.storeListeners.push(SnippetSearchStore.listen(this.onSearch));
     SnippetActions.getAll();
   }
 
   getPropsFromStores () {
     return SnippetStore.getState();
+  }
+
+  getPropsFromSearchStore () {
+    return SnippetSearchStore.getState();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,6 +45,10 @@ class SnippetsIndex extends React.Component {
 
   onChange() {
     this.setState(this.getPropsFromStores(this.state, this.context));
+  }
+
+  onSearch() {
+    this.setState(this.getPropsFromSearchStore(this.state, this.context));
   }
 
   _searchSnippets () {

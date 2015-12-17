@@ -23,17 +23,6 @@ class SnippetStore {
     }
   }
 
-  search (data) {
-    if (data.ok) {
-      this.setState({
-        snippets: data.snippets
-      });
-    } else {
-      // TODO react to errors
-      // console.log(data.error.message)
-    }
-  }
-
   create(data) {
     if (data.ok) {
       const snippets = this.state.snippets;

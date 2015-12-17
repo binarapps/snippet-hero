@@ -8,7 +8,8 @@ class SnippetSearchStore {
 
     this.registerAsync(SnippetSearchSource);
     this.bindListeners({
-      onSearch: SnippetActions.ON_SEARCH
+      onSearch: SnippetActions.SEARCH,
+      onReceivedResults: SnippetActions.RECEIVED_RESULTS
     });
   }
 
@@ -19,13 +20,15 @@ class SnippetSearchStore {
     if (!this.getInstance().isLoading()) {
       this.getInstance().performSearch();
     }
+    this.preventDefault();
   }
 
-  receivedResults(data) {
+  onReceivedResults(data) {
     if (data.ok) {
       this.setState({
         snippets: data.snippets
       });
+      // this.emitChange();
     } else {
       // TODO react to errors
       // console.log(data.error.message)

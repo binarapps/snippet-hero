@@ -11,7 +11,7 @@ const SearchSource = {
     error: SnippetActions.fetchingResultsFailed,
 
     shouldFetch() {
-      return true
+      return true;
     }
   }
 };
