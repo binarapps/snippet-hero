@@ -5,10 +5,16 @@ var models = require('../models');
 
 /* GET snippets listing. */
 router.get('/', function (req, res) {
-  models.Snippet.findAll().then(function (snippets) {
+  models.Snippet.findAll({
+    include: [models.SnippetVersion],
+    order: [[models.SnippetVersion, 'createdAt', 'ASC']]
+  }).then(function (snippets) {
     var mappedSnippets = snippets.map(function (s) {
       return ({ id: s.id,
-                content: s.content,
+                content: s.SnippetVersions.length ? s.SnippetVersions[0].content : '',
+                versions: s.SnippetVersions.map(function (v) {
+                  return {content: v.content, createdAt: v.createdAt};
+                }),
                 name: s.name,
                 description: s.description,
                 language: s.language
@@ -42,20 +48,23 @@ router.get('/:id/ratings', function (req, res) {
 
 /* POST new snippet  */
 router.post('/', function (req, res) {
+  var body = req.body;
   var attributes = {
-    content: req.body.content,
-    description: req.body.description,
+    description: body.description,
     language: 'javascript',
-    name: req.body.name,
-    createdAt: new Date(),
-    updatedAt: new Date()
+    name: body.name
   };
 
-  var snippet = models.Snippet.build(attributes);
-  snippet.save({validate: false, logging: true}).then(function () {
+  models.sequelize.transaction(function (t) {
+    return models.Snippet.create(attributes, {transaction: t}).then(function (snippet) {
+      return snippet.createSnippetVersion({
+        content: body.content
+      }, {transaction: t});
+    });
+  }).then(function () {
     res.status(201).send('ok');
-  }).catch(function () {
-    res.status(422).send('error');
+  }).catch(function (err) {
+    res.status(422).send(err.message);
   });
 });
 
