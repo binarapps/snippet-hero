@@ -22,7 +22,7 @@ export default class SnippetFormDialog extends React.Component {
   }
 
   _resetForm() {
-    this.state = {name: '', content: '', description: '', language: 0, open: false};
+    this.setState({name: '', content: '', description: '', language: 0, open: false});
   }
 
   _handleSubmit() {

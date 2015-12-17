@@ -41,14 +41,14 @@ router.post('/', function (req, res) {
     name: body.name
   };
 
-  models.Snippet.create(attributes).then(function (snippet) {
-    snippet.createSnippetVersion({
-      content: body.content
-    }).then(function () {
-      res.status(201).send('ok');
-    }).catch(function (err) {
-      res.status(422).send(err.message);
+  models.sequelize.transaction(function (t) {
+    return models.Snippet.create(attributes, {transaction: t}).then(function (snippet) {
+      return snippet.createSnippetVersion({
+        content: body.content
+      }, {transaction: t});
     });
+  }).then(function () {
+    res.status(201).send('ok');
   }).catch(function (err) {
     res.status(422).send(err.message);
   });
