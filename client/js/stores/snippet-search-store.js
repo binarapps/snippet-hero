@@ -8,22 +8,11 @@ class SnippetSearchStore {
 
     this.registerAsync(SnippetSearchSource);
     this.bindListeners({
-      onSearch: SnippetActions.SEARCH,
-      onReceivedResults: SnippetActions.RECEIVED_RESULTS
+      onSearch: SnippetActions.SEARCH
     });
   }
 
-  onSearch(name) {
-    this.setState({
-      value: name
-    });
-    if (!this.getInstance().isLoading()) {
-      this.getInstance().performSearch();
-    }
-    this.preventDefault();
-  }
-
-  onReceivedResults(data) {
+  onSearch(data) {
     if (data.ok) {
       this.setState({
         snippets: data.snippets
@@ -35,6 +24,5 @@ class SnippetSearchStore {
     }
   }
 }
-
 
 export default alt.createStore(SnippetSearchStore, 'SnippetSearchStore');

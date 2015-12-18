@@ -11,7 +11,7 @@ import SnippetSearchStore from '../../stores/snippet-search-store';
 class SnippetsIndex extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { snippets: [] };
+    this.state = this.getPropsFromStores();
     this._searchSnippets = this._searchSnippets.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
@@ -20,18 +20,18 @@ class SnippetsIndex extends React.Component {
     this.onSearch = this.onSearch.bind(this);
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.storeListeners = [];
     this.storeListeners.push(SnippetStore.listen(this.onChange));
     this.storeListeners.push(SnippetSearchStore.listen(this.onSearch));
     SnippetActions.getAll();
   }
 
-  getPropsFromStores () {
+  getPropsFromStores() {
     return SnippetStore.getState();
   }
 
-  getPropsFromSearchStore () {
+  getPropsFromSearchStore() {
     return SnippetSearchStore.getState();
   }
 
@@ -51,7 +51,8 @@ class SnippetsIndex extends React.Component {
     this.setState(this.getPropsFromSearchStore(this.state, this.context));
   }
 
-  _searchSnippets () {
+  _searchSnippets (e) {
+    e.preventDefault();
     SnippetActions.search(this.refs.search.getValue());
   }
 
@@ -62,12 +63,18 @@ class SnippetsIndex extends React.Component {
       <PageWrapper>
         <RaisedButton onClick={ () => this.refs.dialog.open()} label="Add new snippet" primary={true}/>
         <h2 style={{fontSize: '24px', margin: '20px 0'}}>All snippets:</h2>
-        <TextField floatingLabelText="Enter snippet description (optional):"
-                   fullWidth={true}
-                   type="text"
-                   ref="search" />
-        <RaisedButton onClick={this._searchSnippets} label="Search" secondary={true}/>
-        <SnippetsList snippets={this.state.snippets}/>
+        <form className="snippet-form" onSubmit={this._searchSnippets} style={{float: 'right'}}>
+          <label style={{marginRight: '5px'}}>Search by name: </label>
+          <TextField floatingLabelText="snippet name"
+                     fullWidth={false}
+                     type="text"
+                     ref="search"
+                     style={{marginRight: '5px'}} />
+          <RaisedButton onClick={this._searchSnippets} label="Search" secondary={true}/>
+        </form>
+        <div style={{clear: 'right'}}>
+          <SnippetsList snippets={this.state.snippets}/>
+        </div>
         <SnippetFormDialog ref="dialog"
                            languages={languages} />
       </PageWrapper>

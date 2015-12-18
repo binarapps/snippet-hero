@@ -10,31 +10,19 @@ class SnippetActions {
   }
 
   getAll() {
-    return axios.get('/snippets')
+    axios.get('/snippets')
       .then(res => this.dispatch({ok: true, snippets: res.data}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
-  // search(name) {
-  //   axios.get('/snippets/search?name=' + name)
-  //     .then(res => this.dispatch({ok: true, snippets: res.data}))
-  //     .catch(err => this.dispatch({ok: false, error: err}));
-  // }
-
   search(name) {
-    this.dispatch(name);
-  }
-
-  receivedResults(response) {
-    this.dispatch({ok: true, snippets: response.data});
-  }
-
-  fetchingResultsFailed() {
-    console.log('failed receivedResults');
+    axios.get('/snippets/search?name=' + name)
+      .then(res => this.dispatch({ok: true, snippets: res.data}))
+      .catch(err => this.dispatch({ok: false, error: err}));
   }
 
   create(snippet) {
-    return axios.post('/snippets', snippet)
+    axios.post('/snippets', snippet)
       .then(res => this.dispatch({ok: true, snippet: res.data}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }

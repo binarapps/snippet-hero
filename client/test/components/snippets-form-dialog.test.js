@@ -17,10 +17,10 @@ describe('SnippetFormDialog', () => {
       let snippetFormDialog = TestUtils.renderIntoDocument(
         <SnippetFormDialog defaultOpen={false} languages={languages} />
       );
-      expect(snippetFormDialog.refs.dialog.isOpen()).to.be.false;
+      expect(snippetFormDialog.dialog.isOpen()).to.be.false;
       snippetFormDialog.open();
-      expect(snippetFormDialog.state.open).to.be.true;
-      expect(snippetFormDialog.refs.dialog.isOpen()).to.be.true;
+      expect(snippetFormDialog.state.isOpen).to.be.true;
+      expect(snippetFormDialog.dialog.isOpen()).to.be.true;
     });
   });
 });
