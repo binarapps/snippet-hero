@@ -56,11 +56,3 @@ class RatingStore {
 }
 
 export default alt.createStore(RatingStore, 'RatingStore');
-
-
-
-  getSnippetRatings (snippet_id) {
-    axios.get('/snippets/' + snippet_id + '/ratings')
-      .then(res => this.dispatch({ok: true, ratings: res.data}))
-      .catch(err => this.dispatch({ok: false, error: err}));
-  }
