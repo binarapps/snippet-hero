@@ -1,6 +1,5 @@
 import React from 'react';
 import Snippet from './snippet';
-import RatingForm from '../ratings/rating-form';
 
 export default class SnippetsIndex extends React.Component {
   constructor(props) {
@@ -15,11 +14,10 @@ export default class SnippetsIndex extends React.Component {
         <ul>
           {this.props.snippets.map(function(item, index) {
             return (
-              <li style={{position: 'relative', paddingLeft: '30px', display: 'inline-flex'}}>
+              <li style={{position: 'relative', paddingLeft: '30px'}}>
                 <span style={{position: 'absolute', left: 0}}>#{index+1}</span>
-                <RatingForm />
                 <Snippet {...item} style={{marginBottom: '15px', width: '80vw'}} key={index}/>
-                <br /><br /><br />
+                <br /><br />
               </li>
             );
           })}
