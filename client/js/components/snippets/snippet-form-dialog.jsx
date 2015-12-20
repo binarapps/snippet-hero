@@ -7,7 +7,7 @@ import Snackbar from 'material-ui/lib/snackbar';
 import Snippet from './snippet';
 import SnippetForm from './snippet-form';
 import SnippetActions from '../../actions/snippet-actions.js';
-// import SnippetStore from '../../stores/snippet-store.js';
+import SnippetStore from '../../stores/snippet-store.js';
 
 // TODO create tests
 export default class SnippetFormDialog extends React.Component {
@@ -18,9 +18,32 @@ export default class SnippetFormDialog extends React.Component {
     this._handleFormChange = this._handleFormChange.bind(this);
     this._handleSubmit = this._handleSubmit.bind(this);
     this._handleCancel = this._handleCancel.bind(this);
+    this._onCreate = this._onCreate.bind(this);
+    this._showSnackbarMessage = this._showSnackbarMessage.bind(this);
   }
 
-  _resetForm () {
+  componentDidMount() {
+    this.storeListener = SnippetStore.listen(this._onCreate);
+  }
+
+  componentWillUnmount() {
+    this.storeListener.unlisten();
+  }
+
+  _onCreate(nextState) {
+    if(nextState.snippetCreated && nextState.lastCreateSuccess) {
+      this._showSnackbarMessage('Snippet created successfuly!');
+    } else if(nextState.snippetCreated && !nextState.lastCreateSuccess) {
+      this._showSnackbarMessage('There was an error while creating snippet!');
+    }
+  }
+
+  _showSnackbarMessage(msg) {
+    this.setState({createMessage: msg});
+    this.refs.snackbar.show();
+  }
+
+  _resetForm() {
     this.setState({name: '', content: '', description: '', language: 0});
   }
 
@@ -43,7 +66,6 @@ export default class SnippetFormDialog extends React.Component {
       description: this.state.description,
       language: this.state.language
     });
-    this.refs.snackbar.show();
     this.setState({isOpen:false});
     this._resetForm();
   }
@@ -89,7 +111,7 @@ export default class SnippetFormDialog extends React.Component {
             </Tab>
           </Tabs>
         </Dialog>
-        <Snackbar message="Snippet created successfuly!"
+        <Snackbar message={this.state.createMessage}
                   ref="snackbar"
                   autoHideDuration={5000}/>
       </div>
