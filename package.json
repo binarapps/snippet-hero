@@ -75,6 +75,7 @@
     "npm-run-all": "^1.2.13",
     "react-addons-test-utils": "^0.14.2",
     "sinon": "^1.17.2",
+    "supertest": "^1.1.0",
     "watch": "^0.16.0",
     "webpack": "^1.12.6"
   }
