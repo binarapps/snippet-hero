@@ -4,6 +4,14 @@ module.exports = function(sequelize, DataTypes) {
     content: DataTypes.TEXT,
     SnippetId: DataTypes.INTEGER
   }, {
+    instanceMethods: {
+      toJson: function () {
+        return {
+          content: this.get('content'),
+          createdAt: this.get('createdAt')
+        };
+      }
+    },
     classMethods: {
       associate: function(models) {
         this.belongsTo(models.Snippet);
