@@ -1,21 +1,18 @@
 import React from 'react';
 import RaisedButton from 'material-ui/lib/raised-button';
 import PageWrapper from '../page-wrapper';
-import TextField from 'material-ui/lib/text-field';
 import SnippetsList from '../snippets/snippets-list';
+import SearchBar from '../search-bar';
 import SnippetFormDialog from '../snippets/snippet-form-dialog';
 import SnippetActions from '../../actions/snippet-actions';
 import SnippetStore from '../../stores/snippet-store';
 import SnippetSearchStore from '../../stores/snippet-search-store';
 
-class SnippetsIndex extends React.Component {
+export default class SnippetsIndex extends React.Component {
   constructor(props) {
     super(props);
     this.state = this.getPropsFromStores();
     this._searchSnippets = this._searchSnippets.bind(this);
-    this.componentDidMount = this.componentDidMount.bind(this);
-    this.componentWillReceiveProps = this.componentWillReceiveProps.bind(this);
-    this.componentWillUnmount = this.componentWillUnmount.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onSearch = this.onSearch.bind(this);
   }
@@ -51,9 +48,8 @@ class SnippetsIndex extends React.Component {
     this.setState(this.getPropsFromSearchStore(this.state, this.context));
   }
 
-  _searchSnippets (e) {
-    e.preventDefault();
-    SnippetActions.search(this.refs.search.getValue());
+  _searchSnippets (value) {
+    SnippetActions.search(value);
   }
 
   render() {
@@ -63,15 +59,7 @@ class SnippetsIndex extends React.Component {
       <PageWrapper>
         <RaisedButton onClick={ () => this.refs.dialog.open()} label="Add new snippet" primary={true}/>
         <h2 style={{fontSize: '24px', margin: '20px 0'}}>All snippets:</h2>
-        <form className="snippet-form" onSubmit={this._searchSnippets} style={{float: 'right'}}>
-          <label style={{marginRight: '5px'}}>Search by name: </label>
-          <TextField floatingLabelText="snippet name"
-                     fullWidth={false}
-                     type="text"
-                     ref="search"
-                     style={{marginRight: '5px'}} />
-          <RaisedButton onClick={this._searchSnippets} label="Search" secondary={true}/>
-        </form>
+        <SearchBar label='Search by name:' onSearch={this._searchSnippets} />
         <div style={{clear: 'right'}}>
           <SnippetsList snippets={this.state.snippets}/>
         </div>
@@ -81,5 +69,3 @@ class SnippetsIndex extends React.Component {
     );
   }
 }
-
-export default SnippetsIndex;
