@@ -10,9 +10,9 @@ import SnippetActions from '../../js/actions/snippet-actions';
 
 const expect = chai.expect;
 
-describe('SnippetActions', () => {
-  var snippets, server;
-  before(() => {
+describe('SnippetActions', function() {
+  var server;
+  before(function() {
     server = sinon.fakeServer.create({
       autoRespond: true,
       respondImmediately: true
@@ -20,19 +20,20 @@ describe('SnippetActions', () => {
     sinon.spy(alt, 'dispatch');
   });
 
-  afterEach(() => {
+  afterEach(function() {
     alt.dispatch.reset();
   });
 
-  describe('Get snippets collection', () => {
-    before(() => {
+  describe('Get snippets collection', function() {
+    var snippets;
+    before(function() {
       snippets = [
         { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript'},
         { id: 2, content: 'test', name: 'test', description: 'test', language: 'javascript'}
       ];
     });
 
-    it('should dispatch all snippets list from server', (done) => {
+    it('should dispatch all snippets list from server', function(done) {
       server.respondWith('GET', '/snippets', [200, { 'Content-Type': 'application/json' }, JSON.stringify(snippets)]);
       SnippetActions.getAll();
       setTimeout(function () {
@@ -42,7 +43,7 @@ describe('SnippetActions', () => {
       });
     });
 
-    it('should dispatch all snippets with name from server', (done) => {
+    it('should dispatch all snippets with name from server', function(done) {
       server.respondWith('GET', '/snippets/search?name=test', [200, { 'Content-Type': 'application/json' }, JSON.stringify(snippets)]);
       SnippetActions.search('test');
       setTimeout(function () {
@@ -53,15 +54,15 @@ describe('SnippetActions', () => {
     });
   });
 
-  describe('Create snippet', () => {
+  describe('Create snippet', function() {
     var snippet;
     before( function() {
       snippet = { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript'};
     });
-    it('should dispatch created snippet', (done) => {
+    it('should dispatch created snippet', function(done) {
       server.respondWith('POST', '/snippets', [201, { 'Content-Type': 'application/json' }, JSON.stringify(snippet)]);
       SnippetActions.create(snippet);
-      setTimeout(function () {
+      setTimeout(function() {
         expect(alt.dispatch.calledTwice).to.be.true;
         expect(alt.dispatch.getCall(1).args[1].snippet).to.deep.equal(snippet);
         done();
