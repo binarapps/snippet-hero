@@ -7,6 +7,7 @@ import Snackbar from 'material-ui/lib/snackbar';
 import Snippet from './snippet';
 import SnippetForm from './snippet-form';
 import SnippetActions from '../../actions/snippet-actions.js';
+import SnippetStore from '../../stores/snippet-store.js';
 
 // TODO create tests
 export default class SnippetFormDialog extends React.Component {
@@ -16,11 +17,29 @@ export default class SnippetFormDialog extends React.Component {
 
     this._handleFormChange = this._handleFormChange.bind(this);
     this._handleSubmit = this._handleSubmit.bind(this);
-    this._handleCancel = this._handleCancel.bind(this);
+    this._onCreate = this._onCreate.bind(this);
+    this._showSnackbarMessage = this._showSnackbarMessage.bind(this);
   }
 
-  _resetForm () {
-    this.setState({name: '', content: '', description: '', language: 0});
+  componentDidMount() {
+    this.storeListener = SnippetStore.listen(this._onCreate);
+  }
+
+  componentWillUnmount() {
+    this.storeListener.unlisten();
+  }
+
+  _onCreate(nextState) {
+    if(nextState.snippetCreated && nextState.lastCreateSuccess) {
+      this._showSnackbarMessage('Snippet created successfuly!');
+    } else if(nextState.snippetCreated && !nextState.lastCreateSuccess) {
+      this._showSnackbarMessage('There was an error while creating snippet!');
+    }
+  }
+
+  _showSnackbarMessage(msg) {
+    this.setState({createMessage: msg});
+    this.refs.snackbar.show();
   }
 
   _handleFormChange(value) {
@@ -28,7 +47,7 @@ export default class SnippetFormDialog extends React.Component {
   }
 
   _resetForm() {
-    this.setState({name: '', content: '', description: '', language: 0, open: false});
+    this.setState({name: '', content: '', description: '', language: 0});
   }
 
   _handleSubmit() {
@@ -41,26 +60,9 @@ export default class SnippetFormDialog extends React.Component {
       content: this.state.content,
       description: this.state.description,
       language: this.state.language
-    }).then(() => {
-      this.setState({isOpen:false});
-      this.refs.snackbar.show();
-      this._resetForm();
     });
-
+    this.setState({isOpen:false});
     this._resetForm();
-  }
-
-  open() {
-    this._resetForm();
-    this.setState({open: true});
-  }
-
-  close() {
-    this.setState({open: false});
-  }
-
-  _handleCancel () {
-    this.close();
   }
 
   open () {
@@ -77,7 +79,7 @@ export default class SnippetFormDialog extends React.Component {
         label="Cancel"
         secondary={true}
         ref="cancel"
-        onTouchTap={ () => this.close() } />,
+        onTouchTap={() => this.setState({isOpen: false})} />,
       <FlatButton
         label="Submit"
         ref="submit"
@@ -90,7 +92,9 @@ export default class SnippetFormDialog extends React.Component {
           title={this.props.title || 'Snippet Form'}
           actions={actions}
           defaultOpen={this.props.defaultOpen}
-          open={this.state.isOpen} >
+          autoScrollBodyContent={true}
+          open={this.state.isOpen}>
+
           <Tabs>
             <Tab label="Form">
               <SnippetForm {...this.state} languages={this.props.languages} onChange={this._handleFormChange} ref="form" />
@@ -100,7 +104,7 @@ export default class SnippetFormDialog extends React.Component {
             </Tab>
           </Tabs>
         </Dialog>
-        <Snackbar message="Snippet created successfuly!"
+        <Snackbar message={this.state.createMessage}
                   ref="snackbar"
                   autoHideDuration={5000}/>
       </div>

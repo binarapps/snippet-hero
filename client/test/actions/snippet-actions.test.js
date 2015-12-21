@@ -62,8 +62,8 @@ describe('SnippetActions', () => {
       server.respondWith('POST', '/snippets', [201, { 'Content-Type': 'application/json' }, JSON.stringify(snippet)]);
       SnippetActions.create(snippet);
       setTimeout(function () {
-        expect(alt.dispatch.calledOnce).to.be.true;
-        expect(alt.dispatch.getCall(0).args[1].snippet).to.deep.equal(snippet);
+        expect(alt.dispatch.calledTwice).to.be.true;
+        expect(alt.dispatch.getCall(1).args[1].snippet).to.deep.equal(snippet);
         done();
       });
     });
