@@ -2,9 +2,6 @@ import React from 'react';
 import Paper from 'material-ui/lib/paper';
 import Codemirror from 'react-codemirror';
 import Markdown from 'markdown-react-js';
-import 'codemirror/mode/javascript/javascript';
-import 'codemirror/mode/xml/xml';
-import 'codemirror/mode/gfm/gfm';
 
 // TODO create tests
 export default class Snippet extends React.Component {

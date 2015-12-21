@@ -32,6 +32,8 @@ module.exports = {
     });
   },
   down: function(queryInterface) {
-    return queryInterface.dropTable('Snippets');
+    return queryInterface.dropTable('Snippets').then(function () {
+      return queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_Snippets_language";');
+    });
   }
 };
