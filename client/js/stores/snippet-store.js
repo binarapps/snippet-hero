@@ -6,7 +6,9 @@ class SnippetStore {
   constructor() {
     this.bindActions(SnippetActions);
     this.state = {
-      snippets: []
+      snippets: [],
+      lastCreateSuccess: false,
+      snippetCreated: false
     };
   }
 
@@ -23,17 +25,28 @@ class SnippetStore {
     }
   }
 
-  create(data) {
-    if (data.ok) {
-      const snippets = this.state.snippets;
+  create() {
+    this.setState({
+      snippetCreated: false
+    });
+    this.preventDefault();
+  }
 
-      this.setState({
-        snippets: snippets.concat(data.snippet)
-      });
-    } else {
-      // TODO react to errors
-      // console.log(data.error.message)
-    }
+  onCreateSuccess(data) {
+    const snippets = this.state.snippets;
+
+    this.setState({
+      snippets: snippets.concat(data.snippet),
+      snippetCreated: true,
+      lastCreateSuccess: true
+    });
+  }
+
+  onCreateFail() {
+    this.setState({
+      snippetCreated: true,
+      lastCreateSuccess: false
+    });
   }
 }
 

@@ -20,7 +20,7 @@ class SnippetsIndex extends React.Component {
   render() {
     return (
       <PageWrapper>
-        <RaisedButton onClick={ () => this.refs.dialog.open() } label="Add new snippet" primary={true} className="openDialog"/>
+        <RaisedButton onClick={ () => this.refs.dialog.open()} label="Add new snippet" primary={true}/>
         <AltContainer store={SnippetStore}>
           <SnippetsList />
         </AltContainer>
