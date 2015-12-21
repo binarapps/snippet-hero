@@ -48,7 +48,7 @@ export default class SnippetFormDialog extends React.Component {
   }
 
   _resetForm() {
-    this.setState({name: '', content: '', description: '', language: 0, isOpen: false});
+    this.setState({name: '', content: '', description: '', language: 0});
   }
 
   _handleSubmit() {
@@ -66,10 +66,6 @@ export default class SnippetFormDialog extends React.Component {
     this._resetForm();
   }
 
-  _handleCancel () {
-    this.close();
-  }
-
   open () {
     this.setState({isOpen: true});
   }
@@ -84,7 +80,7 @@ export default class SnippetFormDialog extends React.Component {
         label="Cancel"
         secondary={true}
         ref="cancel"
-        onTouchTap={this._handleCancel} />,
+        onTouchTap={() => this.setState({isOpen: false})} />,
       <FlatButton
         label="Submit"
         ref="submit"
@@ -97,7 +93,9 @@ export default class SnippetFormDialog extends React.Component {
           title={this.props.title || 'Snippet Form'}
           actions={actions}
           defaultOpen={this.props.defaultOpen}
-          open={this.state.isOpen} >
+          autoScrollBodyContent={true}
+          open={this.state.isOpen}>
+
           <Tabs>
             <Tab label="Form">
               <SnippetForm {...this.state} languages={this.props.languages} onChange={this._handleFormChange} ref="form" />
