@@ -43,10 +43,6 @@ export default class SnippetFormDialog extends React.Component {
     this.refs.snackbar.show();
   }
 
-  _resetForm() {
-    this.setState({name: '', content: '', description: '', language: 0});
-  }
-
   _handleFormChange(value) {
     this.setState(value);
   }
