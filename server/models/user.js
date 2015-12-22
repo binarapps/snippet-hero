@@ -4,7 +4,9 @@ module.exports = function(sequelize, DataTypes) {
     email: DataTypes.STRING,
     name: DataTypes.STRING,
     authToken: DataTypes.STRING,
-    meerkatUserId: DataTypes.INTEGER
+    meerkatUserId: DataTypes.INTEGER,
+    encryptedPassword: DataTypes.STRING,
+    passwordSalt: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
