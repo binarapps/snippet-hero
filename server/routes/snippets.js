@@ -5,30 +5,18 @@ var models = require('../models');
 
 /* GET snippets listing. */
 router.get('/', function (req, res) {
-  models.Snippet.findAll({
-    include: [models.SnippetVersion],
-    order: [[models.SnippetVersion, 'createdAt', 'ASC']]
-  }).then(function (snippets) {
+  models.Snippet.scope('withVersions').findAll().then(function (snippets) {
     var mappedSnippets = snippets.map(function (s) {
-      return ({ id: s.id,
-                content: s.SnippetVersions.length ? s.SnippetVersions[0].content : '',
-                versions: s.SnippetVersions.map(function (v) {
-                  return {content: v.content, createdAt: v.createdAt};
-                }),
-                name: s.name,
-                description: s.description,
-                language: s.language
-      });
+      return s.toJson();
     });
-
     res.send(mappedSnippets);
   });
 });
 
 /* GET snippet by id */
 router.get('/:id', function (req, res) {
-  models.Snippet.findById(req.params.id).then(function (s) {
-    res.send(s);
+  models.Snippet.findById(req.params.id, {include: [models.SnippetVersion]}).then(function (s) {
+    res.send(s.toJson());
   });
 });
 
@@ -43,12 +31,15 @@ router.post('/', function (req, res) {
 
   models.sequelize.transaction(function (t) {
     return models.Snippet.create(attributes, {transaction: t}).then(function (snippet) {
-      return snippet.createSnippetVersion({
-        content: body.content
-      }, {transaction: t});
+      return snippet.createSnippetVersion({content: body.content}, {transaction: t}).then(function (v){
+        return new Promise(function (resolve) {
+          snippet.SnippetVersions = [v];
+          resolve(snippet.toJson());
+        });
+      });
     });
-  }).then(function () {
-    res.status(201).send('ok');
+  }).then(function (data) {
+    res.status(201).send(data);
   }).catch(function (err) {
     res.status(422).send(err.message);
   });
