@@ -40,13 +40,18 @@ class RatingStore {
   getSnippetRatings (data) {
     if (data.ok) {
       var snippetsAverage = this.state.snippetsAvg;
-      var sum = 0;
+      var sum = 0.0;
       var index = 0;
       data.ratings.forEach(function (rating) {
         sum += rating.value;
         index++;
       });
-      snippetsAverage[data.snippetId] = Math.round(sum/index);
+      if(sum == 0.0){
+        snippetsAverage[data.snippetId] = sum.toFixed(2);
+      }
+      else{
+        snippetsAverage[data.snippetId] = ( sum/index ).toFixed(2);
+      }
 
       this.setState({
         snippetsAvg: snippetsAverage

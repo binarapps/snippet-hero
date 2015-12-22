@@ -24,43 +24,45 @@ export default class Rating extends React.Component {
 
   render() {
     return (
-      <div style={{display: 'inline-flex'}}>
-        <div>
-          <ActionGrade
-              ref="oneStar"
+      <div>
+        <div style={{display: 'inline-flex'}}>
+          <div>
+            <ActionGrade
+                ref="oneStar"
+                onClick={this.handleClick}
+                onMouseOver={this.handleHover}
+                style={style.starBlack} />
+          </div>
+          <div>
+            <ActionGrade
+                ref="twoStars"
+                onClick={this.handleClick}
+                onMouseOver={this.handleHover}
+                style={style.starBlack} />
+          </div>
+          <div>
+            <ActionGrade
+                ref="threeStars"
+                onClick={this.handleClick}
+                onMouseOver={this.handleHover}
+                style={style.starBlack} />
+          </div>
+          <div>
+            <ActionGrade
+                ref="fourStars"
+                onClick={this.handleClick}
+                onMouseOver={this.handleHover}
+                style={style.starBlack} />
+          </div>
+          <div>
+           <ActionGrade
+              ref="fiveStars"
               onClick={this.handleClick}
               onMouseOver={this.handleHover}
               style={style.starBlack} />
+          </div>
         </div>
-        <div>
-          <ActionGrade
-              ref="twoStars"
-              onClick={this.handleClick}
-              onMouseOver={this.handleHover}
-              style={style.starBlack} />
-        </div>
-        <div>
-          <ActionGrade
-              ref="threeStars"
-              onClick={this.handleClick}
-              onMouseOver={this.handleHover}
-              style={style.starBlack} />
-        </div>
-        <div>
-          <ActionGrade
-              ref="fourStars"
-              onClick={this.handleClick}
-              onMouseOver={this.handleHover}
-              style={style.starBlack} />
-        </div>
-        <div>
-         <ActionGrade
-            ref="fiveStars"
-            onClick={this.handleClick}
-            onMouseOver={this.handleHover}
-            style={style.starBlack} />
-        </div>
-        <span>#{this.props.snippetsAvg[this.props.snippetId]}</span>
+        <span>{this.props.snippetsAvg[this.props.snippetId]}</span>
       </div>
     );
   }
