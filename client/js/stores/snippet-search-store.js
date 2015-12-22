@@ -1,12 +1,10 @@
 import alt from '../libs/alt';
-import SnippetSearchSource from '../sources/snippet-search-source';
 import SnippetActions from '../actions/snippet-actions';
 
 class SnippetSearchStore {
   constructor() {
     this.state = { value: '', snippets: [] };
 
-    this.registerAsync(SnippetSearchSource);
     this.bindListeners({
       onSearch: SnippetActions.SEARCH
     });
