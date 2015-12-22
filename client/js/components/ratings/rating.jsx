@@ -1,6 +1,7 @@
 import React from 'react';
 import ActionGrade from 'material-ui/lib/svg-icons/action/grade';
 import RatingActions from '../../actions/rating-actions';
+import Star from './star';
 
 export default class Rating extends React.Component {
   constructor(props) {
@@ -17,9 +18,32 @@ export default class Rating extends React.Component {
     e.preventDefault();
     //TODO
   }
-  handleClick(e){
-    e.preventDefault();
-    // TODO
+  handleClick(g){
+    switch(g){
+      case 1:
+        alert(1);
+        RatingActions.create({
+          // TODO add user's id
+          UserId: null,
+          value: g,
+          SnippetId: this.props.snippetId
+        });
+        break;
+      case 2:
+        alert(2);
+        break;
+      case 3:
+        alert(3);
+        break;
+      case 4:
+        alert(4);
+        break;
+      case 5:
+        alert(5);
+        break;
+      default:
+        alert('other');
+    }
   }
 
   render() {
@@ -27,52 +51,39 @@ export default class Rating extends React.Component {
       <div>
         <div style={{display: 'inline-flex'}}>
           <div>
-            <ActionGrade
-                ref="oneStar"
-                onClick={this.handleClick}
-                onMouseOver={this.handleHover}
-                style={style.starBlack} />
+            <Star
+              snippetId={this.props.snippetId}
+              onClick={(g) => this.handleClick(g)}
+              grade={1} />
           </div>
           <div>
-            <ActionGrade
-                ref="twoStars"
-                onClick={this.handleClick}
-                onMouseOver={this.handleHover}
-                style={style.starBlack} />
+            <Star
+              snippetId={this.props.snippetId}
+              onClick={(g) => this.handleClick(g)}
+              grade={2} />
           </div>
           <div>
-            <ActionGrade
-                ref="threeStars"
-                onClick={this.handleClick}
-                onMouseOver={this.handleHover}
-                style={style.starBlack} />
+            <Star
+              snippetId={this.props.snippetId}
+              onClick={(g) => this.handleClick(g)}
+               grade={3} />
           </div>
           <div>
-            <ActionGrade
-                ref="fourStars"
-                onClick={this.handleClick}
-                onMouseOver={this.handleHover}
-                style={style.starBlack} />
+            <Star
+              snippetId={this.props.snippetId}
+              onClick={(g) => this.handleClick(g)}
+              grade={4} />
           </div>
           <div>
-           <ActionGrade
-              ref="fiveStars"
-              onClick={this.handleClick}
-              onMouseOver={this.handleHover}
-              style={style.starBlack} />
+            <Star
+              snippetId={this.props.snippetId}
+              onClick={(g) => this.handleClick(g)}
+              grade={5} />
           </div>
         </div>
+        <br />
         <span>{this.props.snippetsAvg[this.props.snippetId]}</span>
       </div>
     );
   }
 }
-
-let style = {
-  starBlack: {
-    fill: 'rgba(135, 135, 135, 0.8)'
-  },
-  starYellow: {
-    fill: 'rgba(255, 210, 30, 1)'
-  }
-};

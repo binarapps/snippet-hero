@@ -24,17 +24,22 @@ class RatingStore {
     }
   }
 
-  create(data) {
-    if (data.ok) {
-      const ratings = this.state.ratings;
 
-      this.setState({
-        ratings: ratings.concat(data.rating)
-      });
-    } else {
-      // TODO react to errors
-      // console.log(data.error.message)
-    }
+  create() {
+    // TODO add state RatingCreated 
+    this.preventDefault();
+  }
+
+  onCreateSuccess(data) {
+    const ratings = this.state.ratings;
+
+    this.setState({
+      ratings: ratings.concat(data.rating)
+    });
+  }
+
+  onCreateFail(){
+    //TODO set state
   }
 
   getSnippetRatings (data) {

@@ -10,7 +10,7 @@
     "watch:js": "npm run build:js -- --watch",
     "build:css": "node-sass client/css/app.scss build/app.css",
     "watch:css": "watch 'npm run build:css -s' client/css/ -d -u",
-    "build": "npm run clear -s && npm run lint -s && npm run build:css -s && npm run build:js -s",
+    "build": "npm run clear -s && npm run build:css -s && npm run build:js -s",
     "watch": "npm-run-all --parallel watch:css watch:js",
     "livereload": "live-reload build/ --port=9091 --delay=400",
     "test:client": "karma start",
