@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import SnippetActions from '../../actions/snippet-actions';
 import CommentForm from './comment-form';
 import CommentList from './comment-list';
@@ -14,17 +15,21 @@ export default class CommentBox extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  componentDidMount() {
-    this.storeListeners.push(CommentsStore.listen(this.onChange));
-    SnippetActions.getAllComments(this.props.snippetId);
-  }
+  // componentDidMount() {
+  //   this.storeListeners.push(CommentsStore.listen(this.onChange));
+  //   SnippetActions.getAllComments(this.props.snippetId);
+  // }
 
   componentWillUnmount() {
     this.storeListeners.forEach(unlisten => unlisten());
   }
 
   onChange() {
-    this.setState(CommentsStore.getState());
+    let comments = CommentsStore.getState().comments;
+    comments = _.filter(comments, (c) => {
+      return c.SnippetId === this.props.snippetId;
+    });
+    this.setState({comments: comments});
   }
 
   _handleFormSubmit(e) {

@@ -4,7 +4,11 @@ var models = require('../models');
 
 /* GET all snippet comments*/
 router.get('/:snippetId/comments', function (req, res) {
-  models.Comment.findAll().then(function (comments) {
+  models.Comment.findAll({
+    where: {
+      SnippetId: req.params.snippetId
+    }
+  }).then(function (comments) {
     var mappedComments = comments.map(function (c) {
       return c.toJson();
     });

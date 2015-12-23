@@ -33,6 +33,7 @@
     "lodash": "^3.10.1",
     "markdown-react-js": "^0.3.0",
     "material-ui": "^0.13.4",
+    "moment": "^2.10.6",
     "morgan": "~1.6.1",
     "pg": "^4.4.3",
     "pg-hstore": "^2.3.2",

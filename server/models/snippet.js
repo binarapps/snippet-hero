@@ -8,6 +8,12 @@ module.exports = function(sequelize, DataTypes) {
     UserId: DataTypes.INTEGER
   }, {
     scopes: {
+      withComments: function () {
+        return {
+          include: [sequelize.models.Comment],
+          order: [[sequelize.models.Comment, 'createdAt', 'DESC']]
+        };
+      },
       withVersions: function () {
         return {
           include: [sequelize.models.SnippetVersion],
@@ -30,6 +36,12 @@ module.exports = function(sequelize, DataTypes) {
           json.content = this.SnippetVersions.length ? this.SnippetVersions[0].content : '';
           json.versions = this.SnippetVersions.map(function (v) {
             return v.toJson();
+          });
+        }
+
+        if (this.Comments) {
+          json.comments = this.Comments.map(function (c) {
+            return c.toJson();
           });
         }
 
