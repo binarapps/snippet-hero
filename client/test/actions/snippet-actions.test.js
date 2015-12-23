@@ -1,9 +1,9 @@
 /*eslint-disable no-unused-vars*/
 import React from 'react';
-import alt from '../../js/libs/alt';
-import axios from 'axios';
 import ReactDOM from 'react-dom';
 /*eslint-enable no-unused-vars*/
+import alt from '../../js/libs/alt';
+import axios from 'axios';
 import chai from 'chai';
 import sinon from 'sinon';
 

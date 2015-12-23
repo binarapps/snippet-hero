@@ -18,14 +18,9 @@ router.get('/search', function (req, res) {
   if (req.query.name) {
     options.where = { name: req.query.name };
   }
-  models.Snippet.findAll(options).then(function (snippets) {
+  models.Snippet.scope('withVersions').findAll(options).then(function (snippets) {
     var mappedSnippets = snippets.map(function (s) {
-      return ({ id: s.id,
-                content: s.content,
-                name: s.name,
-                description: s.description,
-                language: s.language
-      });
+      return s.toJson();
     });
 
     res.send(mappedSnippets);
