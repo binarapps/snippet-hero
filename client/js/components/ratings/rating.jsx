@@ -14,71 +14,79 @@ export default class Rating extends React.Component {
     RatingActions.getSnippetRatings(this.props.snippetId);
   }
 
-  handleHover(e){
-    e.preventDefault();
-    //TODO
+  //componentWillReceiveProps (props) {
+   // console.log(props);
+  //}
+
+  handleHover(g){
+    
   }
+
   handleClick(g){
-    switch(g){
-      case 1:
-        alert(1);
-        RatingActions.create({
-          // TODO add user's id
-          UserId: null,
-          value: g,
-          SnippetId: this.props.snippetId
-        });
-        break;
-      case 2:
-        alert(2);
-        break;
-      case 3:
-        alert(3);
-        break;
-      case 4:
-        alert(4);
-        break;
-      case 5:
-        alert(5);
-        break;
-      default:
-        alert('other');
-    }
+    RatingActions.create({
+      UserId: null,
+      value: g,
+      SnippetId: this.props.snippetId
+    });
+    RatingActions.getSnippetRatings(this.props.snippetId);
   }
 
   render() {
+    let style = {
+      starBlack: {
+        fill: 'rgba(135, 135, 135, 0.8)'
+      },
+      starYellow: {
+        fill: 'rgba(255, 210, 30, 1)'
+      }
+    };
     return (
       <div>
         <div style={{display: 'inline-flex'}}>
           <div>
             <Star
+              ref="star1"
               snippetId={this.props.snippetId}
               onClick={(g) => this.handleClick(g)}
-              grade={1} />
+              onMouseOver={(g) => this.handleHover(g)}
+              grade={1}
+              style={style.starBlack} />
           </div>
           <div>
             <Star
+              ref="star2"
               snippetId={this.props.snippetId}
               onClick={(g) => this.handleClick(g)}
-              grade={2} />
+              onMouseOver={(g) => this.handleHover(g)}
+              grade={2}
+              style={style.starBlack} />
           </div>
           <div>
             <Star
+              ref="star3"
               snippetId={this.props.snippetId}
               onClick={(g) => this.handleClick(g)}
-               grade={3} />
+              onMouseOver={(g) => this.handleHover(g)}
+              grade={3}
+              style={style.starBlack} />
           </div>
           <div>
             <Star
+              ref="star4"
               snippetId={this.props.snippetId}
               onClick={(g) => this.handleClick(g)}
-              grade={4} />
+              onMouseOver={(g) => this.handleHover(g)}
+              grade={4}
+              style={style.starBlack} />
           </div>
           <div>
             <Star
+              ref="star5"
               snippetId={this.props.snippetId}
               onClick={(g) => this.handleClick(g)}
-              grade={5} />
+              onMouseOver={(g) => this.handleHover(g)}
+              grade={5}
+              style={style.starBlack} />
           </div>
         </div>
         <br />

@@ -4,21 +4,18 @@ import alt from '../libs/alt';
 // TODO create tests
 class RatingActions {
   constructor() {
-    // this.generateActions(
-    //   'create'
-    // );
   }
+
   getAll () {
     axios.get('/ratings')
-      .then(res => this.dispatch({ok: true, ratings: res.data}))
+      .then(res => this.dispatch({ok: true, ratings: res}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
   create(rating) {
-    this.dispatch();
     axios.post('/ratings', rating)
-      .then(res => this.actions.onCreateSuccess(res))
-      .catch(res => this.actions.onCreateFail(res));
+      .then(res =>  this.dispatch({ok: true, rating: res}))
+      .catch(err => this.dispatch({ok: false, error: err}));
   }
 
   getSnippetRatings (snippet_id) {
@@ -27,12 +24,10 @@ class RatingActions {
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
-  onCreateSuccess(res) {
-    this.dispatch({rating: res.data});
-  }
-
-  onCreateFail() {
-    this.dispatch();
+  getUserSnippetRating (snippet_id, user_id) {
+    axios.get('/snippets/' + snippet_id + '/users/' + user_id)
+      .then(res => this.dispatch({ok: true, ratings: res.data, userId: user_id, snippetId: snippet_id}))
+      .catch(err => this.dispatch({ok: false, error: err}));
   }
 }
 export default alt.createActions(RatingActions);

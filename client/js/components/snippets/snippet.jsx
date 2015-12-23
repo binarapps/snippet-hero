@@ -39,23 +39,13 @@ export default class Snippet extends React.Component {
           {this.random(letters)}
         </Avatar>;
     return (
-// <<<<<<< HEAD
-//       <div style={{display: 'inline-flex'}}>
-//         <RatingForm key={this.props.id} snippetId={this.props.id}/>
-//         <Paper style={style}>
-//           <div>{this.props.name}</div>
-//           <Codemirror value={this.props.content} options={codeOptions} />
-//           <Markdown text={this.props.description}/>
-//         </Paper>
-//       </div>
-// =======
       <Card style={style}>
         <CardHeader
           style={{background: Colors.grey100}}
           title={this.props.name || 'No title'}
           subtitle="author link"
-          avatar={avatar}
-          <RatingForm key={this.props.id} snippetId={this.props.id}/> />
+          avatar={avatar} />
+          <RatingForm key={this.props.id} snippetId={this.props.id}/>
         <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300 }}>
           <Codemirror value={this.props.content} options={codeOptions} />
         </div>

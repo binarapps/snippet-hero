@@ -59,4 +59,18 @@ router.post('/', function (req, res) {
   });
 });
 
+/* GET snippet's rating from user*/
+router.get('/:snippet_id/users/:user_id', function (req, res) {
+  models.Rating.findAll({ where: { UserId: req.params.user_id, SnippetId: req.params.snippet_id } }).then(function (ratings){
+    var mappedRatings = ratings.map(function (rating) {
+      return ({ value: rating.value,
+                userdId: rating.UserId,
+                snippetId: rating.SnippetId
+      });
+    });
+
+    res.send(mappedRatings);
+  });
+});
+
 module.exports = router;

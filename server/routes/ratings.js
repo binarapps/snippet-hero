@@ -23,20 +23,6 @@ router.get('/:id', function (req, res) {
   });
 });
 
-/* GET snippet's rating from user*/
-router.get('/snippets/:snippet_id/users/:user_id', function (req, res) {
-  models.Rating.findAll({ where: { UserId: req.params.user_id, SnippetId: req.params.snippet_id } }).then(function (ratings){
-    var mappedRatings = ratings.map(function (rating) {
-      return ({ value: rating.value,
-                userdId: rating.UserId,
-                snippetId: rating.SnippetId
-      });
-    });
-
-    res.send(mappedRatings);
-  });
-});
-
 /* UPDATE user's rating for snippet*/
 router.put('/:id', function (req, res) {
   models.Rating.findById(req.params.id).then( function (rating) {
@@ -56,14 +42,12 @@ router.post('/', function (req, res) {
   var attributes = {
     SnippetId: req.body.SnippetId,
     value: req.body.value,
-    UserId: req.body.UserId,
-    createdAt: new Date(),
-    updatedAt: new Date()
+    UserId: req.body.UserId
   };
 
   var rating = models.Rating.build(attributes);
-  rating.save({ validate: false, logging: true}).then(function () {
-    res.status(201).send('ok');
+  rating.save({ validate: false, logging: true}).then(function (rating) {
+    res.status(201).send(rating.toJson());
   }).catch(function () {
     res.status(422).send('error');
   });
