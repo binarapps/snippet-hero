@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var models = require('../models');
 var passport = require('passport');
-var User = models.User
+var bcrypt = require('bcrypt-nodejs');
+var User = models.User;
 
 /* GET users listing. */
 router.get('/', function(req, res) {
@@ -29,14 +30,15 @@ router.delete('/logout', function(req, res) {
 
 router.post('/register', function(req, res) {
   var body = req.body;
+  var salt = bcrypt.genSaltSync();
   var attributes = {
     email: body.email,
     name: body.name,
-    encryptedPassword: body.password,
-    passwordSalt: ''
+    encryptedPassword: bcrypt.hashSync(body.password, salt),
+    passwordSalt: salt
   };
   User.create(attributes).then(function(user) {
-    res.status(201).send(data);
+    res.status(201).send({ user: user });
   }).catch(function(err) {
     res.status(422).send(err.message);
   });

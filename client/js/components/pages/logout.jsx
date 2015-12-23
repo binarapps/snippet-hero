@@ -4,7 +4,7 @@ import UserActions from '../../actions/user-actions';
 class Logout extends React.Component {
 
   constructor(props) {
-    super()
+    super(props);
     UserActions.logout();
   }
 

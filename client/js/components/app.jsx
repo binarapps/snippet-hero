@@ -26,7 +26,7 @@ export default class App extends React.Component {
     }
   }
 
-  _onChange(data, locationData) {
+  _onChange() {
     this.setState({ currentUser: UserStore.state.currentUser });
     var self = this;
     setTimeout(function() {
@@ -34,7 +34,7 @@ export default class App extends React.Component {
 
       if(!self.state.currentUser && currentPath != '/login' && currentPath != '/register') {
         self.props.history.pushState(null, '/login');
-      } else if(self.state.currentUser && currentPath === '/login') {
+      } else if(self.state.currentUser && (currentPath === '/login' || currentPath === '/register')) {
         self.props.history.pushState(null, '/');
       }
     });

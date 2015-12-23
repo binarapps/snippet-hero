@@ -18,6 +18,12 @@ class UserStore {
       this.setState({ currentUser: false });
     }
   }
+
+  register(data) {
+    if (data.ok) {
+      this.setState({ currentUser: data.user });
+    }
+  }
 }
 
 export default alt.createStore(UserStore, 'UserStore');

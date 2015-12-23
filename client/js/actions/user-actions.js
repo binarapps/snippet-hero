@@ -15,8 +15,8 @@ class UserActions {
       .catch(() => { this.dispatch({ ok: false }); });
   }
 
-  register() {
-    axios.post('users/register')
+  register(userData) {
+    axios.post('users/register', userData)
       .then(res => this.dispatch({ ok: true, user: res.data.user }))
       .catch(err => this.dispatch({ ok: false, error: err }));
   }

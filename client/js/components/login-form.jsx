@@ -47,7 +47,7 @@ export default class LoginForm extends React.Component {
           <div>
             <RaisedButton label="Sign in" primary={true} onClick={this._onSignInRequest}/>
 
-            <RaisedButton label="Sign up" onClick={() => {this.props.history.pushState(null, '/register')}} />
+            <RaisedButton label="Sign up" onClick={() => { this.props.history.pushState(null, '/register'); }} />
           </div>
         </form>
       </Dialog>
