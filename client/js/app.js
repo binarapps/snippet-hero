@@ -19,11 +19,6 @@ function main () {
   document.body.appendChild(app);
 
   ReactDOM.render(
-    <App/>,
-    app
-  );
-
-  ReactDOM.render(
     <Router>
       <Route path="/" component={App}>
         <Route path="snippets" component={SnippetsIndex}/>
