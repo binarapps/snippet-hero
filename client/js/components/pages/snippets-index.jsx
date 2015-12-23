@@ -15,7 +15,6 @@ class SnippetsIndex extends React.Component {
   }
 
   render() {
-
     return (
       <PageWrapper>
         <AltContainer store={SnippetStore}>

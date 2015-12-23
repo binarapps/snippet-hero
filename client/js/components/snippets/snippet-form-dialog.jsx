@@ -32,7 +32,6 @@ export default class SnippetFormDialog extends React.Component {
   }
 
   _onCreate(nextState) {
-    console.log(nextState);
     if(nextState.snippetCreated && nextState.lastCreateSuccess) {
       this._showSnackbarMessage('Snippet created successfuly!');
     } else if(nextState.snippetCreated && !nextState.lastCreateSuccess) {

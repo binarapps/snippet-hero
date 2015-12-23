@@ -2,9 +2,8 @@ import React from 'react';
 import AppBar from 'material-ui/lib/app-bar';
 import LeftNav from 'material-ui/lib/left-nav';
 import SnippetFormDialog from './snippets/snippet-form-dialog';
-import SnippetStore from '../stores/snippet-store';
-import SnippetActions from '../actions/snippet-actions';
 import RaisedButton from 'material-ui/lib/raised-button';
+import {langs} from '../libs/languages';
 
 class Navbar extends React.Component {
 
@@ -24,12 +23,12 @@ class Navbar extends React.Component {
   }
 
   render() {
-    const languages = [{value: 0, label: ''}, {value: 1, label: 'JavaScript'}];
     return (
       <div>
         <RaisedButton onClick={ () => this.refs.dialog.open()} label="Add new snippet" primary={true}/>
-        <SnippetFormDialog ref="dialog"
-                   languages={languages} />
+        <SnippetFormDialog
+          languages={langs}
+          ref="dialog" />
         <LeftNav
             ref="leftNav"
             docked={false}
