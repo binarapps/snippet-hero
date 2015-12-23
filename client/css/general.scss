@@ -1,4 +1,28 @@
+html {
+  font-size: 0.625rem; // it is 10px
+}
 body {
   font-family: 'Roboto', sans-serif;
+  font-size: 1.6rem; // it is 10px * 1.6 == 16px
   min-height: 100vh;
+}
+
+
+.CodeMirror {
+  height: auto;
+}
+.code-editor .CodeMirror {
+  min-height: 53px;
+}
+
+.snippet-description {
+  quotes: "\201C""\201D""\201C""\201D";
+  &:before {
+    color: #ccc;
+    content: open-quote;
+    font-size: 4rem;
+    line-height: .1rem;
+    margin-right: .25rem;
+    vertical-align: -2rem;
+  }
 }
