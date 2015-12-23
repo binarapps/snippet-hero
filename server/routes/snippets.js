@@ -44,7 +44,7 @@ router.post('/', function (req, res) {
   var body = req.body;
   var attributes = {
     description: body.description,
-    language: 'javascript',
+    language: body.language,
     name: body.name
   };
   models.sequelize.transaction(function (t) {
