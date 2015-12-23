@@ -3,15 +3,15 @@ import TextField from 'material-ui/lib/text-field';
 import SelectField from 'material-ui/lib/select-field';
 import Snackbar from 'material-ui/lib/snackbar';
 import Codemirror from 'react-codemirror';
-import 'codemirror/mode/javascript/javascript';
-import 'codemirror/mode/xml/xml';
-import 'codemirror/mode/gfm/gfm';
+import {modeFromMime} from '../../libs/languages';
 
 
 // TODO create tests
 export default class SnippetForm extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {mode: '', mime: ''};
 
     this._handleNameChange = this._handleNameChange.bind(this);
     this._handleContentChange = this._handleContentChange.bind(this);
@@ -28,14 +28,19 @@ export default class SnippetForm extends React.Component {
     this.props.onChange({description: e.target.value});
   }
   _handleLanguageChange(e) {
-    this.props.onChange({language: e.target.value});
+    const mime = e.target.value;
+    this.setState({
+      mime: mime,
+      mode: modeFromMime(mime)
+    });
+    this.props.onChange({language: mime});
   }
   showError() {
     // TODO change message
     this.refs.error.show();
   }
   render() {
-    let codeOptions = {readOnly: false, mode: 'gfm', lineNumbers: true};
+    let codeOptions = {readOnly: false, mode: this.state.mode, mime: this.state.mime, lineNumbers: true};
     return (
       <form className="snippet-form">
         <div>
@@ -52,7 +57,7 @@ export default class SnippetForm extends React.Component {
           <SelectField
             floatingLabelText="Programming language"
             value={this.props.language}
-            valueMember="value"
+            valueMember="mime"
             displayMember="label"
             menuItems={this.props.languages}
             onChange={this._handleLanguageChange}
