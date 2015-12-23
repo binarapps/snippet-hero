@@ -1,8 +1,9 @@
 /*eslint-disable no-unused-vars*/
 import React from 'react';
-import alt from '../../js/libs/alt';
 import ReactDOM from 'react-dom';
 /*eslint-enable no-unused-vars*/
+import alt from '../../js/libs/alt';
+import axios from 'axios';
 import chai from 'chai';
 import sinon from 'sinon';
 
@@ -11,12 +12,7 @@ import SnippetActions from '../../js/actions/snippet-actions';
 const expect = chai.expect;
 
 describe('SnippetActions', function() {
-  var server;
   before(function() {
-    server = sinon.fakeServer.create({
-      autoRespond: true,
-      respondImmediately: true
-    });
     sinon.spy(alt, 'dispatch');
   });
 
@@ -24,17 +20,21 @@ describe('SnippetActions', function() {
     alt.dispatch.reset();
   });
 
-  describe('Get snippets collection', function() {
-    var snippets;
-    before(function() {
+  describe('Get snippets collection', () => {
+    let snippets;
+    before(() => {
       snippets = [
         { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript'},
         { id: 2, content: 'test', name: 'test', description: 'test', language: 'javascript'}
       ];
+      sinon.stub(axios, 'get', () => {
+        return new Promise(function(resolve) {
+          resolve({data: snippets});
+        });
+      });
     });
 
-    it('should dispatch all snippets list from server', function(done) {
-      server.respondWith('GET', '/snippets', [200, { 'Content-Type': 'application/json' }, JSON.stringify(snippets)]);
+    it('should dispatch all snippets list from server', (done) => {
       SnippetActions.getAll();
       setTimeout(function () {
         expect(alt.dispatch.calledOnce).to.be.true;
@@ -43,8 +43,7 @@ describe('SnippetActions', function() {
       });
     });
 
-    it('should dispatch all snippets with name from server', function(done) {
-      server.respondWith('GET', '/snippets/search?name=test', [200, { 'Content-Type': 'application/json' }, JSON.stringify(snippets)]);
+    it('should dispatch all snippets with name from server', (done) => {
       SnippetActions.search('test');
       setTimeout(function () {
         expect(alt.dispatch.calledOnce).to.be.true;
@@ -55,12 +54,17 @@ describe('SnippetActions', function() {
   });
 
   describe('Create snippet', function() {
-    var snippet;
+    let snippet;
     before( function() {
       snippet = { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript'};
+      sinon.stub(axios, 'post', () => {
+        return new Promise(function(resolve) {
+          resolve({data: snippet});
+        });
+      });
     });
+
     it('should dispatch created snippet', function(done) {
-      server.respondWith('POST', '/snippets', [201, { 'Content-Type': 'application/json' }, JSON.stringify(snippet)]);
       SnippetActions.create(snippet);
       setTimeout(function() {
         expect(alt.dispatch.calledTwice).to.be.true;
