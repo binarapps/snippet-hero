@@ -7,6 +7,7 @@ import SnippetFormDialog from '../snippets/snippet-form-dialog';
 import SnippetActions from '../../actions/snippet-actions';
 import SnippetStore from '../../stores/snippet-store';
 import SnippetSearchStore from '../../stores/snippet-search-store';
+import {langs} from '../../libs/languages';
 
 export default class SnippetsIndex extends React.Component {
   constructor(props) {
@@ -53,8 +54,6 @@ export default class SnippetsIndex extends React.Component {
   }
 
   render() {
-    const languages = [{value: 0, label: ''}, {value: 1, label: 'JavaScript'}];
-
     return (
       <PageWrapper>
         <RaisedButton onClick={ () => this.refs.dialog.open()} label="Add new snippet" primary={true}/>
@@ -64,7 +63,7 @@ export default class SnippetsIndex extends React.Component {
           <SnippetsList snippets={this.state.snippets}/>
         </div>
         <SnippetFormDialog ref="dialog"
-                           languages={languages} />
+                           languages={langs} />
       </PageWrapper>
     );
   }

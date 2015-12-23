@@ -4,7 +4,22 @@ module.exports = function(sequelize, DataTypes) {
   var Snippet = sequelize.define('Snippet', {
     name: DataTypes.STRING,
     description: DataTypes.TEXT,
-    language: DataTypes.STRING,
+    language: DataTypes.ENUM(
+      'text/plain',
+      'text/x-coffeescript',
+      'text/x-scss',
+      'text/css',
+      'text/x-markdown',
+      'text/x-haml',
+      'text/html',
+      'text/x-less',
+      'text/javascript',
+      'application/json',
+      'text/nginx',
+      'text/x-ruby',
+      'text/x-sql',
+      'text/x-yaml'
+    ),
     UserId: DataTypes.INTEGER
   }, {
     scopes: {
