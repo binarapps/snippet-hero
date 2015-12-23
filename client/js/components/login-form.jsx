@@ -4,40 +4,29 @@ import Dialog from 'material-ui/lib/dialog';
 import RaisedButton from 'material-ui/lib/raised-button';
 import UserActions from '../actions/user-actions';
 
-export default class RegistrationForm extends React.Component {
+export default class LoginForm extends React.Component {
   constructor(props) {
     super(props);
 
     this._onRequestClose = this._onRequestClose.bind(this);
-    this._onSignUpRequest = this._onSignUpRequest.bind(this);
+    this._onSignInRequest = this._onSignInRequest.bind(this);
   }
 
   _onRequestClose() {
     this.refs.dialog.setState({open: true});
   }
 
-  _onSignUpRequest() {
-    var password = this.refs.passwordInput.getValue();
+  _onSignInRequest() {
     var userData = { email: this.refs.emailInput.getValue(),
-                     password: password,
-                     name: this.refs.nameInput.getValue()
-                   };
-    UserActions.register(userData);
+                     password: this.refs.passwordInput.getValue() };
+    UserActions.login(userData);
   }
 
   render() {
     return (
       <Dialog ref="dialog" defaultOpen={true} onRequestClose={this._onRequestClose}>
         <form className="registration-form">
-          <h1>Sign up</h1>
-
-          <div>
-            <TextField
-              ref="nameInput"
-              floatingLabelText="Name:"
-              type="text"
-            />
-          </div>
+          <h1>Sign in</h1>
 
           <div>
             <TextField
@@ -56,17 +45,9 @@ export default class RegistrationForm extends React.Component {
           </div>
 
           <div>
-            <TextField
-              ref="repeatPasswordInput"
-              floatingLabelText="Repeat password"
-              type="password"
-            />
-          </div>
+            <RaisedButton label="Sign in" primary={true} onClick={this._onSignInRequest}/>
 
-          <div>
-            <RaisedButton label="Sign up" primary={true} onClick={this._onSignUpRequest} />
-
-            <RaisedButton label="Sign in" href="/login" onClick={() => {this.props.history.pushState(null, '/login')}} />
+            <RaisedButton label="Sign up" onClick={() => {this.props.history.pushState(null, '/register')}} />
           </div>
         </form>
       </Dialog>

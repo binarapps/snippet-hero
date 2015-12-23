@@ -17,17 +17,16 @@ export default class SnippetFormDialog extends React.Component {
 
     this._handleFormChange = this._handleFormChange.bind(this);
     this._handleSubmit = this._handleSubmit.bind(this);
-    this._handleCancel = this._handleCancel.bind(this);
     this._onCreate = this._onCreate.bind(this);
     this._showSnackbarMessage = this._showSnackbarMessage.bind(this);
   }
 
   componentDidMount() {
-    this.storeListener = SnippetStore.listen(this._onCreate);
+    SnippetStore.listen(this._onCreate);
   }
 
   componentWillUnmount() {
-    this.storeListener.unlisten();
+    SnippetStore.unlisten(this._onCreate);
   }
 
   _onCreate(nextState) {

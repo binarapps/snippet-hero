@@ -11,6 +11,8 @@ export default class App extends React.Component {
     this._onChange = this._onChange.bind(this);
 
     this.historyListtenerWasAttached = false;
+
+    UserStore.listen(this._onChange);
   }
 
   componentWillUnmount() {
@@ -25,20 +27,17 @@ export default class App extends React.Component {
   }
 
   _onChange(data, locationData) {
-    var newPath;
     this.setState({ currentUser: UserStore.state.currentUser });
+    var self = this;
+    setTimeout(function() {
+      var currentPath = self.props.location.pathname;
 
-    if(locationData && locationData.location) {
-      newPath = locationData.location.pathname;
-    } else {
-      newPath = '/';
-    }
-
-    if(!this.state.currentUser && newPath != '/login') {
-      this.props.history.pushState(null, '/login');
-    } else if(this.state.currentUser && newPath === '/login') {
-      this.props.history.pushState(null, '/');
-    }
+      if(!self.state.currentUser && currentPath != '/login' && currentPath != '/register') {
+        self.props.history.pushState(null, '/login');
+      } else if(self.state.currentUser && currentPath === '/login') {
+        self.props.history.pushState(null, '/');
+      }
+    });
   }
 
   render() {

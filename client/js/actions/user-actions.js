@@ -1,7 +1,6 @@
 import axios from 'axios';
 import alt from '../libs/alt';
 
-// TODO create tests
 class UserActions {
 
   login(userData) {
@@ -14,6 +13,12 @@ class UserActions {
     axios.delete('/users/logout')
       .then(() => { this.dispatch({ ok: true }); })
       .catch(() => { this.dispatch({ ok: false }); });
+  }
+
+  register() {
+    axios.post('users/register')
+      .then(res => this.dispatch({ ok: true, user: res.data.user }))
+      .catch(err => this.dispatch({ ok: false, error: err }));
   }
 }
 export default alt.createActions(UserActions);

@@ -3,7 +3,8 @@ import UserActions from '../../actions/user-actions';
 
 class Logout extends React.Component {
 
-  componentDidMount() {
+  constructor(props) {
+    super()
     UserActions.logout();
   }
 

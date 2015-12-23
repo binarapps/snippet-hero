@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var models = require('../models');
 var passport = require('passport');
+var User = models.User
 
 /* GET users listing. */
 router.get('/', function(req, res) {
@@ -26,8 +27,23 @@ router.delete('/logout', function(req, res) {
   res.send(true);
 });
 
+router.post('/register', function(req, res) {
+  var body = req.body;
+  var attributes = {
+    email: body.email,
+    name: body.name,
+    encryptedPassword: body.password,
+    passwordSalt: ''
+  };
+  User.create(attributes).then(function(user) {
+    res.status(201).send(data);
+  }).catch(function(err) {
+    res.status(422).send(err.message);
+  });
+});
+
 router.get('/:id', function(req, res) {
-  models.User.findById(req.params.id).then(function(user) {
+  User.findById(req.params.id).then(function(user) {
     res.send(user);
   });
 });

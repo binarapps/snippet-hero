@@ -6,7 +6,7 @@ module.exports = {
       'Users',
       'encryptedPassword',
       {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING
       }
     );
 
@@ -14,12 +14,12 @@ module.exports = {
       'Users',
       'passwordSalt',
       {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING
       }
     );
   },
 
-  down: function (queryInterface, Sequelize) {
+  down: function (queryInterface) {
     queryInterface.removeColumn('Users', 'encryptedPassword');
     queryInterface.removeColumn('Users', 'passwordSalt');
   }

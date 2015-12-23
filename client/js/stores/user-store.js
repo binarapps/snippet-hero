@@ -1,15 +1,10 @@
 import alt from '../libs/alt';
 import UserActions from '../actions/user-actions';
 
-// TODO create tests
 class UserStore {
   constructor() {
+    this.bindActions(UserActions);
     this.state = { currentUser: false };
-
-    this.bindListeners({
-      login: UserActions.LOGIN,
-      logout: UserActions.LOGOUT
-    });
   }
 
   login(data) {
