@@ -23,7 +23,7 @@ export const langs = [
   {mode: 'nginx', label: 'Nginx', mime: 'text/nginx'},
   {mode: 'ruby', label: 'Ruby', mime: 'text/x-ruby'},
   {mode: 'sql', label: 'SQL', mime: 'text/x-sql'},
-  {mode: 'yaml', label: 'YAMP', mime: 'text/x-yaml'}
+  {mode: 'yaml', label: 'YAML', mime: 'text/x-yaml'}
 ];
 
 export function modeFromMime (mime) {
