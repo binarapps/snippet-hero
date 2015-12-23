@@ -17,14 +17,14 @@ router.get('/', function (req, res) {
 });
 
 /* GET rating by id */
-router.get('/:id', function (res, req) {
+router.get('/:id', function (req, res) {
   models.Rating.findById(req.params.id).then( function (rating) {
     res.send(rating);
   });
 });
 
 /* GET snippet's rating from user*/
-router.get('/snippets/:snippet_id/users/:user_id', function (res, req) {
+router.get('/snippets/:snippet_id/users/:user_id', function (req, res) {
   models.Rating.findAll({ where: { UserId: req.params.user_id, SnippetId: req.params.snippet_id } }).then(function (ratings){
     var mappedRatings = ratings.map(function (rating) {
       return ({ value: rating.value,
@@ -38,7 +38,7 @@ router.get('/snippets/:snippet_id/users/:user_id', function (res, req) {
 });
 
 /* UPDATE user's rating for snippet*/
-router.put('/:id', function (res, req) {
+router.put('/:id', function (req, res) {
   models.Rating.findById(req.params.id).then( function (rating) {
     rating.value = req.body.value;
     rating.save({ validate: false, logging: true}).then(function () {
@@ -52,10 +52,11 @@ router.put('/:id', function (res, req) {
 });
 
 /* POST new rating */
-router.post('/', function (res, req) {
+router.post('/', function (req, res) {
   var attributes = {
-    value: req.body.value,
     SnippetId: req.body.SnippetId,
+    value: req.body.value,
+    UserId: req.body.UserId,
     createdAt: new Date(),
     updatedAt: new Date()
   };
