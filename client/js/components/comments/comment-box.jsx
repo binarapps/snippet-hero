@@ -3,33 +3,30 @@ import _ from 'lodash';
 import SnippetActions from '../../actions/snippet-actions';
 import CommentForm from './comment-form';
 import CommentList from './comment-list';
-import CommentsStore from '../../stores/snippet-comments-store';
+import SnippetStore from '../../stores/snippet-store';
 
 export default class CommentBox extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { comments: [], content: ''};
+    this.state = { comments: props.comments, content: ''};
     this.storeListeners = [];
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleFormChange = this._handleFormChange.bind(this);
     this.onChange = this.onChange.bind(this);
   }
 
-  // componentDidMount() {
-  //   this.storeListeners.push(CommentsStore.listen(this.onChange));
-  //   SnippetActions.getAllComments(this.props.snippetId);
-  // }
+  componentDidMount() {
+    this.storeListeners.push(SnippetStore.listen(this.onChange));
+  }
 
   componentWillUnmount() {
     this.storeListeners.forEach(unlisten => unlisten());
   }
 
   onChange() {
-    let comments = CommentsStore.getState().comments;
-    comments = _.filter(comments, (c) => {
-      return c.SnippetId === this.props.snippetId;
-    });
-    this.setState({comments: comments});
+    let snippets = SnippetStore.getState().snippets;
+    let snippet = _.findWhere(snippets, {id: this.props.snippetId});
+    this.setState({comments: snippet.comments});
   }
 
   _handleFormSubmit(e) {
@@ -49,8 +46,8 @@ export default class CommentBox extends React.Component {
       <div>
         <CommentForm
           onChange={this._handleFormChange}
-          onSubmit={this._handleFormSubmit}
-          content={this.state.content} />
+          content={this.state.content}
+          onSubmit={this._handleFormSubmit} />
         <CommentList comments={this.state.comments}/>
       </div>
     );

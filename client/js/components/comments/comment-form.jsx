@@ -11,9 +11,9 @@ export default class CommentForm extends React.Component {
           floatingLabelText="Add new comment:"
           fullWidth={true}
           multiLine={true}
+          value={this.props.content}
           rows={2}
           type="text"
-          value={this.props.content}
         />
         <RaisedButton label="Add comment" primary={true} type='submit'/>
       </form>

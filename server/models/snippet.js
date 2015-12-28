@@ -26,7 +26,7 @@ module.exports = function(sequelize, DataTypes) {
       withComments: function () {
         return {
           include: [sequelize.models.Comment],
-          order: [[sequelize.models.Comment, 'createdAt', 'DESC']]
+          order: [['createdAt', 'DESC'], [sequelize.models.Comment, 'createdAt', 'DESC']]
         };
       },
       withVersions: function () {
@@ -58,6 +58,7 @@ module.exports = function(sequelize, DataTypes) {
           json.comments = this.Comments.map(function (c) {
             return c.toJson();
           });
+
         }
 
         return json;

@@ -1,4 +1,5 @@
 import alt from '../libs/alt';
+import _ from 'lodash';
 import SnippetActions from '../actions/snippet-actions';
 
 // TODO create tests
@@ -47,6 +48,17 @@ class SnippetStore {
       snippetCreated: true,
       lastCreateSuccess: false
     });
+  }
+
+  commentSnippet(data) {
+    // const comments = this.state.comments;
+    if (data.ok) {
+      let snippet = _.findWhere(this.state.snippets, { id: data.comment.SnippetId });
+      snippet.comments.unshift(data.comment);
+    } else {
+      // TODO react to errors
+      // console.log(data.error.message)
+    }
   }
 }
 

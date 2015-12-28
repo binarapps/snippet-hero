@@ -1,5 +1,4 @@
 'use strict';
-var moment = require('moment');
 
 module.exports = function(sequelize, DataTypes) {
   var Comment = sequelize.define('Comment', {
@@ -13,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
           content: this.get('content'),
           id: this.get('id'),
           SnippetId: this.get('SnippetId'),
-          createdAt: moment(this.get('createdAt')).format('DD-MM-YYYY HH:mm')
+          createdAt: this.get('createdAt')
         };
       }
     },
