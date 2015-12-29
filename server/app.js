@@ -25,7 +25,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({ secret: 'BLIM HELP xD' }));
+app.use(session({ secret: 'xZiMKk1gLLXRM9OcFktVbgQWcPUWT6pI' })); //TODO move secret to env
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.resolve(__dirname, '../build')));
