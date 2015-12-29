@@ -1,4 +1,5 @@
 import alt from '../libs/alt';
+import update from 'react-addons-update';
 import _ from 'lodash';
 import SnippetActions from '../actions/snippet-actions';
 
@@ -51,10 +52,14 @@ class SnippetStore {
   }
 
   commentSnippet(data) {
-    // const comments = this.state.comments;
+    const snippets = this.state.snippets.slice(0);
     if (data.ok) {
-      let snippet = _.findWhere(this.state.snippets, { id: data.comment.SnippetId });
-      snippet.comments.unshift(data.comment);
+      let snippetIndex = _.findIndex(snippets, 'id', data.comment.SnippetId);
+      let snippet = _.pullAt(snippets, snippetIndex)[0];
+      let newSnippet = update(snippet, {comments: {$unshift: [data.comment]}});
+      this.setState({
+        snippets: snippets.concat(newSnippet)
+      });
     } else {
       // TODO react to errors
       // console.log(data.error.message)
