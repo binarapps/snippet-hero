@@ -22,11 +22,11 @@ export default class SnippetFormDialog extends React.Component {
   }
 
   componentDidMount() {
-    this.storeListener = SnippetStore.listen(this._onCreate);
+    SnippetStore.listen(this._onCreate);
   }
 
   componentWillUnmount() {
-    this.storeListener.unlisten();
+    SnippetStore.unlisten(this._onCreate);
   }
 
   _onCreate(nextState) {

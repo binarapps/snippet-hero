@@ -6,7 +6,10 @@ import ReactTapPlugin from 'react-tap-event-plugin';
 import ReactDOM from 'react-dom';
 import App from './components/app';
 import SnippetsIndex from './components/pages/snippets-index';
-
+import Logout from './components/pages/logout';
+import Login from './components/pages/login';
+import Register from './components/pages/register';
+import createHistory from 'history/lib/createHashHistory';
 
 main();
 
@@ -18,10 +21,18 @@ function main () {
 
   document.body.appendChild(app);
 
+  const history = createHistory({ queryKey: false });
+
+  setTimeout(() => { history.pushState(null, '/snippets'); });
+
   ReactDOM.render(
-    <Router>
-      <Route path="/" component={App}>
-        <Route path="snippets" component={SnippetsIndex}/>
+    <Router history={history}>
+      <Route path="/" component={App} >
+
+        <Route path="/snippets" component={SnippetsIndex}/>
+        <Route path="/logout" component={Logout}/>
+        <Route path="/login" component={Login}/>
+        <Route path="/register" component={Register}/>
       </Route>
     </Router>,
     app
