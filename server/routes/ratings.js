@@ -39,17 +39,28 @@ router.put('/:id', function (req, res) {
 
 /* POST new rating */
 router.post('/', function (req, res) {
-  var attributes = {
-    SnippetId: req.body.SnippetId,
-    value: req.body.value,
-    UserId: req.body.UserId
-  };
-
-  var rating = models.Rating.build(attributes);
-  rating.save({ validate: false, logging: true}).then(function (rating) {
-    res.status(201).send(rating.toJson());
-  }).catch(function () {
-    res.status(422).send('error');
+  var user_id = req.user.dataValues.id;
+  models.Rating.findOne({ where : { SnippetId: req.body.SnippetId, UserId: user_id } }).then( function (rating) {
+    if (rating) {
+      rating.value = req.body.value;
+      rating.save({ validate: false, logging: true}).then(function () {
+        res.status(200).send('ok');
+      }).catch(function () {
+        res.status(422).send('error');
+      });
+    } else {
+      var attributes = {
+        SnippetId: req.body.SnippetId,
+        value: req.body.value,
+        UserId: user_id
+      };
+      var rating = models.Rating.build(attributes);
+      rating.save({ validate: false, logging: true}).then(function (rating) {
+        res.status(201).send(rating.toJson());
+      }).catch(function () {
+        res.status(422).send('error');
+      });
+    }
   });
 });
 

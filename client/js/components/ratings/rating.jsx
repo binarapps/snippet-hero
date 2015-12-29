@@ -34,7 +34,6 @@ export default class Rating extends React.Component {
 
   handleClick(g){
     RatingActions.create({
-      UserId: null,
       value: g,
       SnippetId: this.props.snippetId
     });
