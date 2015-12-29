@@ -40,12 +40,13 @@ export default class Snippet extends React.Component {
         </Avatar>;
     return (
       <Card style={style}>
-        <CardHeader
-          style={{background: Colors.grey100}}
-          title={this.props.name || 'No title'}
-          subtitle="author link"
-          avatar={avatar} />
-          <RatingForm key={this.props.id} snippetId={this.props.id}/>
+        <div style={{display: 'inline-flex', background: Colors.grey100, width: '100%'}}>
+          <CardHeader
+            title={this.props.name || 'No title'}
+            subtitle="author link"
+            avatar={avatar} />
+          <RatingForm key={this.props.id} snippetId={this.props.id} style={{right: 0, margin: '10px'}}/>
+        </div>
         <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300 }}>
           <Codemirror value={this.props.content} options={codeOptions} />
         </div>
