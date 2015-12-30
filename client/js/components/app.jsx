@@ -1,6 +1,8 @@
 import React from 'react';
 import Navbar from './navbar';
 import UserStore from '../stores/user-store';
+import FlashMessages from './flash-messages';
+import FlashMessagesActions from '../actions/flash-messages-actions';
 
 export default class App extends React.Component {
 
@@ -28,14 +30,13 @@ export default class App extends React.Component {
 
   _onChange() {
     this.setState({ currentUser: UserStore.state.currentUser });
-    var self = this;
-    setTimeout(function() {
-      var currentPath = self.props.location.pathname;
+    setTimeout(() => {
+      var currentPath = this.props.location.pathname;
 
-      if(!self.state.currentUser && currentPath != '/login' && currentPath != '/register') {
-        self.props.history.pushState(null, '/login');
-      } else if(self.state.currentUser && (currentPath === '/login' || currentPath === '/register')) {
-        self.props.history.pushState(null, '/');
+      if(!this.state.currentUser && currentPath != '/login' && currentPath != '/register') {
+        this.props.history.pushState(null, '/login');
+      } else if(this.state.currentUser && (currentPath === '/login' || currentPath === '/register')) {
+        this.props.history.pushState(null, '/');
       }
     });
   }
@@ -51,6 +52,7 @@ export default class App extends React.Component {
       <div>
         <Navbar history={this.props.history} menuItems={menuItems}/>
         {this.props.children}
+        <FlashMessages />
       </div>
     );
   }
