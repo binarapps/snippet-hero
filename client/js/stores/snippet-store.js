@@ -16,7 +16,7 @@ class SnippetStore {
 
   getAll (data) {
     if (data.ok) {
-      const snippets = this.state.snippets;
+      const {snippets} = this.state;
 
       this.setState({
         snippets: snippets.concat(data.snippets)
@@ -35,7 +35,7 @@ class SnippetStore {
   }
 
   onCreateSuccess(data) {
-    const snippets = this.state.snippets;
+    const {snippets} = this.state;
 
     this.setState({
       snippets: snippets.concat(data.snippet),
@@ -52,13 +52,12 @@ class SnippetStore {
   }
 
   commentSnippet(data) {
-    const snippets = this.state.snippets.slice(0);
+    const {snippets} = this.state;
     if (data.ok) {
       let snippetIndex = _.findIndex(snippets, 'id', data.comment.SnippetId);
-      let snippet = _.pullAt(snippets, snippetIndex)[0];
-      let newSnippet = update(snippet, {comments: {$unshift: [data.comment]}});
+      let newSnippets = update(snippets, {[snippetIndex]: {comments: {$unshift: [data.comment]}}});
       this.setState({
-        snippets: snippets.concat(newSnippet)
+        snippets: newSnippets
       });
     } else {
       // TODO react to errors
