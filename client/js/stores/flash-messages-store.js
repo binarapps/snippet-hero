@@ -4,7 +4,7 @@ import FlashMessagesActions from '../actions/flash-messages-actions';
 class FlashMessagesStore {
   constructor() {
     this.bindActions(FlashMessagesActions);
-    this.state = { flashMessages: [] }
+    this.state = { flashMessages: [] };
   }
 
   pushMessage(message) {

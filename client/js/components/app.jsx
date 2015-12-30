@@ -2,7 +2,6 @@ import React from 'react';
 import Navbar from './navbar';
 import UserStore from '../stores/user-store';
 import FlashMessages from './flash-messages';
-import FlashMessagesActions from '../actions/flash-messages-actions';
 
 export default class App extends React.Component {
 

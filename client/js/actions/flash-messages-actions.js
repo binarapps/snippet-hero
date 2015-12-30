@@ -1,4 +1,3 @@
-import axios from 'axios';
 import alt from '../libs/alt';
 
 class flashMessagesActions {
