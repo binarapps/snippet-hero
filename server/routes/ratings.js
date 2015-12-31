@@ -42,9 +42,23 @@ router.post('/', function (req, res) {
   var user_id = req.user.dataValues.id;
   models.Rating.findOne({ where : { SnippetId: req.body.SnippetId, UserId: user_id } }).then( function (rating) {
     if (rating) {
+      var snippetAverage = 0;
+      var sum = 0.0;
+      var index = 0;
       rating.value = req.body.value;
+      models.Rating.findAll({ where: {SnippetId: req.body.SnippetId} }).then( function (ratings) {
+        ratings.forEach(function (rating) {
+          sum += rating.value;
+          index++;
+        });
+        if(sum == 0.0){
+          snippetAverage = (req.body.value).toFixed(2);
+        } else {
+          snippetAverage = ((sum + req.body.value)/(index+1)).toFixed(2);
+        }
+      });
       rating.save({ validate: false, logging: true}).then(function () {
-        res.status(200).send('ok');
+        res.status(200).send({rating: rating, avg: snippetAverage});
       }).catch(function () {
         res.status(422).send('error');
       });
@@ -56,7 +70,7 @@ router.post('/', function (req, res) {
       };
       var rating = models.Rating.build(attributes);
       rating.save({ validate: false, logging: true}).then(function (rating) {
-        res.status(201).send(rating.toJson());
+        res.status(201).send({rating: rating, avg: rating.value});
       }).catch(function () {
         res.status(422).send('error');
       });

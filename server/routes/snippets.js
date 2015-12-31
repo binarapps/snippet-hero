@@ -86,4 +86,22 @@ router.get('/:snippet_id/users/:user_id', function (req, res) {
   });
 });
 
+/* GET current user's rating for snippet */
+router.get('/:snippet_id/user', function (req, res) {
+  snippet_id = req.params.snippet_id;
+  if(req.user){
+    user_id = req.user.dataValues.id;
+    models.Rating.findOne({ where : { SnippetId: snippet_id , UserId: user_id } }).then( function (rating) {
+      var grade = 0;
+      if (rating) {
+        grade = rating.value;
+      } 
+      var hash = {user: user_id, rate: grade, snippet: snippet_id};
+      res.status(201).send(hash);
+    });
+  } else {
+    res.status(422).send({user: null, rate: 0, snippet: snippet_id});
+  }
+});
+
 module.exports = router;

@@ -2,6 +2,7 @@ import React from 'react';
 import ActionGrade from 'material-ui/lib/svg-icons/action/grade';
 import RatingActions from '../../actions/rating-actions';
 import Star from './star';
+import UserStore from '../../stores/user-store';
 
 export default class Rating extends React.Component {
   constructor(props) {
@@ -9,7 +10,7 @@ export default class Rating extends React.Component {
     this.handleMouseOver = this.handleMouseOver.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleMouseLeave = this.handleMouseLeave.bind(this);
-    this.state = {grade: 0};
+    this.state = {grade: 0, currentUser: UserStore.state.currentUser};
     this.style = {
       starBlack: {
         fill: 'rgba(135, 135, 135, 0.8)'
@@ -20,12 +21,18 @@ export default class Rating extends React.Component {
     };
   }
 
-  componentDidMount () {
+  componentWillMount () {
+    this.setState({ currentUser: UserStore.state.currentUser });
     RatingActions.getSnippetRatings(this.props.snippetId);
+    RatingActions.getCurrentUserRating(this.props.snippetId);
+  }
+
+  componentDidMount () {
+    this._setGradeOfUserRating();
   }
 
   handleMouseLeave(g){
-    this.setState({grade: 0});
+    this._setGradeOfUserRating();
   }
 
   handleMouseOver(g){
@@ -37,11 +44,27 @@ export default class Rating extends React.Component {
       value: g,
       SnippetId: this.props.snippetId
     });
-    RatingActions.getSnippetRatings(this.props.snippetId);
+    this.setState({grade: g});
   }
 
   _gradeToStyle(grade){
     return grade > this.state.grade ? this.style.starBlack : this.style.starYellow;
+  }
+
+  _setGradeOfUserRating(){
+    var newGrade = 0;
+    if (this.props.usersRatings[this.state.currentUser.id]) {
+      if (this.props.usersRatings[this.state.currentUser.id][this.props.snippetId]){
+        newGrade = this.props.usersRatings[this.state.currentUser.id][this.props.snippetId];
+      } else {
+        newGrade = 0;
+      }
+    } else {
+      newGrade = 0;
+    }
+    this.setState({
+      grade: newGrade
+    });
   }
 
   render() {
