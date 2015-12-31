@@ -3,8 +3,20 @@ import alt from '../libs/alt';
 
 // TODO create tests
 class SnippetActions {
+  constructor() {
+    // this.generateActions(
+    //   'create'
+    // );
+  }
+
   getAll() {
     axios.get('/snippets')
+      .then(res => this.dispatch({ok: true, snippets: res.data}))
+      .catch(err => this.dispatch({ok: false, error: err}));
+  }
+
+  search(name) {
+    axios.get('/snippets/search?name=' + name)
       .then(res => this.dispatch({ok: true, snippets: res.data}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }

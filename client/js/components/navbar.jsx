@@ -23,9 +23,9 @@ class Navbar extends React.Component {
   }
 
   render() {
+    let iconElementRight = (<RaisedButton style={{marginTop: '6px'}} onClick={ () => this.refs.dialog.open()} label="Add new snippet" primary={true}/>);
     return (
       <div>
-        <RaisedButton onClick={ () => this.refs.dialog.open()} label="Add new snippet" primary={true}/>
         <SnippetFormDialog
           languages={langs}
           ref="dialog" />
@@ -35,7 +35,10 @@ class Navbar extends React.Component {
             onChange={this.onLeftNavChange}
             menuItems={this.props.menuItems}/>
         <header>
-          <AppBar title='Snippet-hero' onLeftIconButtonTouchTap={this.handleClick} />
+          <AppBar
+              title='Snippet-hero'
+              onLeftIconButtonTouchTap={this.handleClick}
+              iconElementRight={iconElementRight} />
         </header>
       </div>
     );

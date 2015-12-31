@@ -102,7 +102,7 @@ export default class SnippetFormDialog extends React.Component {
               <SnippetForm {...this.state} languages={this.props.languages} onChange={this._handleFormChange} ref="form" />
             </Tab>
             <Tab label="Preview">
-              <Snippet {...this.state} />
+              <Snippet {...this.state}/>
             </Tab>
           </Tabs>
         </Dialog>
