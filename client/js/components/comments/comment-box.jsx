@@ -12,18 +12,18 @@ export default class CommentBox extends React.Component {
     this.storeListeners = [];
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleFormChange = this._handleFormChange.bind(this);
-    this.onChange = this.onChange.bind(this);
+    this._onChange = this._onChange.bind(this);
   }
 
   componentDidMount() {
-    this.storeListeners.push(SnippetStore.listen(this.onChange));
+    this.storeListeners.push(SnippetStore.listen(this._onChange));
   }
 
   componentWillUnmount() {
     this.storeListeners.forEach(unlisten => unlisten());
   }
 
-  onChange() {
+  _onChange() {
     let snippets = SnippetStore.getState().snippets;
     let snippet = _.findWhere(snippets, {id: this.props.snippetId});
     this.setState({comments: snippet.comments});

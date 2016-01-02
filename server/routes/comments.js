@@ -23,10 +23,9 @@ router.post('/:snippetId/comments', function (req, res) {
     content: body.content,
     SnippetId: req.params.snippetId
   };
-  models.sequelize.transaction(function (t) {
-    return models.Comment.create(attributes, {transaction: t});
-  }).then(function (data) {
-    res.status(201).send(data);
+  models.Comment.create(attributes)
+  .then(function (comment) {
+    res.status(201).send(comment.toJson());
   }).catch(function (err) {
     res.status(422).send(err.message);
   });
