@@ -10,6 +10,7 @@ var passport = require('passport');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var snippets = require('./routes/snippets');
+var snippetComments = require('./routes/comments');
 
 require('./config/passport_configuration');
 
@@ -21,7 +22,10 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+// use logger only in development
+if (app.get('env') === 'development') {
+  app.use(logger('dev'));
+}
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -33,6 +37,7 @@ app.use(express.static(path.resolve(__dirname, '../build')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/snippets', snippets);
+app.use('/snippets', snippetComments);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
