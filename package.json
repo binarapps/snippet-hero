@@ -42,6 +42,7 @@
     "passport-remember-me": "0.0.1",
     "pg": "^4.4.3",
     "pg-hstore": "^2.3.2",
+    "rand-token": "^0.2.1",
     "react": "^0.14.3",
     "react-addons-update": "^0.14.3",
     "react-codemirror": "^0.2.2",
