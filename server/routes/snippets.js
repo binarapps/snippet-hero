@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var models = require('../models');
 var slack = require('../services/slack-integration');
+var appLogger = require('../lib/logger');
 
 /* GET snippets listing. */
 router.get('/', function (req, res) {
@@ -55,6 +56,7 @@ router.post('/', function (req, res) {
     slack.notify('New snippet was added! ' + slack.link('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'See it!'));
     res.status(201).send(data);
   }).catch(function (err) {
+    appLogger.debug(err.message);
     res.status(422).send(err.message);
   });
 });

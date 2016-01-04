@@ -4,32 +4,24 @@ var request = require('supertest');
 var db = require('../models');
 var app = require('../app');
 
+var factory = require('factory-girl');
+require('factory-girl-sequelize')();
+
 var expect = chai.expect;
 
-var createSingleSnippet = function (data, done) {
-  db.Snippet.sync({ force : true }).then(function () {
-    db.SnippetVersion.sync({ force : true }).then(function () {
-      db.Snippet.create(data).then(function (snippet) {
-        snippet.createSnippetVersion({content: data.content}).then(function () {
-          done();
-        }).catch(function (err) {
-          done(err);
-        });
-      }).catch(function (err) {
-        done(err);
-      });
-    }).catch(function (err) {
-      done(err);
-    });
-  }).catch(function (err) {
-    done(err);
-  });
-};
+// For creating snippets with version
+factory.define('snippetVersion', db.SnippetVersion, {
+  content: 'hura',
+  SnippetId: factory.assoc('snippet', 'id')
+});
+
 var data = {
   name: 'example name',
   content: 'hura',
   description: 'some description'
 };
+
+factory.define('snippet', db.Snippet, data);
 
 describe('Snippets routes', function() {
   describe('POST /snippets', function () {
@@ -66,7 +58,15 @@ describe('Snippets routes', function() {
 
   describe('GET /snippets', function () {
     before(function (done) {
-      createSingleSnippet(data, done);
+      db.Snippet.sync({ force : true }).then(function () {
+        db.SnippetVersion.sync({ force : true }).then(function () {
+          factory.createMany('snippetVersion', 2, function(err) {
+            if(!err) done();
+          });
+        }).catch(function (err) {
+          done(err);
+        });
+      });
     });
 
     it('should return array of snippets', function (done) {
@@ -78,7 +78,7 @@ describe('Snippets routes', function() {
           if (err) {return done(err);}
 
           expect(res.body).to.be.an.array;
-          expect(res.body.length).to.be.equal(1);
+          expect(res.body.length).to.be.equal(2);
 
           var snippet  = res.body[0];
 
@@ -95,7 +95,11 @@ describe('Snippets routes', function() {
 
 describe('Snippet model', function () {
   before(function (done) {
-    createSingleSnippet(data, done);
+    db.Snippet.sync({ force : true }).then(function () {
+      factory.create('snippet', function(err) {
+        if(!err) done();
+      });
+    });
   });
 
   describe('#toJson', function () {

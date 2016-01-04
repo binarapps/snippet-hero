@@ -4,3 +4,4 @@ node_modules/
 build/
 server/config/config.json
 server/config/secrets.json
+log
