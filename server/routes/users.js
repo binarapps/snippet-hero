@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models');
-
+var passport = require('passport');
+var bcrypt = require('bcrypt-nodejs');
+var User = models.User;
 
 /* GET users listing. */
 router.get('/', function(req, res) {
@@ -14,9 +16,31 @@ router.get('/', function(req, res) {
   });
 });
 
-router.get('/:id', function(req, res) {
-  models.User.findById(req.params.id).then(function(user) {
-    res.send(user);
+router.post('/login',
+  passport.authenticate('local'),
+  function(req, res) {
+    res.send({ user: req.user.toJson() });
+  }
+);
+
+router.delete('/logout', function(req, res) {
+  req.logout();
+  res.send(true);
+});
+
+router.post('/register', function(req, res) {
+  var body = req.body;
+  var salt = bcrypt.genSaltSync();
+  var attributes = {
+    email: body.email,
+    name: body.name,
+    encryptedPassword: bcrypt.hashSync(body.password, salt),
+    passwordSalt: salt
+  };
+  User.create(attributes).then(function(user) {
+    res.status(201).send({ user: user.toJson() });
+  }).catch(function(err) {
+    res.status(422).send(err.message);
   });
 });
 
