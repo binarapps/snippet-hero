@@ -16,6 +16,7 @@ export default class App extends React.Component {
 
     UserActions.fetchCurrent();
     UserStore.listen(this._onChange);
+    setTimeout(() => { this._onChange(); });
   }
 
   componentWillUnmount() {

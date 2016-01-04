@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models');
-
+var appLogger = require('../lib/logger');
 
 /* GET snippets listing. */
 router.get('/', function (req, res) {
@@ -54,6 +54,7 @@ router.post('/', function (req, res) {
   }).then(function (data) {
     res.status(201).send(data);
   }).catch(function (err) {
+    appLogger.debug(err.message);
     res.status(422).send(err.message);
   });
 });
