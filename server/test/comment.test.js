@@ -26,7 +26,11 @@ describe('Comments routes', function() {
   describe('POST /snippets/:snippetId/comments', function() {
     before(function(done) {
       db.Comment.sync({ force : true }).then(function() {
-        done();
+        db.Snippet.create({description: 'test', name: 'test'}).then(function () {
+          done();
+        }).catch(function (err) {
+          done(err);
+        });
       }).catch(function(err) {
         done(err);
       });
@@ -57,7 +61,7 @@ describe('Comment model', function() {
   });
 
   describe('#toJson', function() {
-    it ('should return serilized model object', function(done) {
+    it ('should return serialized model object', function(done) {
       db.Comment.findOne().then(function(comment) {
         expect(comment.toJson).to.be.a.function;
 
