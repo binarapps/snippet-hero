@@ -34,7 +34,10 @@ router.post('/:snippetId/comments', authChecker, function (req, res) {
   };
   models.Comment.create(attributes)
   .then(function (comment) {
-    res.status(201).send(comment.toJson());
+    models.Comment.findById(comment.id, {include: [models.User]}).then(function (c) {
+      res.send(c.toJson());
+    });
+    // res.status(201).send(comment.toJson());
   }).catch(function (err) {
     res.status(422).send(err.message);
   });
