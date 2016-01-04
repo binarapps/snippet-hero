@@ -29,7 +29,7 @@ module.exports = function(sequelize, DataTypes) {
           id: this.get('id'),
           email: this.get('email'),
           name: this.get('email')
-        }
+        };
         return json;
       }
     }
