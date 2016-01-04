@@ -14,6 +14,8 @@ export default class SnippetFormDialog extends React.Component {
   constructor(props) {
     super(props);
     this.state = {name: '', content: '', description: '', language: 0, isOpen: props.dialogOpen};
+    this.store = SnippetStore;
+    this.listener = null;
 
     this._handleFormChange = this._handleFormChange.bind(this);
     this._handleSubmit = this._handleSubmit.bind(this);
@@ -22,11 +24,11 @@ export default class SnippetFormDialog extends React.Component {
   }
 
   componentDidMount() {
-    this.storeListener = SnippetStore.listen(this._onCreate);
+    this.listener = this.store.listen(this._onCreate);
   }
 
   componentWillUnmount() {
-    this.storeListener.unlisten();
+    this.listener();
   }
 
   _onCreate(nextState) {
