@@ -13,6 +13,12 @@ class UserStore {
     }
   }
 
+  fetchCurrent(data) {
+    if (data.ok) {
+      this.setState({ currentUser: data.user });
+    }
+  }
+
   logout(data) {
     if (data.ok) {
       this.setState({ currentUser: false });

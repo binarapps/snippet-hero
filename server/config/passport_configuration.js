@@ -12,8 +12,8 @@ passport.use(new LocalStrategy({ usernameField: 'email' },
           done(null, false, { message: 'Incorrect password.' });
         }
       });
-    }).catch(function() {
-      done(null, false, { message: 'Incorrect username.' });
+    }).catch(function(err) {
+      done(err, false, { message: 'Incorrect username.' });
     });
   }
 ));

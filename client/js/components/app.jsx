@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from './navbar';
 import UserStore from '../stores/user-store';
+import UserActions from '../actions/user-actions';
 import FlashMessages from './flash-messages';
 
 export default class App extends React.Component {
@@ -13,6 +14,7 @@ export default class App extends React.Component {
 
     this.historyListtenerWasAttached = false;
 
+    UserActions.fetchCurrent();
     UserStore.listen(this._onChange);
     setTimeout(() => { this._onChange(); });
   }
