@@ -14,6 +14,7 @@ export default class App extends React.Component {
     this.historyListtenerWasAttached = false;
 
     UserStore.listen(this._onChange);
+    setTimeout(() => { this._onChange(); });
   }
 
   componentWillUnmount() {
