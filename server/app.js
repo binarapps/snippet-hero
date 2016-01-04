@@ -11,6 +11,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var snippets = require('./routes/snippets');
 var snippetComments = require('./routes/comments');
+var secrets = require('./config/secrets');
 
 require('./config/passport_configuration');
 
@@ -29,7 +30,7 @@ if (app.get('env') === 'development') {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({ secret: 'xZiMKk1gLLXRM9OcFktVbgQWcPUWT6pI' })); //TODO move secret to env
+app.use(session({ secret: secrets.sessionSecret }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.resolve(__dirname, '../build')));
