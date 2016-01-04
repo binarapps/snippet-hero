@@ -23,6 +23,14 @@ module.exports = function(sequelize, DataTypes) {
         bcrypt.compare(password, this.encryptedPassword, function(err, res) {
           callback(res);
         });
+      },
+      toJson: function() {
+        var json = {
+          id: this.get('id'),
+          email: this.get('email'),
+          name: this.get('email')
+        }
+        return json;
       }
     }
   });

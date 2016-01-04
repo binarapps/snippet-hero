@@ -19,7 +19,7 @@ router.get('/', function(req, res) {
 router.post('/login',
   passport.authenticate('local'),
   function(req, res) {
-    res.send({ user: req.user });
+    res.send({ user: req.user.toJson() });
   }
 );
 
@@ -38,15 +38,9 @@ router.post('/register', function(req, res) {
     passwordSalt: salt
   };
   User.create(attributes).then(function(user) {
-    res.status(201).send({ user: user });
+    res.status(201).send({ user: user.toJson() });
   }).catch(function(err) {
     res.status(422).send(err.message);
-  });
-});
-
-router.get('/:id', function(req, res) {
-  User.findById(req.params.id).then(function(user) {
-    res.send(user);
   });
 });
 

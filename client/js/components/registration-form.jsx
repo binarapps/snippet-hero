@@ -28,7 +28,7 @@ export default class RegistrationForm extends React.Component {
   render() {
     return (
       <Dialog ref="dialog" defaultOpen={true} onRequestClose={this._onRequestClose}>
-        <form className="registration-form">
+        <form className="registration-form" onSubmit={this._onSignUpRequest}>
           <h1>Sign up</h1>
 
           <div>
