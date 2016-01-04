@@ -42,7 +42,7 @@ export default class RegistrationForm extends React.Component {
 
     var _presentValidator = (field, fieldName) => {
       if(data[field].length === 0) { errors.push(fieldName + ' can\'t be blank'); }
-    }
+    };
 
     if(data.password !== data.repeatPassword) {
       errors.push('Repeated password is incorrect');
