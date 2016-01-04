@@ -8,13 +8,14 @@ var SlackIntegration = {
     if(linkName) {
       link += '|' + linkName
     }
-    link += 'link'
+    link += '>'
     return link;
   },
   notify: function(text) {
     this.send({ text: text });
   },
   send: function(data) {
+    if(!secrets.slackHookUrl) { throw "No slackHookUrl was provided in 'config/secrets.json'."; }
     var payload = {
       channel: data.channel || settings.slack.defaultChannel,
       username: data.username || settings.slack.defaultUsername,
