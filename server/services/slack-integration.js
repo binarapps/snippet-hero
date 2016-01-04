@@ -15,7 +15,7 @@ var SlackIntegration = {
     this.send({ text: text });
   },
   send: function(data) {
-    if(!secrets.slackHookUrl) { throw "No slackHookUrl was provided in 'config/secrets.json'."; }
+    if(!secrets.slackHookUrl) { throw new Error("No slackHookUrl was provided in 'config/secrets.json'."); }
     var payload = {
       channel: data.channel || settings.slack.defaultChannel,
       username: data.username || settings.slack.defaultUsername,
