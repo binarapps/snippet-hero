@@ -19,8 +19,8 @@ describe('Comments routes', function() {
   describe('POST /snippets/:snippetId/comments', function() {
     before(function(done) {
       db.Comment.sync({ force : true }).then(function() {
-        factory.create('snippet', function(err, snippet) {
-          done();
+        factory.create('snippet', function(err) {
+          if(!err) done();
         });
       }).catch(function(err) {
         done(err);
@@ -49,8 +49,8 @@ describe('Comments routes', function() {
 describe('Comment model', function() {
   before(function(done) {
     db.Comment.sync({ force : true }).then(function () {
-      factory.create('comment', function(err, comment) {
-        done();
+      factory.create('comment', function(err) {
+        if(!err) done();
       });
     });
   });

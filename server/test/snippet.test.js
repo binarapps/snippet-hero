@@ -9,7 +9,7 @@ require('factory-girl-sequelize')();
 
 var expect = chai.expect;
 
-// For creating snippets with version 
+// For creating snippets with version
 factory.define('snippetVersion', db.SnippetVersion, {
   content: 'hura',
   SnippetId: factory.assoc('snippet', 'id')
@@ -60,8 +60,8 @@ describe('Snippets routes', function() {
     before(function (done) {
       db.Snippet.sync({ force : true }).then(function () {
         db.SnippetVersion.sync({ force : true }).then(function () {
-          factory.createMany('snippetVersion', 2, function(err, snippets) {
-            done();
+          factory.createMany('snippetVersion', 2, function(err) {
+            if(!err) done();
           });
         }).catch(function (err) {
           done(err);
@@ -96,8 +96,8 @@ describe('Snippets routes', function() {
 describe('Snippet model', function () {
   before(function (done) {
     db.Snippet.sync({ force : true }).then(function () {
-      factory.create('snippet', function(err, snippet) {
-        done();
+      factory.create('snippet', function(err) {
+        if(!err) done();
       });
     });
   });
