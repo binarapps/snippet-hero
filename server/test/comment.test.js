@@ -13,12 +13,15 @@ var data = {
 };
 
 factory.define('comment', db.Comment, data);
+factory.define('snippet', db.Snippet, {description: 'test', name: 'snippet'});
 
 describe('Comments routes', function() {
   describe('POST /snippets/:snippetId/comments', function() {
     before(function(done) {
       db.Comment.sync({ force : true }).then(function() {
-        done();
+        factory.create('snippet', function(err, snippet) {
+          done();
+        });
       }).catch(function(err) {
         done(err);
       });
@@ -53,8 +56,7 @@ describe('Comment model', function() {
   });
 
   describe('#toJson', function() {
-    it ('should return serailized model object', function(done) {
-
+    it ('should return serialized model object', function(done) {
       db.Comment.findOne().then(function(comment) {
         expect(comment.toJson).to.be.a.function;
         var json = comment.toJson();

@@ -1,12 +1,13 @@
 import React from 'react';
 import moment from 'moment';
+import Markdown from 'markdown-react-js';
 
 class CommentListItem extends React.Component{
   render() {
     return (
-      <li style={{position: 'relative', padding: '10px 0'}} key={this.props.comment.id}>
-        <span>{this.props.comment.content}</span>
-        <span style={{float: 'right'}}>{moment(this.props.comment.createdAt).format('DD-MM-YYYY HH:mm')}</span>
+      <li style={{position: 'relative', padding: '10px 0'}}>
+        <Markdown text={this.props.content} className="markdown" />
+        <span style={{float: 'right'}}>{moment(this.props.createdAt).format('DD-MM-YYYY HH:mm')}</span>
       </li>
     );
   }
@@ -23,7 +24,7 @@ export default class CommentList extends React.Component {
       <ul style={{paddingLeft: '30px', listStyle: 'none'}}>
         {this.props.comments.map(function(comment) {
           return (
-            <CommentListItem key={comment.id} comment={comment}/>
+            <CommentListItem key={`comment-${comment.id}`} {...comment}/>
           );
         })}
       </ul>
