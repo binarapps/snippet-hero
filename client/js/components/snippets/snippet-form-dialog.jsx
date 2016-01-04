@@ -28,7 +28,7 @@ export default class SnippetFormDialog extends React.Component {
   }
 
   componentWillUnmount() {
-    this.store.unlisten(this.listener);
+    this.listener();
   }
 
   _onCreate(nextState) {
