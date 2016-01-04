@@ -1,4 +1,5 @@
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
 // var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -6,11 +7,14 @@ var appLogger = require('./lib/logger');
 
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var passport = require('passport');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var snippets = require('./routes/snippets');
 var snippetComments = require('./routes/comments');
+
+require('./config/passport_configuration');
 
 var app = express();
 
@@ -28,6 +32,9 @@ app.use(logger('combined', {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(session({ secret: 'xZiMKk1gLLXRM9OcFktVbgQWcPUWT6pI' })); //TODO move secret to env
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(path.resolve(__dirname, '../build')));
 
 app.use('/', routes);
