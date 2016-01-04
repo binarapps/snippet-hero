@@ -1,14 +1,31 @@
-var log4js = require('log4js');
-log4js.configure({
-  appenders: [
-    {
-      type: 'dateFile',
-      filename: './server/log/server.log',
-      pattern: '-yyyy-MM-dd'
-    },
-    { type: 'console' }
-  ]
-});
-var appLogger = log4js.getLogger();
+var winston = require('winston');
+var winstonDailyRotate = require('winston-daily-rotate-file');
 
-module.exports = appLogger;
+var logger = new winston.Logger({
+  transports: [
+    new winstonDailyRotate({
+      level: 'info',
+      filename: './server/log/server.log',
+      handleExceptions: true,
+      json: true,
+      maxsize: 5242880, //5MB
+      maxFiles: 5,
+      colorize: false
+    }),
+    new winston.transports.Console({
+      level: 'debug',
+      handleExceptions: true,
+      json: false,
+      colorize: true
+    })
+  ],
+  exitOnError: false
+});
+
+logger.stream = {
+  write: function(message){
+    logger.info(message);
+  }
+};
+
+module.exports = logger;

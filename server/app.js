@@ -1,8 +1,6 @@
 var express = require('express');
 var path = require('path');
 // var favicon = require('serve-favicon');
-// var fs = require('fs');
-// var FileStreamRotator = require('file-stream-rotator');
 var logger = require('morgan');
 var appLogger = require('./lib/logger');
 
@@ -21,26 +19,9 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-// create a write stream (in append mode)
 
-// setup the logger
-// var logDirectory = __dirname + '/log';
-// fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
-// var logStream = FileStreamRotator.getStream({
-//   filename: logDirectory + '/server-%DATE%.log',
-//   frequency: 'daily',
-//   verbose: false,
-//   date_format: 'YYYY-MM-DD'
-// });
-// app.use(logger('combined', {stream: logStream}));
-app.use(logger('dev', {
-  stream: {
-    write: function(str) {
-      console.log(str);
-      console.log('-----------------------------------');
-      appLogger.info(str);
-    }
-  }
+app.use(logger('combined', {
+  stream: appLogger.stream
 }));
 
 app.use(bodyParser.json());
