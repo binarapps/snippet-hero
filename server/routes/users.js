@@ -50,7 +50,7 @@ router.get('/current',
 
 router.delete('/logout', function(req, res) {
   req.logout();
-  res.clearCookie('rememberMeToken', { httpOnly: true, path: '/' })
+  res.clearCookie('rememberMeToken', { httpOnly: true, path: '/' });
   res.send(true);
 });
 
