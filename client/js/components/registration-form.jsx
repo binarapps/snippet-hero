@@ -3,6 +3,7 @@ import TextField from 'material-ui/lib/text-field';
 import Dialog from 'material-ui/lib/dialog';
 import RaisedButton from 'material-ui/lib/raised-button';
 import UserActions from '../actions/user-actions';
+import FlashMessages from '../actions/flash-messages-actions';
 
 export default class RegistrationForm extends React.Component {
   constructor(props) {
@@ -17,18 +18,45 @@ export default class RegistrationForm extends React.Component {
   }
 
   _onSignUpRequest() {
-    var password = this.refs.passwordInput.getValue();
-    var userData = { email: this.refs.emailInput.getValue(),
-                     password: password,
+    var formData = { email: this.refs.emailInput.getValue(),
+                     password: this.refs.passwordInput.getValue(),
+                     repeatPassword: this.refs.repeatPasswordInput.getValue(),
                      name: this.refs.nameInput.getValue()
                    };
-    UserActions.register(userData);
+
+    var validationErrors = this._validateForm(formData);
+
+    if(validationErrors.length) {
+      FlashMessages.pushMessage({ content: validationErrors.join(', ') });
+    } else {
+      UserActions.register({
+        email: formData.email,
+        password: formData.password,
+        name: formData.name
+      });
+    }
+  }
+
+  _validateForm(data) {
+    var errors = [];
+
+    var _presentValidator = (field, fieldName) => {
+      if(data[field].length === 0) { errors.push(fieldName + ' can\'t be blank'); }
+    };
+
+    if(data.password !== data.repeatPassword) {
+      errors.push('Repeated password is incorrect');
+    }
+    _presentValidator('email', 'E-mail');
+    _presentValidator('name', 'Name');
+    _presentValidator('password', 'Password');
+    return errors;
   }
 
   render() {
     return (
       <Dialog ref="dialog" defaultOpen={true} onRequestClose={this._onRequestClose}>
-        <form className="registration-form">
+        <form className="registration-form" onSubmit={this._onSignUpRequest}>
           <h1>Sign up</h1>
 
           <div>

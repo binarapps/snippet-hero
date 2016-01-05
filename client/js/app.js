@@ -23,8 +23,6 @@ function main () {
 
   const history = createHistory({ queryKey: false });
 
-  setTimeout(() => { history.pushState(null, '/snippets'); });
-
   ReactDOM.render(
     <Router history={history}>
       <Route path="/" component={App} >

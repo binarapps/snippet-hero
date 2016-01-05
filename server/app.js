@@ -3,6 +3,8 @@ var session = require('express-session');
 var path = require('path');
 // var favicon = require('serve-favicon');
 var logger = require('morgan');
+var appLogger = require('./lib/logger');
+
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
@@ -11,6 +13,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var snippets = require('./routes/snippets');
 var ratings = require('./routes/ratings');
+var snippetComments = require('./routes/comments');
 
 require('./config/passport_configuration');
 
@@ -22,7 +25,11 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+
+app.use(logger('combined', {
+  stream: appLogger.stream
+}));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -35,6 +42,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/snippets', snippets);
 app.use('/ratings', ratings);
+app.use('/snippets', snippetComments);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

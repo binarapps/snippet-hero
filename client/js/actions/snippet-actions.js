@@ -21,6 +21,18 @@ class SnippetActions {
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
+  getAllComments(snippetId) {
+    axios.get('/snippets/' + snippetId + '/comments')
+      .then(res => this.dispatch({ok: true, comments: res.data}))
+      .catch(err => this.dispatch({ok: false, error: err}));
+  }
+
+  commentSnippet(comment, snippetId) {
+    axios.post('/snippets/' + snippetId + '/comments', comment)
+      .then(res => this.dispatch({ok: true, comment: res.data}))
+      .catch(res => this.dispatch({ok: false, comment: res.data}));
+  }
+
   create(snippet) {
     this.dispatch();
     axios.post('/snippets', snippet)

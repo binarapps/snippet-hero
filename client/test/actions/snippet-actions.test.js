@@ -16,7 +16,7 @@ describe('SnippetActions', function() {
     sinon.spy(alt, 'dispatch');
   });
 
-  afterEach(() => {
+  afterEach(function() {
     alt.dispatch.reset();
   });
 
