@@ -13,7 +13,7 @@ class CommentListItem extends React.Component{
           style={{float: 'left'}}
           color={generateColor()}
           backgroundColor={generateColor()}>
-          {this.props.User.email.split('')[0].toUpperCase()}
+          {this.props.User.name.split('')[0].toUpperCase()}
         </Avatar>
         <div style={{marginLeft: '60px'}}>
           <span style={{fontSize: '1.2rem', fontWeight: 'bold'}}>{this.props.User.email}, posted on: {moment(this.props.createdAt).format('DD-MM-YYYY HH:mm')}</span>
