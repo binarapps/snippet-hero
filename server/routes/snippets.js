@@ -5,7 +5,7 @@ var appLogger = require('../lib/logger');
 
 /* GET snippets listing. */
 router.get('/', function (req, res) {
-  models.Snippet.scope(['withVersions', 'withComments']).findAll().then(function (snippets) {
+  models.Snippet.scope(['withVersions', 'withComments', 'withAuthor']).findAll().then(function (snippets) {
     var mappedSnippets = snippets.map(function (s) {
       return s.toJson();
     });
@@ -50,11 +50,13 @@ router.get('/:id/ratings', function (req, res) {
 
 /* POST new snippet  */
 router.post('/', function (req, res) {
+  var user = req.user.dataValues.id;
   var body = req.body;
   var attributes = {
     description: body.description,
     language: body.language,
-    name: body.name
+    name: body.name,
+    UserId: user
   };
   models.sequelize.transaction(function (t) {
     return models.Snippet.create(attributes, {transaction: t}).then(function (snippet) {

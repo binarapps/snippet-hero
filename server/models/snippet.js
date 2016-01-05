@@ -34,6 +34,11 @@ module.exports = function(sequelize, DataTypes) {
           include: [sequelize.models.SnippetVersion],
           order: [['createdAt', 'DESC'], [sequelize.models.SnippetVersion, 'createdAt', 'ASC']]
         };
+      },
+      withAuthor: function () {
+        return {
+          include: [sequelize.models.User]
+        };
       }
     },
     instanceMethods: {
@@ -46,6 +51,10 @@ module.exports = function(sequelize, DataTypes) {
           content: '',
           versions: []
         };
+
+        if(this.User) {
+          json.user = this.User.toJson();
+        }
 
         if (this.SnippetVersions) {
           json.content = this.SnippetVersions.length ? this.SnippetVersions[0].content : '';

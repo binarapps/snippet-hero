@@ -96,4 +96,11 @@ router.get('/:id/ratings', function (req, res) {
   });
 });
 
+/* GET user by id */
+router.get('/:id', function (req, res) {
+  models.User.findById(req.params.id).then(function (u){
+    res.send(u.toJson());
+  });
+});
+
 module.exports = router;

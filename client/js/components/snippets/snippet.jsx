@@ -38,12 +38,14 @@ export default class Snippet extends React.Component {
           backgroundColor={Colors[this.random(colors) + this.random(intensity)]}>
           {this.random(letters)}
         </Avatar>;
+    let author = (this.props.user == null ? 'No author' : this.props.user.name)
+
     return (
       <Card style={style}>
         <div style={{display: 'inline-flex', background: Colors.grey100, width: '100%'}}>
           <CardHeader
             title={this.props.name || 'No title'}
-            subtitle="author link"
+            subtitle= {author}
             avatar={avatar} />
           <RatingForm key={this.props.id} snippetId={this.props.id} style={{right: 0, margin: '10px'}}/>
         </div>
