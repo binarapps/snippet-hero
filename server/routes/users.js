@@ -65,6 +65,7 @@ router.post('/register', function(req, res) {
   };
   User.create(attributes).then(function(user) {
     req.logIn(user, function() {
+      res.cookie('rememberMeToken', user.get('authToken'), { expires: new Date(Date.now() + 30 * 24 * 3600), httpOnly: true, path: '/' });
       res.status(201).send({ user: user.toJson() });
     });
   }).catch(function(err) {
