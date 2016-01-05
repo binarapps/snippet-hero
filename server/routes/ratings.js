@@ -68,9 +68,9 @@ router.post('/', function (req, res) {
         value: req.body.value,
         UserId: user_id
       };
-      var rating = models.Rating.build(attributes);
-      rating.save({ validate: false, logging: true}).then(function (rating) {
-        res.status(201).send({rating: rating, avg: rating.value});
+      var new_rating = models.Rating.build(attributes);
+      new_rating.save({ validate: false, logging: true}).then(function (new_rating) {
+        res.status(201).send({rating: new_rating, avg: new_rating.value});
       }).catch(function () {
         res.status(422).send('error');
       });

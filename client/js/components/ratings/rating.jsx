@@ -1,5 +1,4 @@
 import React from 'react';
-import ActionGrade from 'material-ui/lib/svg-icons/action/grade';
 import RatingActions from '../../actions/rating-actions';
 import Star from './star';
 import UserStore from '../../stores/user-store';
