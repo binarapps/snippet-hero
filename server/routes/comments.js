@@ -30,14 +30,13 @@ router.post('/:snippetId/comments', authChecker, function (req, res) {
   var attributes = {
     content: body.content,
     SnippetId: req.params.snippetId,
-    UserId: 1
+    UserId: req.user.id
   };
   models.Comment.create(attributes)
   .then(function (comment) {
     models.Comment.findById(comment.id, {include: [models.User]}).then(function (c) {
-      res.send(c.toJson());
+      res.status(201).send(c.toJson());
     });
-    // res.status(201).send(comment.toJson());
   }).catch(function (err) {
     res.status(422).send(err.message);
   });

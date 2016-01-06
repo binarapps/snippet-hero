@@ -6,6 +6,13 @@ module.exports = function(sequelize, DataTypes) {
     UserId: DataTypes.INTEGER,
     SnippetId: DataTypes.INTEGER
   }, {
+    scopes: {
+      withUser: function () {
+        return {
+          include: sequelize.models.User
+        };
+      }
+    },
     instanceMethods: {
       toJson: function () {
         return {
