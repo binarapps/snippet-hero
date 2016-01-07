@@ -11,11 +11,17 @@ import CardHeader from 'material-ui/lib/card/card-header';
 import Avatar from 'material-ui/lib/avatar';
 import Colors from 'material-ui/lib/styles/colors';
 import {modeFromMime} from '../../libs/languages';
+import UserStore from '../../stores/user-store';
 
 // TODO create tests
 export default class Snippet extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {currentUser: null};
+  }
+
+  componentDidMount () {
+    this.setState({ currentUser: UserStore.state.currentUser });
   }
 
   random(list) {
@@ -47,7 +53,19 @@ export default class Snippet extends React.Component {
             title={this.props.name || 'No title'}
             subtitle= {author}
             avatar={avatar} />
-          <RatingForm key={this.props.id} snippetId={this.props.id} style={{right: 0, margin: '10px'}}/>
+          <div>
+            {( () => {
+              var today = Date.now();
+              var dateCreated = Date.parse(this.props.createdAt);
+              if(Math.ceil((today-dateCreated) / (1000*3600*24))<30){
+                if(this.state.currentUser && this.props.user){
+                  if(this.state.currentUser.id != this.props.user.id){
+                    return <RatingForm key={this.props.id} snippetId={this.props.id} style={{right: 0, margin: '10px'}}/>;
+                  }
+                }
+              }
+            })()}
+          </div>
         </div>
         <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300 }}>
           <Codemirror value={this.props.content} options={codeOptions} />

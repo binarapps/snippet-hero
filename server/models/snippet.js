@@ -49,7 +49,8 @@ module.exports = function(sequelize, DataTypes) {
           description: this.get('description'),
           language: this.get('language'),
           content: '',
-          versions: []
+          versions: [],
+          createdAt: this.get('createdAt')
         };
 
         if(this.User) {
