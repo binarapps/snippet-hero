@@ -66,7 +66,7 @@ export default class Snippet extends React.Component {
             subtitle= {author}
             avatar={avatar} />
           <div>
-            <RatingForm key={this.props.id} snippetId={this.props.id} style={{right: 0, margin: '10px'}} enabled={enabled}/>
+            <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={enabled}/>
           </div>
         </div>
         <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300 }}>
