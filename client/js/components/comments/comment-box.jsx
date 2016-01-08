@@ -43,7 +43,7 @@ export default class CommentBox extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{paddingLeft: '30px'}}>
         <CommentForm
           onChange={this._handleFormChange}
           content={this.state.content}

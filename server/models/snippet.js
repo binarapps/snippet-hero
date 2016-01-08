@@ -25,7 +25,10 @@ module.exports = function(sequelize, DataTypes) {
     scopes: {
       withComments: function () {
         return {
-          include: [sequelize.models.Comment],
+          include: {
+            model: sequelize.models.Comment,
+            include: [sequelize.models.User]
+          },
           order: [['createdAt', 'DESC'], [sequelize.models.Comment, 'createdAt', 'DESC']]
         };
       },
