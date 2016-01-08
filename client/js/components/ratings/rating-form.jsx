@@ -14,7 +14,7 @@ export default class RatingForm extends React.Component {
     return (
       <form className="rating-form" style={{margin: '10px', right: 0, float: 'right', position: 'absolute'}}>
         <AltContainer store={RatingStore}>
-          <Rating snippetId={this.props.snippetId}/>
+          <Rating snippetId={this.props.snippetId} enabled={this.props.enabled}/>
         </AltContainer>
       </form>
     );

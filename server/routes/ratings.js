@@ -6,10 +6,7 @@ var models = require('../models');
 router.get('/', function (req, res) {
   models.Rating.findAll().then(function (ratings) {
     var mappedRatings = ratings.map(function (rating) {
-      return ({ value: rating.value,
-                userdId: rating.UserId,
-                snippetId: rating.SnippetId
-      });
+      return rating.toJson();
     });
 
     res.send(mappedRatings);
@@ -19,7 +16,7 @@ router.get('/', function (req, res) {
 /* GET rating by id */
 router.get('/:id', function (req, res) {
   models.Rating.findById(req.params.id).then( function (rating) {
-    res.send(rating);
+    res.send(rating.toJson());
   });
 });
 

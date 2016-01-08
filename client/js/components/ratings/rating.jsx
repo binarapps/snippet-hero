@@ -83,10 +83,14 @@ export default class Rating extends React.Component {
     return (
       <div>
         <div style={{display: 'inline-flex'}}>
-          {stars}
+          {(() => {
+            if(this.props.enabled==true){
+              return stars;
+            }
+          })()}
         </div>
         <br />
-        <span style={{float: 'right'}}>Total: {this.props.snippetsAvg[this.props.snippetId]}</span>
+        <span style={{float: 'right'}}>Total rating: {this.props.snippetsAvg[this.props.snippetId]}</span>
       </div>
     );
   }

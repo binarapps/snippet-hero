@@ -24,6 +24,21 @@ export default class Snippet extends React.Component {
     this.setState({ currentUser: UserStore.state.currentUser });
   }
 
+  checkRatingAbility() {
+    let today = Date.now();
+    let dateCreated = Date.parse(this.props.createdAt);
+    let enabled = false;
+
+    if(Math.ceil((today-dateCreated) / (1000*3600*24))<30){
+      if(this.state.currentUser && this.props.user){
+        if(this.state.currentUser.id != this.props.user.id){
+          enabled = true;
+        }
+      }
+    }
+    return enabled;
+  }
+
   random(list) {
     return list[Math.floor(Math.random() * list.length)];
   }
@@ -44,7 +59,9 @@ export default class Snippet extends React.Component {
           backgroundColor={Colors[this.random(colors) + this.random(intensity)]}>
           {this.random(letters)}
         </Avatar>;
-    let author = (this.props.user == null ? 'No author' : this.props.user.name)
+    let author = (this.props.user == null ? 'No author' : this.props.user.name);
+    let enabled = this.checkRatingAbility();
+
 
     return (
       <Card style={style}>
@@ -54,17 +71,7 @@ export default class Snippet extends React.Component {
             subtitle= {author}
             avatar={avatar} />
           <div>
-            {( () => {
-              var today = Date.now();
-              var dateCreated = Date.parse(this.props.createdAt);
-              if(Math.ceil((today-dateCreated) / (1000*3600*24))<30){
-                if(this.state.currentUser && this.props.user){
-                  if(this.state.currentUser.id != this.props.user.id){
-                    return <RatingForm key={this.props.id} snippetId={this.props.id} style={{right: 0, margin: '10px'}}/>;
-                  }
-                }
-              }
-            })()}
+            <RatingForm key={this.props.id} snippetId={this.props.id} style={{right: 0, margin: '10px'}} enabled={enabled}/>
           </div>
         </div>
         <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300 }}>

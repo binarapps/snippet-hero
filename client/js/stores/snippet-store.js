@@ -10,11 +10,14 @@ class SnippetStore {
     this.state = {
       snippets: [],
       lastCreateSuccess: false,
-      snippetCreated: false
+      snippetCreated: false,
+      snippetsAvg: {},
+      usersRatings: {}
     };
   }
 
   getAll (data) {
+    console.log(data);
     if (data.ok) {
       const {snippets} = this.state;
 
