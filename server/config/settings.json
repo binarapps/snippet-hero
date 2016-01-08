@@ -1,0 +1,7 @@
+{
+  "slack": {
+    "defaultChannel": "#foodintegrator",
+    "defaultUsername": "Chewie",
+    "defaultIconEmoji": ":chewie:"
+  }
+}
