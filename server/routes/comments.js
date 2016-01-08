@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models');
+var slack = require('../services/slack-integration');
+
 
 /* GET all snippet comments*/
 router.get('/:snippetId/comments', function (req, res) {
@@ -25,6 +27,7 @@ router.post('/:snippetId/comments', function (req, res) {
   };
   models.Comment.create(attributes)
   .then(function (comment) {
+    slack.notify('New comment to snippet was added! ' + slack.link('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'See it!'));
     res.status(201).send(comment.toJson());
   }).catch(function (err) {
     res.status(422).send(err.message);

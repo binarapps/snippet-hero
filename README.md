@@ -29,6 +29,10 @@ To run migrations
 ```
 npm run sequalize -- db:migrate
 ```
+### Secrets
+```
+cp server/config/secrets.json.example server/config/secrets.json
+```
 
 ## Run dev server
 ```
