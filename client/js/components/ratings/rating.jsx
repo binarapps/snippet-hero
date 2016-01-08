@@ -6,9 +6,9 @@ import UserStore from '../../stores/user-store';
 export default class Rating extends React.Component {
   constructor(props) {
     super(props);
-    this.handleMouseOver = this.handleMouseOver.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleMouseLeave = this.handleMouseLeave.bind(this);
+    this._handleMouseOver = this._handleMouseOver.bind(this);
+    this._handleClick = this._handleClick.bind(this);
+    this._handleMouseLeave = this._handleMouseLeave.bind(this);
     this.state = {grade: 0, currentUser: UserStore.state.currentUser};
     this.style = {
       starBlack: {
@@ -30,15 +30,15 @@ export default class Rating extends React.Component {
     this._setGradeOfUserRating();
   }
 
-  handleMouseLeave(g){
+  _handleMouseLeave(g){
     this._setGradeOfUserRating();
   }
 
-  handleMouseOver(g){
+  _handleMouseOver(g){
     this.setState({grade: g});
   }
 
-  handleClick(g){
+  _handleClick(g){
     RatingActions.create({
       value: g,
       SnippetId: this.props.snippetId
@@ -51,10 +51,13 @@ export default class Rating extends React.Component {
   }
 
   _setGradeOfUserRating(){
-    var newGrade = 0;
-    if (this.props.usersRatings[this.state.currentUser.id]) {
-      if (this.props.usersRatings[this.state.currentUser.id][this.props.snippetId]){
-        newGrade = this.props.usersRatings[this.state.currentUser.id][this.props.snippetId];
+    let newGrade = 0;
+    const user_id = this.props.usersRatings[this.state.currentUser.id];
+    const snippet_id = this.props.snippetId;
+
+    if (user_id) {
+      if (user_id[snippet_id]){
+        newGrade = user_id[snippet_id];
       } else {
         newGrade = 0;
       }
@@ -67,60 +70,20 @@ export default class Rating extends React.Component {
   }
 
   render() {
-
+    const stars = [1,2,3,4,5].map((rating) => {
+      return (<Star ref={`star${rating}`}
+        snippetId={this.props.snippetId}
+        onClick={(g) => this._handleClick(g)}
+        onMouseOver={(g) => this._handleMouseOver(g)}
+        onMouseOut={(g) => this._handleMouseLeave(g)}
+        grade={rating}
+        style={this._gradeToStyle(rating)} />
+      );
+    });
     return (
       <div>
         <div style={{display: 'inline-flex'}}>
-          <div>
-            <Star
-              ref="star1"
-              snippetId={this.props.snippetId}
-              onClick={(g) => this.handleClick(g)}
-              onMouseOver={(g) => this.handleMouseOver(g)}
-              onMouseOut={(g) => this.handleMouseLeave(g)}
-              grade={1}
-              style={this._gradeToStyle(1)} />
-          </div>
-          <div>
-            <Star
-              ref="star2"
-              snippetId={this.props.snippetId}
-              onClick={(g) => this.handleClick(g)}
-              onMouseOver={(g) => this.handleMouseOver(g)}
-              onMouseOut={(g) => this.handleMouseLeave(g)}
-              grade={2}
-              style={this._gradeToStyle(2)} />
-          </div>
-          <div>
-            <Star
-              ref="star3"
-              snippetId={this.props.snippetId}
-              onClick={(g) => this.handleClick(g)}
-              onMouseOver={(g) => this.handleMouseOver(g)}
-              onMouseOut={(g) => this.handleMouseLeave(g)}
-              grade={3}
-              style={this._gradeToStyle(3)} />
-          </div>
-          <div>
-            <Star
-              ref="star4"
-              snippetId={this.props.snippetId}
-              onClick={(g) => this.handleClick(g)}
-              onMouseOver={(g) => this.handleMouseOver(g)}
-              onMouseOut={(g) => this.handleMouseLeave(g)}
-              grade={4}
-              style={this._gradeToStyle(4)} />
-          </div>
-          <div>
-            <Star
-              ref="star5"
-              snippetId={this.props.snippetId}
-              onClick={(g) => this.handleClick(g)}
-              onMouseOver={(g) => this.handleMouseOver(g)}
-              onMouseOut={(g) => this.handleMouseLeave(g)}
-              grade={5}
-              style={this._gradeToStyle(5)} />
-          </div>
+          {stars}
         </div>
         <br />
         <span style={{float: 'right'}}>Total: {this.props.snippetsAvg[this.props.snippetId]}</span>
