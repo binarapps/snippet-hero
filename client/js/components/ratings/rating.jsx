@@ -23,6 +23,7 @@ export default class Rating extends React.Component {
   componentWillMount () {
     this.setState({ currentUser: UserStore.state.currentUser });
     RatingActions.getSnippetRatings(this.props.snippetId);
+    RatingActions.getCurrentUserRating(this.props.snippetId);
   }
 
   componentDidMount () {
@@ -30,7 +31,9 @@ export default class Rating extends React.Component {
   }
 
   _handleMouseLeave(g){
-    this._setGradeOfUserRating();
+    this._setNewGradeOfUser();
+    RatingActions.getSnippetRatings(this.props.snippetId);
+    RatingActions.getCurrentUserRating(this.props.snippetId);
   }
 
   _handleMouseOver(g){
@@ -61,6 +64,18 @@ export default class Rating extends React.Component {
     this.setState({
       grade: newGrade
     });
+  }
+
+  _setNewGradeOfUser(){
+    let newGrade = 0;
+    const user_id = this.props.userRatings[this.state.currentUser.id];
+    const snippet_id = this.props.snippetId;
+
+    if(user_id){
+      if (user_id[snippet_id]){
+        newGrade = user_id[snippet_id];
+      } 
+    }
   }
 
   render() {
