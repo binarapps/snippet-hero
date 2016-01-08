@@ -34,7 +34,7 @@ router.post('/:snippetId/comments', authChecker, function (req, res) {
   };
   models.Comment.create(attributes)
   .then(function (comment) {
-    models.Comment.findById(comment.id, {include: [models.User]}).then(function (c) {
+    models.Comment.scope(['withUser']).findById(comment.id).then(function (c) {
       res.status(201).send(c.toJson());
     });
   }).catch(function (err) {

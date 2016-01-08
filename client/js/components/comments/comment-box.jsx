@@ -1,6 +1,5 @@
 import React from 'react';
 import _ from 'lodash';
-import Paper from 'material-ui/lib/paper';
 import SnippetActions from '../../actions/snippet-actions';
 import CommentForm from './comment-form';
 import CommentList from './comment-list';
