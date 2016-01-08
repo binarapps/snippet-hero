@@ -6,6 +6,7 @@ import CardText from 'material-ui/lib/card/card-text';
 import CardHeader from 'material-ui/lib/card/card-header';
 import Avatar from 'material-ui/lib/avatar';
 import Colors from 'material-ui/lib/styles/colors';
+import {generateColor, generateLetter} from '../mixins/color-generate';
 
 import {modeFromMime} from '../../libs/languages';
 
@@ -14,9 +15,7 @@ export default class Snippet extends React.Component {
   constructor(props) {
     super(props);
   }
-  random(list) {
-    return list[Math.floor(Math.random() * list.length)];
-  }
+
   render() {
     let codeOptions = {
       readOnly: true,
@@ -25,15 +24,11 @@ export default class Snippet extends React.Component {
       mime: this.props.language
     };
     let { style } = this.props;
-    let colors = ['red', 'pink', 'purple', 'deepPurple', 'indigo', 'blue', 'lightBlue', 'cyan', 'teal', 'green',
-                  'lightGreen', 'lime', 'yellow', 'amber', 'orange', 'deepOrange', 'brown', 'blueGrey', 'grey'];
-    let intensity = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
-    let letters = 'ABCDEFGHIJKLMNOQPRSTUW';
-    let avatar = <Avatar
-          color={Colors[this.random(colors) + this.random(intensity)]}
-          backgroundColor={Colors[this.random(colors) + this.random(intensity)]}>
-          {this.random(letters)}
-        </Avatar>;
+    let avatar = (<Avatar
+          color={generateColor()}
+          backgroundColor={generateColor()}>
+          {generateLetter()}
+        </Avatar>);
     return (
       <Card style={style}>
         <CardHeader
