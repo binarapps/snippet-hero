@@ -27,7 +27,7 @@ cp server/config/config.json.example server/config/config.json
 ```
 To run migrations
 ```
-npm run sequalize -- db:migrate
+npm run sequelize -- db:migrate
 ```
 ### Secrets
 ```

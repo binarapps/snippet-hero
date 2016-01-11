@@ -13,6 +13,7 @@ export default class CommentBox extends React.Component {
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleFormChange = this._handleFormChange.bind(this);
     this._onChange = this._onChange.bind(this);
+    this._loadMoreComments = this._loadMoreComments.bind(this);
   }
 
   componentDidMount() {
@@ -41,6 +42,10 @@ export default class CommentBox extends React.Component {
     this.setState({content: e.target.value});
   }
 
+  _loadMoreComments() {
+    SnippetActions.getAllComments(this.props.snippetId);
+  }
+
   render() {
     return (
       <div style={{paddingLeft: '30px'}}>
@@ -49,6 +54,7 @@ export default class CommentBox extends React.Component {
           content={this.state.content}
           onSubmit={this._handleFormSubmit} />
         <CommentList comments={this.state.comments}/>
+        <div style={{cursor: 'pointer'}} onClick={this._loadMoreComments}>Load more comments...</div>
       </div>
     );
   }
