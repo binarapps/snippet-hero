@@ -23,7 +23,7 @@ class SnippetActions {
 
   getAllComments(snippetId) {
     axios.get('/snippets/' + snippetId + '/comments')
-      .then(res => this.dispatch({ok: true, comments: res.data}))
+      .then(res => this.dispatch({ok: true, comments: res.data, snippetId: snippetId}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 

@@ -16,7 +16,7 @@ class CommentListItem extends React.Component{
           {this.props.User.name.split('')[0].toUpperCase()}
         </Avatar>
         <div style={{marginLeft: '60px'}}>
-          <span style={{fontSize: '1.2rem', fontWeight: 'bold'}}>{this.props.User.email}, posted on: {moment(this.props.createdAt).format('DD-MM-YYYY HH:mm')}</span>
+          <span style={{fontSize: '1.2rem', fontWeight: 'bold'}}>{this.props.User.name}, posted on: {moment(this.props.createdAt).format('DD-MM-YYYY HH:mm')}</span>
           <Markdown text={this.props.content} className="markdown" />
         </div>
       </Paper>

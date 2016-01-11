@@ -51,6 +51,17 @@ class SnippetStore {
     });
   }
 
+  getAllComments(data) {
+    const {snippets} = this.state;
+    if (data.ok) {
+      let snippetIndex = _.findIndex(snippets, 'id', data.snippetId);
+      let newSnippets = update(snippets, {[snippetIndex]: {comments: {$unshift: data.comments}}});
+      this.setState({
+        snippets: newSnippets
+      });
+    }
+  }
+
   commentSnippet(data) {
     const {snippets} = this.state;
     if (data.ok) {

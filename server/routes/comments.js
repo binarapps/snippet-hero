@@ -14,7 +14,7 @@ var authChecker = function(req, res, next) {
 
 /* GET all snippet comments*/
 router.get('/:snippetId/comments', function (req, res) {
-  models.Comment.findAll({
+  models.Comment.scope(['withUser']).findAll({
     where: {
       SnippetId: req.params.snippetId
     }
