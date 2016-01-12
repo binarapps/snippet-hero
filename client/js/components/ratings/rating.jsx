@@ -30,8 +30,12 @@ export default class Rating extends React.Component {
     this._setGradeOfUserRating();
   }
 
-  _handleMouseLeave(g){
-    this._setGradeOfUserRating();
+  _handleMouseLeave(){
+    RatingActions.getCurrentUserRating(this.props.snippetId);
+
+    this.setState({
+      grade: this.props.usersRatings[this.state.currentUser.id][this.props.snippetId]
+    });
   }
 
   _handleMouseOver(g){
@@ -39,7 +43,7 @@ export default class Rating extends React.Component {
   }
 
   _handleClick(g){
-    RatingActions.create({
+    RatingActions.createRating({
       value: g,
       SnippetId: this.props.snippetId
     });
@@ -52,18 +56,14 @@ export default class Rating extends React.Component {
 
   _setGradeOfUserRating(){
     let newGrade = 0;
-    const user_id = this.props.usersRatings[this.state.currentUser.id];
-    const snippet_id = this.props.snippetId;
+    const user_id = this.state.currentUser.id;
 
-    if (user_id) {
-      if (user_id[snippet_id]){
-        newGrade = user_id[snippet_id];
-      } else {
-        newGrade = 0;
+    (this.props.snippet.ratings).forEach(function (r){
+      if(r.UserId == user_id){
+        newGrade = r.value;
       }
-    } else {
-      newGrade = 0;
-    }
+    });
+
     this.setState({
       grade: newGrade
     });
@@ -75,7 +75,7 @@ export default class Rating extends React.Component {
         snippetId={this.props.snippetId}
         onClick={(g) => this._handleClick(g)}
         onMouseOver={(g) => this._handleMouseOver(g)}
-        onMouseOut={(g) => this._handleMouseLeave(g)}
+        onMouseOut={() => this._handleMouseLeave()}
         grade={rating}
         style={this._gradeToStyle(rating)} />
       );

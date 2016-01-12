@@ -47,7 +47,7 @@ module.exports = function(sequelize, DataTypes) {
         return {
           include: [sequelize.models.Rating],
           order: [['createdAt', 'DESC'], [sequelize.models.Rating, 'createdAt', 'ASC']]
-        }
+        };
       }
     },
     instanceMethods: {
