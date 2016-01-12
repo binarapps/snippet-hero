@@ -19,7 +19,7 @@
     "test": "npm run test:client:firefox && npm run test:server",
     "server": "nodemon -L ./bin/www",
     "start": "npm-run-all build --parallel watch server livereload",
-    "sequalize": "cd server && sequelize",
+    "sequelize": "cd server && sequelize",
     "kill": "killall node"
   },
   "dependencies": {
