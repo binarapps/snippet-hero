@@ -23,6 +23,7 @@ export default class Rating extends React.Component {
   componentWillMount () {
     this.setState({ currentUser: UserStore.state.currentUser });
     RatingActions.getSnippetRatings(this.props.snippetId);
+    RatingActions.getCurrentUserRating(this.props.snippetId);
   }
 
   componentDidMount () {
