@@ -58,11 +58,13 @@ export default class Rating extends React.Component {
     let newGrade = 0;
     const user_id = this.state.currentUser.id;
 
-    (this.props.snippet.ratings).forEach(function (r){
-      if(r.UserId == user_id){
-        newGrade = r.value;
-      }
-    });
+    if(this.props.snippet.ratings){
+      (this.props.snippet.ratings).forEach(function (r){
+        if(r.UserId == user_id){
+          newGrade = r.value;
+        }
+      });
+    }
 
     this.setState({
       grade: newGrade
