@@ -51,6 +51,7 @@ class SnippetStore {
       allRatings[createdRating.UserId] = userRating;
 
       this.setState({
+        ratings: ratings.concat(createdRating),
         snippetsAvg: snippetsAverage,
         usersRatings: allRatings
       });
@@ -116,28 +117,6 @@ class SnippetStore {
         usersRatings: userRate
       });
     }
-  }
-
-  getCurrentUserRating (data) {    
-    if (data.ok) {    
-      var user_id = data.grade.user;    
-      var snippet_id = data.grade.snippet;    
-      var grade = data.grade.rate;    
-      var userRate = this.state.usersRatings;   
-    
-      if (user_id != null) {    
-        var snippet_rating = {};    
-        if (userRate[user_id]){   
-          snippet_rating = userRate[user_id];   
-        }   
-        snippet_rating[snippet_id] = grade;   
-        userRate[user_id] = snippet_rating;   
-    
-        this.setState({   
-          usersRatings: userRate    
-        });   
-      }   
-    }   
   }
 }
 
