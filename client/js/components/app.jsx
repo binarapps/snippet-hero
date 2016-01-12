@@ -47,6 +47,7 @@ export default class App extends React.Component {
     let menuItems = [
       { route: '/', text: 'Dashboard' },
       { route: '/snippets', text: 'All snippets' },
+      { route: '/snippets/user', text: 'My snippets' },
       { route: '/logout', text: 'Sign Out' }
     ];
 

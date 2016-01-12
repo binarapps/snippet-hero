@@ -31,6 +31,17 @@ class SnippetStore {
     }
   }
 
+  getAllOfCurrentUser (data){
+    if (data.ok) {
+      this.setState({
+        snippets: data.snippets
+      });
+    } else {
+      // TODO react to errors
+      // console.log(data.error.message)
+    }
+  }
+
   create() {
     this.setState({
       snippetCreated: false

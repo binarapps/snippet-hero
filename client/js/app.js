@@ -10,6 +10,7 @@ import Logout from './components/pages/logout';
 import Login from './components/pages/login';
 import Register from './components/pages/register';
 import createHistory from 'history/lib/createHashHistory';
+import UserSnippets from './components/pages/user-snippets';
 
 main();
 
@@ -28,6 +29,7 @@ function main () {
       <Route path="/" component={App} >
 
         <Route path="/snippets" component={SnippetsIndex}/>
+        <Route path="/snippets/user" component={UserSnippets}/>
         <Route path="/logout" component={Logout}/>
         <Route path="/login" component={Login}/>
         <Route path="/register" component={Register}/>

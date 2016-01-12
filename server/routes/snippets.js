@@ -14,6 +14,17 @@ router.get('/', function (req, res) {
   });
 });
 
+/*GET current user's snippet listing */
+router.get('/user', function (req, res) {
+  var user_id = req.user.dataValues.id;
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ where : { UserId: user_id } }).then(function (snippets) {
+    var mappedSnippets = snippets.map(function (s) {
+      return s.toJson();
+    });
+    res.send(mappedSnippets);
+  });
+});
+
 router.get('/search', function (req, res) {
   var options = {};
   if (req.query.name) {
