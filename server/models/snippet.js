@@ -27,9 +27,21 @@ module.exports = function(sequelize, DataTypes) {
         return {
           include: {
             model: sequelize.models.Comment,
-            include: [sequelize.models.User]
+            include: [sequelize.models.User],
+            order: [['createdAt', 'DESC']]
           },
-          order: [['createdAt', 'DESC'], [sequelize.models.Comment, 'createdAt', 'DESC']]
+          order: [['createdAt', 'DESC']]
+        };
+      },
+      lastComments: function () {
+        return {
+          include: {
+            model: sequelize.models.Comment,
+            include: [sequelize.models.User],
+            limit: 5,
+            order: [['createdAt', 'DESC']]
+          },
+          order: [['createdAt', 'DESC']]
         };
       },
       withVersions: function () {

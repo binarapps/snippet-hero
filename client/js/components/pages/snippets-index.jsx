@@ -56,8 +56,20 @@ export default class SnippetsIndex extends React.Component {
         <h2 style={{fontSize: '24px', margin: '20px 0'}}>All snippets:</h2>
         <SearchBar label='Search by name:' onSearch={this._searchSnippets} />
         <div style={{clear: 'right'}}>
-          <SnippetsList snippets={this.state.snippets}/>
-        </div>
+          {(() => {
+            if(this.state.snippets.length > 0){
+              return (
+                <SnippetsList snippets={this.state.snippets}/>
+              );
+            } else {
+              return (
+                <h2 style={{textAlign: 'center', fontWeight: 'normal'}}>
+                  Sorry, there are no snippets to display at this time.
+                </h2>
+              );
+            }
+          })()}
+      </div>
       </PageWrapper>
     );
   }

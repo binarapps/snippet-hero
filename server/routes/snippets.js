@@ -6,7 +6,7 @@ var appLogger = require('../lib/logger');
 
 /* GET snippets listing. */
 router.get('/', function (req, res) {
-  models.Snippet.scope(['withVersions', 'withComments', 'withAuthor', 'withRatings']).findAll().then(function (snippets) {
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll().then(function (snippets) {
     var mappedSnippets = snippets.map(function (s) {
       return s.toJson();
     });
