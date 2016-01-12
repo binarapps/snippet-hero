@@ -39,7 +39,7 @@ export default class Rating extends React.Component {
   }
 
   _handleClick(g){
-    RatingActions.createRating({
+    RatingActions.create({
       value: g,
       SnippetId: this.props.snippetId
     });
@@ -52,13 +52,18 @@ export default class Rating extends React.Component {
 
   _setGradeOfUserRating(){
     let newGrade = 0;
-    const user_id = this.state.currentUser.id;
+    const user_id = this.props.usersRatings[this.state.currentUser.id];
+    const snippet_id = this.props.snippetId;
 
-    (this.props.snippet.ratings).forEach(function (r){
-      if (r.UserId == user_id) {
-        newGrade = r.value;
+    if (user_id) {
+      if (user_id[snippet_id]){
+        newGrade = user_id[snippet_id];
+      } else {
+        newGrade = 0;
       }
-    });
+    } else {
+      newGrade = 0;
+    }
     this.setState({
       grade: newGrade
     });

@@ -39,7 +39,10 @@ router.get('/:id', function (req, res) {
 router.get('/:id/ratings', function (req, res) {
   models.Rating.findAll({ where : { SnippetId: req.params.id } }).then(function (ratings) {
     var mappedRatings = ratings.map(function (rating) {
-      return rating.toJson();
+      return ({ value: rating.value,
+                Id: rating.id,
+                UserId: rating.UserId
+      });
     });
     
     res.send(mappedRatings);
@@ -78,7 +81,10 @@ router.post('/', function (req, res) {
 router.get('/:snippet_id/users/:user_id', function (req, res) {
   models.Rating.findAll({ where: { UserId: req.params.user_id, SnippetId: req.params.snippet_id } }).then(function (ratings){
     var mappedRatings = ratings.map(function (rating) {
-      return rating.toJson();
+      return ({ value: rating.value,
+                userdId: rating.UserId,
+                snippetId: rating.SnippetId
+      });
     });
 
     res.send(mappedRatings);
@@ -101,23 +107,6 @@ router.get('/:snippet_id/user', function (req, res) {
   } else {
     res.status(422).send({user: null, rate: 0, snippet: snippet_id});
   }
-});
-
-/* GET snippet's ratings avg */
-router.get('/:id/avg', function (req, res) {
-  var snippet_id = req.params.id;
-  var sum_ratings = 0.0;
-  var count_ratings = 0;
-  models.Rating.sum('value', { where : { SnippetId: snippet_id } }).then( function (sum) {
-    sum_ratings = sum;
-    models.Rating.count({ where : { SnippetId: snippet_id } }).then(function (c){
-      var average = 0;
-      if (c > 0) {
-        average = (sum_ratings/c);
-      } 
-      res.status(200).send({avg: average.toFixed(2), snippetId: snippet_id});
-    });
-  });
 });
 
 module.exports = router;
