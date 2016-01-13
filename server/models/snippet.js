@@ -49,6 +49,17 @@ module.exports = function(sequelize, DataTypes) {
           include: [sequelize.models.SnippetVersion],
           order: [['createdAt', 'DESC'], [sequelize.models.SnippetVersion, 'createdAt', 'ASC']]
         };
+      },
+      withAuthor: function () {
+        return {
+          include: [sequelize.models.User]
+        };
+      },
+      withRatings: function () {
+        return {
+          include: [sequelize.models.Rating],
+          order: [['createdAt', 'DESC'], [sequelize.models.Rating, 'createdAt', 'ASC']]
+        };
       }
     },
     instanceMethods: {
@@ -59,8 +70,14 @@ module.exports = function(sequelize, DataTypes) {
           description: this.get('description'),
           language: this.get('language'),
           content: '',
-          versions: []
+          versions: [],
+          ratings: [],
+          createdAt: this.get('createdAt')
         };
+
+        if(this.User) {
+          json.user = this.User.toJson();
+        }
 
         if (this.SnippetVersions) {
           json.content = this.SnippetVersions.length ? this.SnippetVersions[0].content : '';
@@ -73,7 +90,12 @@ module.exports = function(sequelize, DataTypes) {
           json.comments = this.Comments.map(function (c) {
             return c.toJson();
           });
+        }
 
+        if (this.Ratings) {
+          json.ratings = this.Ratings.map(function (r) {
+            return r.toJson();
+          });
         }
 
         return json;

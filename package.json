@@ -17,9 +17,10 @@
     "test:client:firefox": "karma start --browsers Firefox",
     "test:server": "NODE_ENV=test mocha server/test --opts server/test/mocha.opts",
     "test": "npm run test:client:firefox && npm run test:server",
-    "server": "nodemon ./bin/www",
+    "server": "nodemon -L ./bin/www",
     "start": "npm-run-all build --parallel watch server livereload",
-    "sequelize": "cd server && sequelize"
+    "sequelize": "cd server && sequelize",
+    "kill": "killall node"
   },
   "dependencies": {
     "alt": "^0.17.9",

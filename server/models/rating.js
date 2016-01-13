@@ -5,6 +5,18 @@ module.exports = function(sequelize, DataTypes) {
     UserId: DataTypes.INTEGER,
     SnippetId: DataTypes.INTEGER
   }, {
+    instanceMethods: {
+      toJson: function () {
+        return {
+          value: this.get('value'),
+          UserId: this.get('UserId'),
+          SnippetId: this.get('SnippetId'),
+          id: this.get('id'),
+          createdAt: this.get('createdAt'),
+          updatedAt: this.get('updatedAt')
+        };
+      }
+    },
     classMethods: {
       associate: function(models) {
         this.belongsTo(models.User);

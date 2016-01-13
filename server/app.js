@@ -12,6 +12,7 @@ var passport = require('passport');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var snippets = require('./routes/snippets');
+var ratings = require('./routes/ratings');
 var snippetComments = require('./routes/comments');
 var secrets = require('./config/secrets');
 
@@ -41,6 +42,7 @@ app.use(express.static(path.resolve(__dirname, '../build')));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/snippets', snippets);
+app.use('/ratings', ratings);
 app.use('/snippets', snippetComments);
 
 // catch 404 and forward to error handler

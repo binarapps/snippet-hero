@@ -84,4 +84,25 @@ router.get('/:id/snippets', function(req, res) {
   });
 });
 
+/* GET user's ratings */
+router.get('/:id/ratings', function (req, res) {
+  models.Rating.findAll({ where: { UserId: req.params.id } }).then(function (ratings) {
+    var mappedRatings = ratings.map(function (rating) {
+      return ({ value: rating.value,
+                Id: rating.id,
+                UserId: rating.UserId
+      });
+    });
+
+    res.send(mappedRatings);
+  });
+});
+
+/* GET user by id */
+router.get('/:id', function (req, res) {
+  models.User.findById(req.params.id).then(function (u){
+    res.send(u.toJson());
+  });
+});
+
 module.exports = router;

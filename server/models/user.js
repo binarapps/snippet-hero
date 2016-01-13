@@ -28,7 +28,7 @@ module.exports = function(sequelize, DataTypes) {
         var json = {
           id: this.get('id'),
           email: this.get('email'),
-          name: this.get('email')
+          name: this.get('name')
         };
         return json;
       }

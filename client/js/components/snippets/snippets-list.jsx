@@ -17,6 +17,7 @@ class SnippetListItem extends React.Component{
 export default class SnippetsList extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {rateDialogOpen: false};
   }
 
   render() {
