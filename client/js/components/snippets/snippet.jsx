@@ -13,6 +13,8 @@ import Colors from 'material-ui/lib/styles/colors';
 import {generateColor, generateLetter} from '../mixins/color-generate';
 import {modeFromMime} from '../../libs/languages';
 import UserStore from '../../stores/user-store';
+import RaisedButton from 'material-ui/lib/raised-button';
+import SnippetActions from '../../actions/snippet-actions.js';
 
 // TODO create tests
 export default class Snippet extends React.Component {
@@ -38,6 +40,10 @@ export default class Snippet extends React.Component {
       }
     }
     return enabled;
+  }
+
+  deleteSnippet(snippet_id) {
+    SnippetActions.destroySnippet(snippet_id);
   }
 
   render() {
@@ -68,6 +74,9 @@ export default class Snippet extends React.Component {
           <div>
             <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={enabled}/>
           </div>
+        </div>
+        <div style={{display: 'inline-flex', background: Colors.grey100, width: '100%'}}>
+          <RaisedButton onClick={ () => this.deleteSnippet(this.props.id)} label="Delete snippet" primary={true}/>
         </div>
         <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300 }}>
           <Codemirror value={this.props.content} options={codeOptions} />

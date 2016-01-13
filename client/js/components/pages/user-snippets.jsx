@@ -39,9 +39,9 @@ export default class UserSnippets extends React.Component {
         <h2 style={{fontSize: '24px', margin: '20px 0'}}>Your snippets:</h2>
         <div style={{clear: 'right'}}>
           {(() => {
-            if(this.state.snippets.length > 0){
+            if(this.state.currentUserSnippets.length > 0){
               return (
-                <UserList snippets={this.state.snippets}/>
+                <UserList snippets={this.state.currentUserSnippets}/>
               );
             } else {
               return (

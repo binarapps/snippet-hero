@@ -1,7 +1,6 @@
 import React from 'react';
 import Snippet from './snippet';
 import CommentBox from '../comments/comment-box';
-import UserStore from '../../stores/user-store';
 
 class SnippetListItem extends React.Component{
   render() {
@@ -18,11 +17,6 @@ class SnippetListItem extends React.Component{
 export default class UserList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {currentUser: UserStore.state.currentUser};
-  }
-
-  componentDidMount() {
-    SnippetActions.getAllOfCurrentUser();
   }
 
   render() {

@@ -114,6 +114,7 @@ router.get('/:snippet_id/user', function (req, res) {
   }
 });
 
+/* GET snippet's average rating */
 router.get('/:id/avg', function (req, res){
   var snippet_id = req.params.id;
   var sum_ratings = 0.0;
@@ -126,6 +127,16 @@ router.get('/:id/avg', function (req, res){
       }
       res.status(200).send({avg: average.toFixed(2), snippetId: snippet_id});
     });
+  });
+});
+
+/* DESTROY snippet and it's ratings/versions/comments */
+router.delete('/:id', function (req, res){
+  var snippet_id = req.params.id;
+  models.Snippet.findById(snippet_id, { cascade: true }).then(function (){
+    res.status(204).send();
+  }).catch(function (err) {
+    res.status(422).send(err);
   });
 });
 

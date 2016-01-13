@@ -53,5 +53,11 @@ class SnippetActions {
   onCreateFail() {
     this.dispatch();
   }
+
+  destroySnippet(snippet_id) {
+    axios.delete('/snippets/' + snippet_id)
+      .then(res => this.dispatch({ok: true}))
+      .catch(res => this.dispatch({ok: false}));
+  }
 }
 export default alt.createActions(SnippetActions);
