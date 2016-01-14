@@ -130,11 +130,15 @@ router.get('/:id/avg', function (req, res){
   });
 });
 
-/* DESTROY snippet and it's ratings/versions/comments */
+/* DELETE snippet and it's ratings/versions/comments */
 router.delete('/:id', function (req, res){
   var snippet_id = req.params.id;
-  models.Snippet.findById(snippet_id, { cascade: true }).then(function (){
-    res.status(204).send();
+  models.Snippet.findById(snippet_id).then(function (snippet){
+    snippet.destroy().then(function () {
+      res.status(200).send({snippet: snippet_id});
+    }).catch( function (err) {
+      res.status(422).send(err);
+    });
   }).catch(function (err) {
     res.status(422).send(err);
   });

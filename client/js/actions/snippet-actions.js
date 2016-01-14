@@ -56,7 +56,7 @@ class SnippetActions {
 
   destroySnippet(snippet_id) {
     axios.delete('/snippets/' + snippet_id)
-      .then(res => this.dispatch({ok: true}))
+      .then(res => this.dispatch({ok: true, res: res.data}))
       .catch(res => this.dispatch({ok: false}));
   }
 }

@@ -168,12 +168,13 @@ class SnippetStore {
   }
 
   destroySnippet (data) {
-    console.log(data);
     if (data.ok){
       this.setState({
-        snippets: []
+        snippets: [],
+        currentUserSnippets: []
       });
       SnippetActions.getAll();
+      SnippetActions.getAllOfCurrentUser();
     }
   }
 }
