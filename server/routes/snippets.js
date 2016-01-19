@@ -16,7 +16,7 @@ router.get('/', function (req, res) {
 
 /*GET current user's snippet listing */
 router.get('/user', function (req, res) {
-  var user_id = req.user.dataValues.id;
+  var user_id = req.user.get('id');
   models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ where : { UserId: user_id } }).then(function (snippets) {
     var mappedSnippets = snippets.map(function (s) {
       return s.toJson();
