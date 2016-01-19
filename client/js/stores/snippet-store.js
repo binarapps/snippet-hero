@@ -37,10 +37,7 @@ class SnippetStore {
       this.setState({
         currentUserSnippets: data.snippets
       });
-    } else {
-      // TODO react to errors
-      // console.log(data.error.message)
-    }
+    } 
   }
 
   create() {

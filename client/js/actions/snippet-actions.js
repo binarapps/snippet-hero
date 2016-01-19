@@ -1,5 +1,6 @@
 import axios from 'axios';
 import alt from '../libs/alt';
+import FlashMessages from './flash-messages-actions';
 
 // TODO create tests
 class SnippetActions {
@@ -56,8 +57,13 @@ class SnippetActions {
 
   destroySnippet(snippet_id) {
     axios.delete('/snippets/' + snippet_id)
-      .then(res => this.dispatch({ok: true, res: res.data.snippet}))
-      .catch(() => this.dispatch({ok: false}));
+      .then(res => {
+        FlashMessages.pushMessage({ content: 'Successfully deleted snippet!' });
+        this.dispatch({ok: true, res: res.data.snippet});
+      }).catch(() => {
+        FlashMessages.pushMessage({ content: 'Something went wrong. Could not delete that snippet :(' });
+        this.dispatch({ok: false});
+      });
   }
 }
 export default alt.createActions(SnippetActions);
