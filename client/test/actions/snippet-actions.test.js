@@ -74,4 +74,25 @@ describe('SnippetActions', function() {
     });
   });
 
+  describe('Delete snippet', function(){
+    let snippet;
+    before(function(){
+      snippet = {id: 1, content: 'test content', name: 'test snippet', description: 'test description', language: 'javascript'};
+      sinon.stub(axios, 'delete', () => {
+        return new Promise(function(resolve) {
+          resolve({data: res});
+        });
+      });
+    });
+
+    it('should destroy snippet', function(done){
+      SnippetActions.destroySnippet(1);
+      setTimeout(function(){
+        expect(alt.dispatch.calledOnce).to.be.true;
+        expect(alt.dispatch.getCall(0).args[1].res).to.deep.equal(snippet.id);
+        done();
+      });
+    });
+  });
+
 });
