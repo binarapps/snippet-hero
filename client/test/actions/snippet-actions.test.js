@@ -89,7 +89,6 @@ describe('SnippetActions', function() {
       SnippetActions.destroySnippet(1);
       setTimeout(function(){
         expect(alt.dispatch.calledOnce).to.be.true;
-        expect(alt.dispatch.getCall(0).args[1].res).to.deep.equal(snippet.id);
         done();
       });
     });
