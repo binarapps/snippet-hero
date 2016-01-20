@@ -9,6 +9,7 @@ install:
   - npm install
 before_script:
   - npm run lint
+  - cp server/config/secrets.json.example server/config/secrets.json
   - cp server/config/config.json.travis server/config/config.json
   - psql -c 'create database travis_ci_test;' -U postgres
   - npm run sequelize -- db:migrate

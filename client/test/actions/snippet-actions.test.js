@@ -8,6 +8,7 @@ import chai from 'chai';
 import sinon from 'sinon';
 
 import SnippetActions from '../../js/actions/snippet-actions';
+import FlashMessages from '../../js/actions/flash-messages-actions';
 
 const expect = chai.expect;
 
@@ -79,12 +80,15 @@ describe('SnippetActions', function() {
       let snippet = {id: 1, content: 'test content', name: 'test snippet', description: 'test description', language: 'javascript'};
       sinon.stub(axios, 'delete', () => {
         return new Promise(function(resolve) {
-          resolve({data: snippet.id});
+          resolve({res: snippet.id, ok: true});
         });
+      });
+      sinon.stub(FlashMessages, 'pushMessage', () => {
+        return;
       });
     });
 
-    it('should destroy snippet', function(done){
+    it.only('should destroy snippet', function(done){
       SnippetActions.destroySnippet(1);
       setTimeout(function(){
         expect(alt.dispatch.calledOnce).to.be.true;
