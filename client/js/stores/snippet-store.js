@@ -18,6 +18,10 @@ class SnippetStore {
     };
   }
 
+  getPaginatedSnippets(data) {
+    console.log(data);
+  }
+
   getAll (data) {
     if (data.ok) {
       const {snippets} = this.state;

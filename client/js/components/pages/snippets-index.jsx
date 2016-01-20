@@ -5,6 +5,7 @@ import SearchBar from '../search-bar';
 import SnippetActions from '../../actions/snippet-actions';
 import SnippetStore from '../../stores/snippet-store';
 import SnippetSearchStore from '../../stores/snippet-search-store';
+import Paginator from 'react-paginate-component'
 
 export default class SnippetsIndex extends React.Component {
   constructor(props) {
@@ -20,6 +21,11 @@ export default class SnippetsIndex extends React.Component {
     this.storeListeners.push(SnippetStore.listen(this._onChange));
     this.storeListeners.push(SnippetSearchStore.listen(this._onSearch));
     SnippetActions.getAll();
+    this.getPaginatedSnippets(1);
+  }
+
+  getPaginatedSnippets(page){
+    SnippetActions.getPaginatedSnippets(page, 2);
   }
 
   getPropsFromStores() {

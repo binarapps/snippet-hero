@@ -14,6 +14,11 @@ router.get('/', function (req, res) {
   });
 });
 
+/* GET with pagination */
+router.get('/paginated', function (req, res) {
+  res.status(200).send({data: req});
+});
+
 router.get('/search', function (req, res) {
   var options = {};
   if (req.query.name) {
