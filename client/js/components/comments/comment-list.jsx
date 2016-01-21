@@ -32,14 +32,14 @@ export default class CommentList extends React.Component {
   }
 
   render() {
-    let comments = this.props.comments.map(function(comment, index) {
+    let comments = this.props.comments.map(function(comment) {
       return (
-        <CommentListItem key={`comment-${index}`} {...comment}/>
+        <CommentListItem key={`comment-${comment.id}`} {...comment}/>
       );
     });
     return (
       <div style={{display: 'list', margin: '20px 0', listStyle: 'none'}}>
-        <ReactCSSTransitionGroup transitionName="comment" transitionEnterTimeout={1500} transitionLeaveTimeout={300} transitionAppear={true} transitionAppearTimeout={1500}>
+        <ReactCSSTransitionGroup transitionName="comment" transitionEnterTimeout={500}>
           {comments}
         </ReactCSSTransitionGroup>
       </div>
