@@ -60,13 +60,13 @@ export default class Snippet extends React.Component {
     };
     let { style } = this.props;
 
-    let author = (this.props.user == null ? 'No author' : this.props.user.name);
+    let author = (this.props.user ? this.props.user.name : this.state.currentUser.name );
     let enabled = this.checkRatingAbility();
 
     let avatar = (<Avatar
           color={generateColor()}
           backgroundColor={generateColor()}>
-          {generateLetter()}
+          {this.props.user ? this.props.user.name.split('')[0].toUpperCase() : this.state.currentUser.name.split('')[0].toUpperCase()}
         </Avatar>);
 
     let deleteButton = (<div style={{display: 'table', background: Colors.grey100, width: '100%'}}>
