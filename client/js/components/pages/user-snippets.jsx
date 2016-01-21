@@ -1,8 +1,8 @@
 import React from 'react';
 import PageWrapper from '../page-wrapper';
 import UserList from '../snippets/user-list';
-import SnippetActions from '../../actions/snippet-actions';
-import SnippetStore from '../../stores/snippet-store';
+import UserSnippetsActions from '../../actions/user-snippets-actions';
+import UserSnippetsStore from '../../stores/user-snippetd-store';
 
 export default class UserSnippets extends React.Component {
   constructor(props) {
@@ -13,12 +13,12 @@ export default class UserSnippets extends React.Component {
 
   componentDidMount() {
     this.storeListeners = [];
-    this.storeListeners.push(SnippetStore.listen(this._onChange));
-    SnippetActions.getAllOfCurrentUser();
+    this.storeListeners.push(UserSnippetsActions.listen(this._onChange));
+    UserSnippetsActions.getAllOfCurrentUser();
   }
 
   getPropsFromStores() {
-    return SnippetStore.getState();
+    return UserSnippetsStore.getState();
   }
 
   componentWillReceiveProps(nextProps) {
