@@ -19,7 +19,14 @@ class SnippetStore {
   }
 
   getPaginatedSnippets(data) {
-    console.log(data);
+    if(data.ok){
+      const {snippets} = this.state;
+      const pageSnippets = data.results.snippets;
+
+      this.setState({
+        snippets: snippets.concat(pageSnippets)
+      });
+    }
   }
 
   getAll (data) {

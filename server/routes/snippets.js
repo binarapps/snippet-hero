@@ -16,7 +16,15 @@ router.get('/', function (req, res) {
 
 /* GET with pagination */
 router.get('/paginated', function (req, res) {
-  res.status(200).send({data: req});
+  var results = req.query.results;
+  var page = req.query.start;
+
+  models.Snippet.findAll({ limit: results, offset: page }).then(function (snippets) {
+    var mappedSnippets = snippets.map(function (s){
+      return s.toJson();
+    });
+    res.status(200).send({snippets: mappedSnippets});
+  });
 });
 
 router.get('/search', function (req, res) {

@@ -10,9 +10,9 @@ class SnippetActions {
   }
 
   getPaginatedSnippets(page, perPage){
-    var config = {results: perPage, start: (perPage*(page-1))};
-    axios.get('/snippets/paginated', config)
-      .then(res => this.dispatch({ok: true, snippets: res}))
+    var start = (perPage*(page-1));
+    axios.get('/snippets/paginated?results='+ perPage +'&start='+ start)
+      .then(res => this.dispatch({ok: true, results: res.data}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 

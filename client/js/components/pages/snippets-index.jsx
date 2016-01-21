@@ -20,7 +20,6 @@ export default class SnippetsIndex extends React.Component {
     this.storeListeners = [];
     this.storeListeners.push(SnippetStore.listen(this._onChange));
     this.storeListeners.push(SnippetSearchStore.listen(this._onSearch));
-    SnippetActions.getAll();
     this.getPaginatedSnippets(1);
   }
 
