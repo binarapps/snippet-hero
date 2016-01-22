@@ -92,6 +92,7 @@
     "react-addons-css-transition-group": "^0.14.6",
     "react-addons-test-utils": "^0.14.2",
     "shipit-cli": "^1.4.1",
+    "shipit-deploy": "^2.1.2",
     "shipit-pm2": "0.0.4",
     "sinon": "^1.17.2",
     "supertest": "^1.1.0",
