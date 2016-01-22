@@ -25,7 +25,7 @@ export default class SnippetsList extends React.Component {
       <ul>
         {this.props.snippets.map(function(snippet, index) {
           return (
-            <SnippetListItem key={`snippet-${snippet.id}`} snippet={snippet} index={index}/>
+            <SnippetListItem key={`snippet-${index}`} snippet={snippet} index={index}/>
           );
         })}
       </ul>

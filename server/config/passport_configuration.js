@@ -19,7 +19,11 @@ passport.use(new LocalStrategy({ usernameField: 'email' },
 ));
 
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  if(user) {
+    done(null, user.get('id'));
+  } else {
+    done();
+  }
 });
 
 passport.deserializeUser(function(id, done) {

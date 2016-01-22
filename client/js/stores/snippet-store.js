@@ -82,7 +82,7 @@ class SnippetStore {
     const {snippets} = this.state;
     if (data.ok) {
       let snippetIndex = _.findIndex(snippets, 'id', data.snippetId);
-      let newSnippets = update(snippets, {[snippetIndex]: {comments: {$unshift: data.comments}}});
+      let newSnippets = update(snippets, {[snippetIndex]: {comments: {$set: data.comments}}});
       this.setState({
         snippets: newSnippets
       });

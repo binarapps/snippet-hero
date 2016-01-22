@@ -33,7 +33,7 @@ class SnippetActions {
   }
 
   search(name) {
-    axios.get('/snippets/search?name=' + name)
+    axios.get('/snippets/search', {params: { name: name }})
       .then(res => this.dispatch({ok: true, snippets: res.data}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }

@@ -8,7 +8,7 @@ import SnippetStore from '../../stores/snippet-store';
 export default class CommentBox extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { comments: props.comments, content: ''};
+    this.state = { comments: props.comments, content: '', createError: ''};
     this.storeListeners = [];
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleFormChange = this._handleFormChange.bind(this);
@@ -32,6 +32,7 @@ export default class CommentBox extends React.Component {
 
   _handleFormSubmit(e) {
     e.preventDefault();
+    if (this.state.content.length === 0) return;
     SnippetActions.commentSnippet({
       content: this.state.content
     }, this.props.snippetId);
