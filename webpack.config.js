@@ -1,6 +1,6 @@
 'use strict';
-
 let path = require('path');
+let webpack = require('webpack');
 
 const ROOT_PATH = path.resolve(__dirname);
 const APP_PATH = path.resolve(ROOT_PATH, 'client', 'js');
@@ -19,9 +19,8 @@ const config = {
     path: BUILD_PATH,
     filename: 'app.js'
   },
-  debug: true,
-  devtool: 'eval-source-map',
   module: {
+    noParse: [],
     loaders: [
       { test: /\.json$/, loader: 'json' },
       {
@@ -32,5 +31,26 @@ const config = {
     ]
   }
 };
+
+// Setup environment config
+
+let env = process.env.NODE_ENV;
+
+if(env === 'production') {
+  config.plugins = [
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      },
+      mangle: {
+        except: ['$super', '$', 'exports', 'require']
+      },
+      sourceMap: false
+    })
+  ];
+} else {
+  config.debug = true;
+  config.devtool = 'eval-source-map';
+}
 
 module.exports = config;
