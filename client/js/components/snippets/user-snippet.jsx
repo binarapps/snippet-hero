@@ -1,4 +1,5 @@
 import React from 'react';
+import Markdown from 'markdown-react-js';
 import UserStore from '../../stores/user-store';
 import UserSnippetsActions from '../../actions/user-snippets-actions.js';
 import Avatar from 'material-ui/lib/avatar';
@@ -8,7 +9,6 @@ import Card from 'material-ui/lib/card/card';
 import CardText from 'material-ui/lib/card/card-text';
 import CardHeader from 'material-ui/lib/card/card-header';
 import Codemirror from 'react-codemirror';
-import RatingForm from '../ratings/rating-form';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/xml/xml';
 import 'codemirror/mode/gfm/gfm';
@@ -24,6 +24,16 @@ export default class UserSnippet extends React.Component {
 
   _deleteSnippet() {
     UserSnippetsActions.destroySnippet(this.props.id);
+  }
+
+  countAverage(){
+    var sum = 0.0;
+    var index = 0;
+    this.props.ratings.forEach(function (rate) {
+      sum += rate.value;
+      index++;
+    });
+    return (sum == 0) ? sum.toFixed(2) : (sum/index).toFixed(2);
   }
 
   render() {
@@ -54,7 +64,9 @@ export default class UserSnippet extends React.Component {
             subtitle= {author}
             avatar={avatar} />
           <div>
-            <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={false}/>
+            <form className="rating-form" style={{margin: '10px', right: 0, float: 'right', position: 'absolute'}}>
+              <span style={{float: 'right'}}>Total rating: {this.countAverage()}</span>
+            </form>
           </div>
         </div>
         {deleteButton}

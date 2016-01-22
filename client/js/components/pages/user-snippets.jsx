@@ -2,7 +2,7 @@ import React from 'react';
 import PageWrapper from '../page-wrapper';
 import UserList from '../snippets/user-list';
 import UserSnippetsActions from '../../actions/user-snippets-actions';
-import UserSnippetsStore from '../../stores/user-snippetd-store';
+import UserSnippetsStore from '../../stores/user-snippets-store';
 
 export default class UserSnippets extends React.Component {
   constructor(props) {
@@ -13,7 +13,7 @@ export default class UserSnippets extends React.Component {
 
   componentDidMount() {
     this.storeListeners = [];
-    this.storeListeners.push(UserSnippetsActions.listen(this._onChange));
+    this.storeListeners.push(UserSnippetsStore.listen(this._onChange));
     UserSnippetsActions.getAllOfCurrentUser();
   }
 
@@ -51,7 +51,7 @@ export default class UserSnippets extends React.Component {
               );
             }
           })()}
-      </div>
+        </div>
       </PageWrapper>
     );
   }

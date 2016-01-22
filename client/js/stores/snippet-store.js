@@ -11,7 +11,6 @@ class SnippetStore {
     this.bindActions(RatingActions);
     this.state = {
       snippets: [],
-      currentUserSnippets: [],
       lastCreateSuccess: false,
       snippetCreated: false,
       snippetsAvg: {},
@@ -32,13 +31,6 @@ class SnippetStore {
     }
   }
 
-  getAllOfCurrentUser (data){
-    if (data.ok) {
-      this.setState({
-        currentUserSnippets: data.snippets
-      });
-    } 
-  }
 
   create() {
     this.setState({

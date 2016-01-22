@@ -23,12 +23,12 @@ class UserSnippetsStore {
   }
 
   getAllComments(data) {
-    const {snippets} = this.state;
+    const {currentUserSnippets} = this.state;
     if (data.ok) {
-      let snippetIndex = _.findIndex(snippets, 'id', data.snippetId);
-      let newSnippets = update(snippets, {[snippetIndex]: {comments: {$unshift: data.comments}}});
+      let snippetIndex = _.findIndex(currentUserSnippets, 'id', data.snippetId);
+      let newSnippets = update(currentUserSnippets, {[snippetIndex]: {comments: {$unshift: data.comments}}});
       this.setState({
-        snippets: newSnippets
+        currentUserSnippets: newSnippets
       });
     }
   }
