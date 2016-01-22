@@ -89,6 +89,8 @@
     "npm-run-all": "^1.2.13",
     "passport-stub": "^1.0.1",
     "react-addons-test-utils": "^0.14.2",
+    "shipit-cli": "^1.4.1",
+    "shipit-pm2": "0.0.4",
     "sinon": "^1.17.2",
     "supertest": "^1.1.0",
     "supertest-session": "^2.0.0",
