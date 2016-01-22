@@ -1,0 +1,10 @@
+.comment-enter {
+  opacity: 0.01;
+  transform: translateY(-50px) scale(0);
+}
+
+.comment-enter.comment-enter-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: all 500ms ease-in;
+}
