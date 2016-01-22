@@ -1,54 +1,29 @@
 import React from 'react';
+import UserStore from '../../stores/user-store';
+import UserSnippetsActions from '../../actions/user-snippets-actions.js';
+import Avatar from 'material-ui/lib/avatar';
+import Colors from 'material-ui/lib/styles/colors';
+import RaisedButton from 'material-ui/lib/raised-button';
+import Card from 'material-ui/lib/card/card';
+import CardText from 'material-ui/lib/card/card-text';
+import CardHeader from 'material-ui/lib/card/card-header';
 import Codemirror from 'react-codemirror';
-import Markdown from 'markdown-react-js';
 import RatingForm from '../ratings/rating-form';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/xml/xml';
 import 'codemirror/mode/gfm/gfm';
-import Card from 'material-ui/lib/card/card';
-import CardText from 'material-ui/lib/card/card-text';
-import CardHeader from 'material-ui/lib/card/card-header';
-import Avatar from 'material-ui/lib/avatar';
-import Colors from 'material-ui/lib/styles/colors';
 import {generateColor, generateLetter} from '../mixins/color-generate';
 import {modeFromMime} from '../../libs/languages';
-import UserStore from '../../stores/user-store';
-import SnippetActions from '../../actions/snippet-actions.js';
-import RaisedButton from 'material-ui/lib/raised-button';
 
-// TODO create tests
-export default class Snippet extends React.Component {
+export default class UserSnippet extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {currentUser: UserStore.state.currentUser};
+    this.state = { currentUser: UserStore.state.currentUser };
     this._deleteSnippet = this._deleteSnippet.bind(this);
   }
 
   _deleteSnippet() {
-    SnippetActions.destroySnippet(this.props.id);
-  } 
-
-  checkRatingAbility() {
-    let today = Date.now();
-    let dateCreated = Date.parse(this.props.createdAt);
-    let enabled = false;
-
-    if(Math.ceil((today-dateCreated) / (1000*3600*24))<30){
-      if(this.state.currentUser && this.props.user){
-        if(this.state.currentUser.id != this.props.user.id){
-          enabled = true;
-        }
-      }
-    }
-    return enabled;
-  }
-
-  checkOwner() {
-    if(this.state.currentUser && this.props.user){
-      return this.state.currentUser.id === this.props.user.id;
-    } else {
-      return false;
-    }
+    UserSnippetsActions.destroySnippet(this.props.id);
   }
 
   render() {
@@ -59,14 +34,12 @@ export default class Snippet extends React.Component {
       mime: this.props.language
     };
     let { style } = this.props;
-
-    let author = (this.props.user ? this.props.user.name : this.state.currentUser.name );
-    let enabled = this.checkRatingAbility();
+    let author = ( this.state.currentUser ? this.state.currentUser.name : 'no name author' );
 
     let avatar = (<Avatar
           color={generateColor()}
           backgroundColor={generateColor()}>
-          {this.props.user ? this.props.user.name.split('')[0].toUpperCase() : this.state.currentUser.name.split('')[0].toUpperCase()}
+          {this.state.currentUser ? this.state.currentUser.name.split('')[0].toUpperCase() : generateLetter()}
         </Avatar>);
 
     let deleteButton = (<div style={{display: 'table', background: Colors.grey100, width: '100%'}}>
@@ -81,10 +54,10 @@ export default class Snippet extends React.Component {
             subtitle= {author}
             avatar={avatar} />
           <div>
-            <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={enabled}/>
+            <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={false}/>
           </div>
         </div>
-        {this.checkOwner() ? deleteButton : ''}
+        {deleteButton}
         <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300 }}>
           <Codemirror value={this.props.content} options={codeOptions} />
         </div>
