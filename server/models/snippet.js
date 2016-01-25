@@ -47,7 +47,7 @@ module.exports = function(sequelize, DataTypes) {
       withVersions: function () {
         return {
           include: [sequelize.models.SnippetVersion],
-          order: [['createdAt', 'DESC'], [sequelize.models.SnippetVersion, 'createdAt', 'ASC']]
+          order: [['createdAt', 'DESC'], [sequelize.models.SnippetVersion, 'createdAt', 'DESC']]
         };
       },
       withAuthor: function () {
@@ -75,7 +75,7 @@ module.exports = function(sequelize, DataTypes) {
           createdAt: this.get('createdAt')
         };
 
-        if(this.User) {
+        if (this.User) {
           json.user = this.User.toJson();
         }
 

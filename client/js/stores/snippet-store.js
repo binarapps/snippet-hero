@@ -14,6 +14,8 @@ class SnippetStore {
       currentUserSnippets: [],
       lastCreateSuccess: false,
       snippetCreated: false,
+      snippetUpdated: false,
+      lastUpdateSuccess: false,
       snippetsAvg: {},
       usersRatings: {}
     };
@@ -37,7 +39,7 @@ class SnippetStore {
       this.setState({
         currentUserSnippets: data.snippets
       });
-    } 
+    }
   }
 
   create() {
@@ -83,6 +85,29 @@ class SnippetStore {
     this.setState({
       snippetCreated: true,
       lastCreateSuccess: false
+    });
+  }
+
+  update() {
+    this.setState({
+      snippetUpdated: false
+    });
+    this.preventDefault();
+  }
+
+  onUpdateSuccess(res) {
+    const {snippets} = this.state;
+    let snippetIndex = _.findIndex(snippets, 'id', res.snippet.id);
+    let newSnippets = update(snippets, {[snippetIndex]: {$set: res.snippet}});
+    this.setState({
+      snippets: newSnippets
+    });
+  }
+
+  onUpdateFail() {
+    this.setState({
+      snippetUpdated: true,
+      lastUpdateSuccess: false
     });
   }
 

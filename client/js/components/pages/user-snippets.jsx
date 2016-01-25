@@ -2,7 +2,7 @@ import React from 'react';
 import PageWrapper from '../page-wrapper';
 import UserList from '../snippets/user-list';
 import UserSnippetsActions from '../../actions/user-snippets-actions';
-import UserSnippetsStore from '../../stores/user-snippetd-store';
+import UserSnippetsStore from '../../stores/user-snippets-store';
 
 export default class UserSnippets extends React.Component {
   constructor(props) {
