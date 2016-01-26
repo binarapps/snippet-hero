@@ -185,8 +185,7 @@ class SnippetStore {
       let {snippets} = this.state;
       let snippetIndex = _.findIndex(snippets, 'id', data.snippetId);
 
-      let newSnippets = update(snippets, {$splice: [snippetId, 1]});
-
+      let newSnippets = update(snippets, {$splice: [snippetIndex, 1]});
       this.setState({
         snippets: newSnippets
       });

@@ -61,7 +61,7 @@ export default class Snippet extends React.Component {
 
     if (Math.ceil((today-dateCreated) / (1000*3600*24))<30) {
       if (currentUser && currentUser.id != this.props.user.id) {
-        enabled = true;
+        return true;
       }
     }
     return false;
@@ -124,8 +124,6 @@ export default class Snippet extends React.Component {
       mime: this.props.language
     };
     let { style } = this.props;
-    let currentUser = this.getCurrentUser();
-    let enabled = this._checkRatingAbility();
     let author = this.props.user.name;
 
     let snippetActions = (
@@ -151,7 +149,7 @@ export default class Snippet extends React.Component {
             subtitle= {author}
             avatar={avatar} />
           <div>
-            <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={enabled}/>
+            <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={this._checkRatingAbility()}/>
           </div>
         </div>
         {this.checkOwner() ? snippetActions : ''}
