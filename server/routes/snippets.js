@@ -4,6 +4,14 @@ var models = require('../models');
 var slack = require('../services/slack-integration');
 var appLogger = require('../lib/logger');
 
+var authChecker = function(req, res, next) {
+  if (!req.user) {
+    return res.status(401).send({message: 'You need to sign in before taking this action!'});
+  } else {
+    return next();
+  }
+};
+
 /* GET snippets listing. */
 router.get('/', function (req, res) {
   models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll().then(function (snippets) {
@@ -15,7 +23,7 @@ router.get('/', function (req, res) {
 });
 
 /*GET current user's snippet listing */
-router.get('/user', function (req, res) {
+router.get('/user', authChecker, function (req, res) {
   var user_id = req.user.get('id');
   models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ where : { UserId: user_id } }).then(function (snippets) {
     var mappedSnippets = snippets.map(function (s) {
@@ -30,7 +38,7 @@ router.get('/search', function (req, res) {
   if (req.query.name) {
     options.where = { name: req.query.name };
   }
-  models.Snippet.scope('withVersions').findAll(options).then(function (snippets) {
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll(options).then(function (snippets) {
     var mappedSnippets = snippets.map(function (s) {
       return s.toJson();
     });
@@ -58,14 +66,14 @@ router.get('/:id/ratings', function (req, res) {
 });
 
 /* POST new snippet  */
-router.post('/', function (req, res) {
-  var user = req.user.dataValues.id;
+router.post('/', authChecker, function (req, res) {
+  var userId = req.user.id;
   var body = req.body;
   var attributes = {
     description: body.description,
     language: body.language,
     name: body.name,
-    UserId: user
+    UserId: userId
   };
   models.sequelize.transaction(function (t) {
     return models.Snippet.create(attributes, {transaction: t}).then(function (snippet) {
@@ -87,7 +95,7 @@ router.post('/', function (req, res) {
 });
 
 /* PUT snippet  */
-router.put('/:id', function (req, res) {
+router.put('/:id', authChecker, function (req, res) {
   var body = req.body;
   var attributes = {
     description: body.description,
@@ -131,24 +139,24 @@ router.get('/:snippet_id/users/:user_id', function (req, res) {
 
 /* GET current user's rating for snippet */
 router.get('/:snippet_id/user', function (req, res) {
-  var snippet_id = req.params.snippet_id;
-  if(req.user){
-    var user_id = req.user.dataValues.id;
-    models.Rating.findOne({ where : { SnippetId: snippet_id , UserId: user_id } }).then( function (rating) {
+  var snippetId = req.params.snippet_id;
+  if (req.user) {
+    var userId = req.user.dataValues.id;
+    models.Rating.findOne({ where : { SnippetId: snippetId , UserId: userId } }).then( function (rating) {
       var grade = 0;
       if (rating) {
         grade = rating.value;
       }
-      var hash = {user: user_id, rate: grade, snippet: snippet_id};
+      var hash = {user: userId, rate: grade, snippet: snippetId};
       res.status(201).send(hash);
     });
   } else {
-    res.status(422).send({user: null, rate: 0, snippet: snippet_id});
+    res.status(422).send({user: null, rate: 0, snippet: snippetId});
   }
 });
 
 /* GET snippet's average rating */
-router.get('/:id/avg', function (req, res){
+router.get('/:id/avg', function (req, res) {
   var snippet_id = req.params.id;
   var sum_ratings = 0.0;
   models.Rating.sum('value', { where : { SnippetId: snippet_id } }).then(function (sum){
@@ -164,9 +172,14 @@ router.get('/:id/avg', function (req, res){
 });
 
 /* DELETE snippet and it's ratings/versions/comments */
-router.delete('/:id', function (req, res){
-  var snippet_id = req.params.id;
-  models.Snippet.findById(snippet_id).then(function (snippet){
+router.delete('/:id', authChecker, function (req, res) {
+  models.Snippet.scope(['withAuthor']).findById(req.params.id).then(function (snippet) {
+    if (!(snippet.UserId === req.user.id)) {
+      return res.status(422).send({status: 'error', message: 'You can not delete someone else snippet!'});
+    } else if (!snippet) {
+      return res.status(404).send({status: 'error', message: 'There is no snippet with given id!'});
+    }
+
     snippet.destroy().then(function () {
       res.status(204).send();
     }).catch( function (err) {
