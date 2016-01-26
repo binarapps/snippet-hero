@@ -20,7 +20,6 @@ import RaisedButton from 'material-ui/lib/raised-button';
 export default class Snippet extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {currentUser: UserStore.state.currentUser};
     this._deleteSnippet = this._deleteSnippet.bind(this);
   }
 
@@ -28,14 +27,19 @@ export default class Snippet extends React.Component {
     SnippetActions.destroySnippet(this.props.id);
   } 
 
+  getCurrentUser(){
+    return UserStore.state.currentUser;
+  }
+
   checkRatingAbility() {
     let today = Date.now();
     let dateCreated = Date.parse(this.props.createdAt);
     let enabled = false;
 
     if(Math.ceil((today-dateCreated) / (1000*3600*24))<30){
-      if(this.state.currentUser && this.props.user){
-        if(this.state.currentUser.id != this.props.user.id){
+      let currentUser = this.getCurrentUser();
+      if(currentUser && this.props.user){
+        if(currentUser.id != this.props.user.id){
           enabled = true;
         }
       }
@@ -44,8 +48,9 @@ export default class Snippet extends React.Component {
   }
 
   checkOwner() {
-    if(this.state.currentUser && this.props.user){
-      return this.state.currentUser.id === this.props.user.id;
+    let currentUser = this.getCurrentUser();
+    if(currentUser && this.props.user){
+      return currentUser.id === this.props.user.id;
     } else {
       return false;
     }
@@ -60,13 +65,15 @@ export default class Snippet extends React.Component {
     };
     let { style } = this.props;
 
-    let author = (this.props.user ? this.props.user.name : this.state.currentUser.name );
+    let currentUser = this.getCurrentUser();
+
+    let author = (this.props.user ? this.props.user.name : (currentUser ? currentUser.name : 'author') );
     let enabled = this.checkRatingAbility();
 
     let avatar = (<Avatar
           color={generateColor()}
           backgroundColor={generateColor()}>
-          {this.props.user ? this.props.user.name.split('')[0].toUpperCase() : this.state.currentUser.name.split('')[0].toUpperCase()}
+          {this.props.user ? this.props.user.name.split('')[0].toUpperCase() : (currentUser ? currentUser.name.split('')[0].toUpperCase() : '')}
         </Avatar>);
 
     let deleteButton = (<div style={{display: 'table', background: Colors.grey100, width: '100%'}}>

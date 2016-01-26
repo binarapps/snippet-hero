@@ -15,6 +15,9 @@ const expect = chai.expect;
 describe('SnippetActions', function() {
   before(function() {
     sinon.spy(alt, 'dispatch');
+    sinon.stub(FlashMessages, 'pushMessage', () => {
+      return;
+    });
   });
 
   afterEach(function() {
@@ -83,9 +86,7 @@ describe('SnippetActions', function() {
           resolve({res: snippet.id, ok: true});
         });
       });
-      sinon.stub(FlashMessages, 'pushMessage', () => {
-        return;
-      });
+
     });
 
     it('should destroy snippet', function(done){
