@@ -182,26 +182,13 @@ class SnippetStore {
 
   destroySnippet (data) {
     if (data.ok){
-      var oldSnippets = this.state.snippets;
-      var oldUserSnippets = this.state.currentUserSnippets;
+      let {snippets} = this.state;
+      let snippetIndex = _.findIndex(snippets, 'id', data.snippetId);
 
-      oldSnippets.forEach(function (snippet) {
-        if(snippet.id == data.res){
-          var indexOfSnippet = oldSnippets.indexOf(snippet);
-          oldSnippets.splice(indexOfSnippet, 1);
-        }
-      });
-
-      oldUserSnippets.forEach(function (userSnippet) {
-        if(userSnippet.id == data.res){
-          var indexOfUserSnippet = oldUserSnippets.indexOf(userSnippet);
-          oldUserSnippets.splice(indexOfUserSnippet, 1);
-        }
-      });
+      let newSnippets = update(snippets, {$splice: [snippetId, 1]});
 
       this.setState({
-        snippets: oldSnippets,
-        currentUserSnippets: oldUserSnippets
+        snippets: newSnippets
       });
     }
   }

@@ -8,6 +8,7 @@ import Snippet from './snippet';
 import SnippetForm from './snippet-form';
 import SnippetActions from '../../actions/snippet-actions.js';
 import SnippetStore from '../../stores/snippet-store.js';
+import UserStore from '../../stores/user-store';
 
 // TODO create tests
 export default class SnippetFormDialog extends React.Component {
@@ -102,7 +103,7 @@ export default class SnippetFormDialog extends React.Component {
               <SnippetForm {...this.state} languages={this.props.languages} onChange={this._handleFormChange} ref="form" />
             </Tab>
             <Tab label="Preview">
-              <Snippet {...this.state}/>
+              <Snippet {...this.state} user={UserStore.getState().currentUser} />
             </Tab>
           </Tabs>
         </Dialog>

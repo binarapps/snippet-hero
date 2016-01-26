@@ -83,11 +83,11 @@ class SnippetActions {
     this.dispatch();
   }
 
-  destroySnippet(snippet_id) {
-    axios.delete('/snippets/' + snippet_id)
+  destroySnippet(snippetId) {
+    axios.delete('/snippets/' + snippetId)
       .then(res => {
         FlashMessages.pushMessage({ content: 'Successfully deleted snippet!' });
-        this.dispatch({ok: true});
+        this.dispatch({ok: true, snippetId: snippetId});
       }).catch(() => {
         FlashMessages.pushMessage({ content: 'Something went wrong. Could not delete that snippet :(' });
         this.dispatch({ok: false});

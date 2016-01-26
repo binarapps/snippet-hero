@@ -46,24 +46,22 @@ export default class Snippet extends React.Component {
 
   _deleteSnippet() {
     let confirmed = confirm('Are you sure?');
-    if(!confirmed) return;
+    if (!confirmed) return;
     SnippetActions.destroySnippet(this.props.id);
   }
 
-  getCurrentUser(){
-    return UserStore.state.currentUser;
+  getCurrentUser() {
+    return UserStore.getState().currentUser;
   }
 
-  checkRatingAbility() {
+  _checkRatingAbility() {
     let today = Date.now();
     let dateCreated = Date.parse(this.props.createdAt);
     let currentUser = this.getCurrentUser();
 
-    if(Math.ceil((today-dateCreated) / (1000*3600*24))<30){
-      if(currentUser && this.props.user){
-        if(currentUser.id != this.props.user.id){
-          enabled = true;
-        }
+    if (Math.ceil((today-dateCreated) / (1000*3600*24))<30) {
+      if (currentUser && currentUser.id != this.props.user.id) {
+        enabled = true;
       }
     }
     return false;
@@ -71,7 +69,7 @@ export default class Snippet extends React.Component {
 
   checkOwner() {
     let currentUser = this.getCurrentUser();
-    if(currentUser && this.props.user){
+    if (currentUser) {
       return currentUser.id === this.props.user.id;
     } else {
       return false;
@@ -127,28 +125,21 @@ export default class Snippet extends React.Component {
     };
     let { style } = this.props;
     let currentUser = this.getCurrentUser();
-    let author = (this.props.user ? this.props.user.name : currentUser.name );
-    let enabled = this.checkRatingAbility();
+    let enabled = this._checkRatingAbility();
+    let author = this.props.user.name;
 
-    let avatar = (
-      <Avatar
-        color={generateColor()}
-        backgroundColor={generateColor()}>
-        {this.props.user ? this.props.user.name.split('')[0].toUpperCase() : currentUser.name.split('')[0].toUpperCase()}
-      </Avatar>
+    let snippetActions = (
+      <div style={{display: 'table', background: Colors.grey100, width: '100%'}}>
+        <RaisedButton style={{float: 'right', margin: '0 10px 5px 0'}} onClick={this._editSnippet} label='Edit' secondary={true} />
+        <RaisedButton style={{float: 'right', margin: '0 10px 5px 0'}} onClick={this._deleteSnippet} label='Delete' primary={true} />
+      </div>
     );
-    let snippetActions = (<div style={{display: 'table', background: Colors.grey100, width: '100%'}}>
-      <RaisedButton style={{float: 'right', margin: '0 10px 5px 0'}} onClick={this._editSnippet} label='Edit' secondary={true} />
-      <RaisedButton style={{float: 'right', margin: '0 10px 5px 0'}} onClick={this._deleteSnippet} label='Delete' primary={true} />
-
-    let author = (this.props.user ? this.props.user.name : (currentUser ? currentUser.name : 'author') );
-    let enabled = this.checkRatingAbility();
 
     let avatar = (
       <Avatar
         color={generateColor()}
         backgroundColor={generateColor()}>
-        {this.props.user ? this.props.user.name.split('')[0].toUpperCase() : (currentUser ? currentUser.name.split('')[0].toUpperCase() : '')}
+        {this.props.user.name.split('')[0].toUpperCase()}
       </Avatar>
     );
 
@@ -168,7 +159,7 @@ export default class Snippet extends React.Component {
           <Codemirror value={this.props.content} options={codeOptions} />
         </div>
         <CardText className="snippet-description" >
-          this.props.description ? (<Markdown text={this.props.description} className="markdown" />)
+          {this.props.description ? <Markdown text={this.props.description} className="markdown" /> : null}
         </CardText>
       </Card>
     );
