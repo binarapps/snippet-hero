@@ -88,7 +88,7 @@ describe('SnippetActions', function() {
       });
     });
 
-    it.only('should destroy snippet', function(done){
+    it('should destroy snippet', function(done){
       SnippetActions.destroySnippet(1);
       setTimeout(function(){
         expect(alt.dispatch.calledOnce).to.be.true;

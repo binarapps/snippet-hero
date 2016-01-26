@@ -10,7 +10,7 @@ import CardText from 'material-ui/lib/card/card-text';
 import CardHeader from 'material-ui/lib/card/card-header';
 import Avatar from 'material-ui/lib/avatar';
 import Colors from 'material-ui/lib/styles/colors';
-import {generateColor, generateLetter} from '../mixins/color-generate';
+import {generateColor} from '../mixins/color-generate';
 import {modeFromMime} from '../../libs/languages';
 import UserStore from '../../stores/user-store';
 import SnippetActions from '../../actions/snippet-actions.js';
