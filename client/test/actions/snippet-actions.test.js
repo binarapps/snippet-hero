@@ -89,11 +89,31 @@ describe('SnippetActions', function() {
     it('should destroy snippet', (done) => {
       SnippetActions.destroySnippet();
       setTimeout(() => {
-        // TODO fix calling action twice 
+        // TODO fix calling action twice
         expect(alt.dispatch.calledTwice).to.be.true;
         done();
       });
     });
   });
 
+  describe('Edit snippet', function() {
+    before(() => {
+      this.snippet = { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript'};
+      sinon.stub(axios, 'put', () => {
+        return new Promise((resolve) => {
+          resolve({data: this.snippet});
+        });
+      });
+    });
+
+    it('should dispatch updated snippet', (done) => {
+      SnippetActions.update(this.snippet);
+      setTimeout(() => {
+        // Twice for create and success callback
+        expect(alt.dispatch.calledTwice).to.be.true;
+        expect(alt.dispatch.getCall(1).args[1].snippet).to.deep.equal(this.snippet);
+        done();
+      });
+    });
+  });
 });
