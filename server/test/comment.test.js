@@ -14,7 +14,6 @@ var data = {
   content: 'great snippet'
 };
 
-
 factory.define('snippet', db.Snippet, {description: 'test', name: 'snippet'});
 factory.define('user', db.User, {name: 'user', email: 'test@example.com'});
 factory.define('comment', db.Comment, data);
@@ -28,12 +27,13 @@ describe('Comments routes', function() {
     var user;
     before(function(done) {
       db.Comment.sync({ force : true }).then(function() {
-        db.Snippet.sync({ force : true }).then(function() {
-          db.User.sync({ force : true }).then(function() {
+        return db.Snippet.sync({ force : true }).then(function() {
+          return db.User.sync({ force : true }).then(function() {
             factory.create('snippet', function() {
               factory.create('user', function(err, newUser) {
                 user = newUser;
-                if(!err) done();
+                if(!err) return done();
+                return done(err);
               });
             });
           });

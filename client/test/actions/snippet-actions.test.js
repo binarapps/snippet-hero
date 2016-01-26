@@ -15,6 +15,9 @@ const expect = chai.expect;
 describe('SnippetActions', function() {
   before(function() {
     sinon.spy(alt, 'dispatch');
+    sinon.stub(FlashMessages, 'pushMessage', () => {
+      return;
+    });
   });
 
   afterEach(function() {
@@ -22,54 +25,52 @@ describe('SnippetActions', function() {
   });
 
   describe('Get snippets collection', () => {
-    let snippets;
     before(() => {
-      snippets = [
+      this.snippets = [
         { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript'},
         { id: 2, content: 'test', name: 'test', description: 'test', language: 'javascript'}
       ];
       sinon.stub(axios, 'get', () => {
-        return new Promise(function(resolve) {
-          resolve({data: snippets});
+        return new Promise((resolve) => {
+          resolve({data: this.snippets});
         });
       });
     });
 
     it('should dispatch all snippets list from server', (done) => {
       SnippetActions.getAll();
-      setTimeout(function () {
+      setTimeout(() => {
         expect(alt.dispatch.calledOnce).to.be.true;
-        expect(alt.dispatch.getCall(0).args[1].snippets).to.deep.equal(snippets);
+        expect(alt.dispatch.getCall(0).args[1].snippets).to.deep.equal(this.snippets);
         done();
       });
     });
 
     it('should dispatch all snippets with name from server', (done) => {
       SnippetActions.search('test');
-      setTimeout(function () {
+      setTimeout(() => {
         expect(alt.dispatch.calledOnce).to.be.true;
-        expect(alt.dispatch.getCall(0).args[1].snippets).to.deep.equal(snippets);
+        expect(alt.dispatch.getCall(0).args[1].snippets).to.deep.equal(this.snippets);
         done();
       });
     });
   });
 
   describe('Create snippet', function() {
-    let snippet;
-    before( function() {
-      snippet = { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript'};
+    before(() => {
+      this.snippet = { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript'};
       sinon.stub(axios, 'post', () => {
-        return new Promise(function(resolve) {
-          resolve({data: snippet});
+        return new Promise((resolve) => {
+          resolve({data: this.snippet});
         });
       });
     });
 
-    it('should dispatch created snippet', function(done) {
-      SnippetActions.create(snippet);
-      setTimeout(function() {
+    it('should dispatch created snippet', (done) => {
+      SnippetActions.create(this.snippet);
+      setTimeout(() => {
         expect(alt.dispatch.calledTwice).to.be.true;
-        expect(alt.dispatch.getCall(1).args[1].snippet).to.deep.equal(snippet);
+        expect(alt.dispatch.getCall(1).args[1].snippet).to.deep.equal(this.snippet);
         done();
       });
     });
@@ -83,14 +84,11 @@ describe('SnippetActions', function() {
           resolve({res: snippet.id, ok: true});
         });
       });
-      sinon.stub(FlashMessages, 'pushMessage', () => {
-        return;
-      });
     });
 
-    it.only('should destroy snippet', function(done){
+    it('should destroy snippet', function(done){
       SnippetActions.destroySnippet(1);
-      setTimeout(function(){
+      setTimeout(() => {
         expect(alt.dispatch.calledOnce).to.be.true;
         done();
       });

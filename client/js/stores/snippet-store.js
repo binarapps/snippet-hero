@@ -11,7 +11,6 @@ class SnippetStore {
     this.bindActions(RatingActions);
     this.state = {
       snippets: [],
-      currentUserSnippets: [],
       lastCreateSuccess: false,
       snippetCreated: false,
       snippetUpdated: false,
@@ -31,14 +30,6 @@ class SnippetStore {
     } else {
       // TODO react to errors
       // console.log(data.error.message)
-    }
-  }
-
-  getAllOfCurrentUser (data){
-    if (data.ok) {
-      this.setState({
-        currentUserSnippets: data.snippets
-      });
     }
   }
 

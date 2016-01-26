@@ -13,7 +13,6 @@ class SnippetActions {
   getAll() {
     axios.get('/snippets')
       .then(res => {
-        FlashMessages.pushMessage({ content: 'Here are all of the snippets!' });
         this.dispatch({ok: true, snippets: res.data});
       }).catch(err => {
         FlashMessages.pushMessage({ content: 'Oops! Something went wrong :(' });
@@ -58,13 +57,13 @@ class SnippetActions {
   }
 
   onCreateSuccess(res) {
-    this.dispatch({snippet: res.data});
     FlashMessages.pushMessage({ content: 'Snippet created successfully!' });
+    this.dispatch({snippet: res.data});
   }
 
   onCreateFail() {
-    this.dispatch();
     FlashMessages.pushMessage({ content: 'There was an error while creating snippet.' });
+    this.dispatch();
   }
 
   update(data) {
@@ -75,20 +74,20 @@ class SnippetActions {
   }
 
   onUpdateSuccess(res) {
-    this.dispatch({snippet: res.data});
     FlashMessages.pushMessage({ content: 'Snippet updated successfully!' });
+    this.dispatch({snippet: res.data});
   }
 
   onUpdateFail() {
-    this.dispatch();
     FlashMessages.pushMessage({ content: 'There was an error while updating snippet.' });
+    this.dispatch();
   }
 
   destroySnippet(snippet_id) {
     axios.delete('/snippets/' + snippet_id)
       .then(res => {
         FlashMessages.pushMessage({ content: 'Successfully deleted snippet!' });
-        this.dispatch({ok: true, res: res.data.snippet});
+        this.dispatch({ok: true});
       }).catch(() => {
         FlashMessages.pushMessage({ content: 'Something went wrong. Could not delete that snippet :(' });
         this.dispatch({ok: false});

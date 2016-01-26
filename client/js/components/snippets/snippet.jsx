@@ -50,15 +50,19 @@ export default class Snippet extends React.Component {
     SnippetActions.destroySnippet(this.props.id);
   }
 
+  getCurrentUser(){
+    return UserStore.state.currentUser;
+  }
+
   checkRatingAbility() {
     let today = Date.now();
     let dateCreated = Date.parse(this.props.createdAt);
-    let currentUser = UserStore.state.currentUser;
+    let currentUser = this.getCurrentUser();
 
     if(Math.ceil((today-dateCreated) / (1000*3600*24))<30){
       if(currentUser && this.props.user){
         if(currentUser.id != this.props.user.id){
-          return true;
+          enabled = true;
         }
       }
     }
@@ -66,7 +70,7 @@ export default class Snippet extends React.Component {
   }
 
   checkOwner() {
-    let currentUser = UserStore.state.currentUser;
+    let currentUser = this.getCurrentUser();
     if(currentUser && this.props.user){
       return currentUser.id === this.props.user.id;
     } else {
@@ -75,8 +79,8 @@ export default class Snippet extends React.Component {
   }
 
   _getEditableSnippet() {
-    let { style } = this.props;
     let codeOptions = {readOnly: false, mode: modeFromMime(this.props.language), mime: this.props.language, lineNumbers: true};
+    let { style } = this.props;
     return (
       <Card style={style}>
         <div style={{display: 'inline-flex', background: Colors.grey100, width: '100%'}}>
@@ -111,7 +115,7 @@ export default class Snippet extends React.Component {
             type="text" />
         </CardText>
       </Card>
-    )
+    );
   }
 
   _getShowSnippet() {
@@ -122,7 +126,7 @@ export default class Snippet extends React.Component {
       mime: this.props.language
     };
     let { style } = this.props;
-    let currentUser = UserStore.state.currentUser;
+    let currentUser = this.getCurrentUser();
     let author = (this.props.user ? this.props.user.name : currentUser.name );
     let enabled = this.checkRatingAbility();
 
@@ -136,7 +140,18 @@ export default class Snippet extends React.Component {
     let snippetActions = (<div style={{display: 'table', background: Colors.grey100, width: '100%'}}>
       <RaisedButton style={{float: 'right', margin: '0 10px 5px 0'}} onClick={this._editSnippet} label='Edit' secondary={true} />
       <RaisedButton style={{float: 'right', margin: '0 10px 5px 0'}} onClick={this._deleteSnippet} label='Delete' primary={true} />
-    </div>);
+
+    let author = (this.props.user ? this.props.user.name : (currentUser ? currentUser.name : 'author') );
+    let enabled = this.checkRatingAbility();
+
+    let avatar = (
+      <Avatar
+        color={generateColor()}
+        backgroundColor={generateColor()}>
+        {this.props.user ? this.props.user.name.split('')[0].toUpperCase() : (currentUser ? currentUser.name.split('')[0].toUpperCase() : '')}
+      </Avatar>
+    );
+
     return (
       <Card style={style}>
         <div style={{display: 'inline-flex', background: Colors.grey100, width: '100%'}}>
@@ -150,38 +165,10 @@ export default class Snippet extends React.Component {
         </div>
         {this.checkOwner() ? snippetActions : ''}
         <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300 }}>
-          {(() => {
-            if (this.state.isEditing) {
-              let codeOptions = {readOnly: false, mode: modeFromMime(this.props.language), mime: this.props.language, lineNumbers: true};
-              return (
-                <Codemirror
-                  ref="editor"
-                  value={this.state.content}
-                  options={codeOptions}
-                  className="code-editor" />
-              );
-            } else {
-              return (<Codemirror value={this.props.content} options={codeOptions} />);
-            }
-          })()}
+          <Codemirror value={this.props.content} options={codeOptions} />
         </div>
         <CardText className="snippet-description" >
-          {(() => {
-            if (this.state.isEditing) {
-              return (
-                <TextField
-                  floatingLabelText="Snippet description (optional - markdown allowed):"
-                  defaultValue={this.props.description}
-                  fullWidth={true}
-                  multiLine={true}
-                  rows={2}
-                  ref="description"
-                  type="text" />
-              );
-            } else {
-              return this.props.description ? (<Markdown text={this.props.description} className="markdown" />) : null;
-            }
-          })()}
+          this.props.description ? (<Markdown text={this.props.description} className="markdown" />)
         </CardText>
       </Card>
     );

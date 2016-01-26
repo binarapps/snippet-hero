@@ -13,7 +13,7 @@ export default class UserSnippets extends React.Component {
 
   componentDidMount() {
     this.storeListeners = [];
-    this.storeListeners.push(UserSnippetsActions.listen(this._onChange));
+    this.storeListeners.push(UserSnippetsStore.listen(this._onChange));
     UserSnippetsActions.getAllOfCurrentUser();
   }
 
@@ -51,7 +51,7 @@ export default class UserSnippets extends React.Component {
               );
             }
           })()}
-      </div>
+        </div>
       </PageWrapper>
     );
   }
