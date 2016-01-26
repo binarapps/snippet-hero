@@ -14,6 +14,17 @@ router.get('/', function (req, res) {
   });
 });
 
+/*GET current user's snippet listing */
+router.get('/user', function (req, res) {
+  var user_id = req.user.get('id');
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ where : { UserId: user_id } }).then(function (snippets) {
+    var mappedSnippets = snippets.map(function (s) {
+      return s.toJson();
+    });
+    res.send(mappedSnippets);
+  });
+});
+
 router.get('/search', function (req, res) {
   var options = {};
   if (req.query.name) {
@@ -103,6 +114,7 @@ router.get('/:snippet_id/user', function (req, res) {
   }
 });
 
+/* GET snippet's average rating */
 router.get('/:id/avg', function (req, res){
   var snippet_id = req.params.id;
   var sum_ratings = 0.0;
@@ -115,6 +127,20 @@ router.get('/:id/avg', function (req, res){
       }
       res.status(200).send({avg: average.toFixed(2), snippetId: snippet_id});
     });
+  });
+});
+
+/* DELETE snippet and it's ratings/versions/comments */
+router.delete('/:id', function (req, res){
+  var snippet_id = req.params.id;
+  models.Snippet.findById(snippet_id).then(function (snippet){
+    snippet.destroy().then(function () {
+      res.status(200).send({snippet: snippet_id});
+    }).catch( function (err) {
+      res.status(422).send(err);
+    });
+  }).catch(function (err) {
+    res.status(422).send(err);
   });
 });
 
