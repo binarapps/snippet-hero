@@ -20,7 +20,7 @@ router.get('/paginated', function (req, res) {
   var results = req.query.results;
   var page = req.query.start;
 
-  models.Snippet.findAll({ limit: results, offset: page }).then(function (snippets) {
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ limit: results, offset: page }).then(function (snippets) {
     var mappedSnippets = snippets.map(function (s){
       return s.toJson();
     });

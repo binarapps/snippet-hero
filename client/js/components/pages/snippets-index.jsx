@@ -20,11 +20,24 @@ export default class SnippetsIndex extends React.Component {
     this.storeListeners = [];
     this.storeListeners.push(SnippetStore.listen(this._onChange));
     this.storeListeners.push(SnippetSearchStore.listen(this._onSearch));
-    this.getPaginatedSnippets(1);
+    this._getPaginatedSnippets(1);
+    this.setState({
+      loading: false,
+      currentPage: 1
+    });
   }
 
-  getPaginatedSnippets(page){
-    SnippetActions.getPaginatedSnippets(page, 2);
+  _getPaginatedSnippets(page){
+    this.setState({
+      loading: true
+    });
+
+    SnippetActions.getPaginatedSnippets(page, 2).then(function (){
+      this.setState({
+        loading: false,
+        currentPage: page
+      });
+    });
   }
 
   getPropsFromStores() {
@@ -56,6 +69,14 @@ export default class SnippetsIndex extends React.Component {
   }
 
   render() {
+    let s = this.state;
+    const pages = [1,2,3,4,5].map((page) => {
+      return (<li key={page} className={s.currentPage === page ? 'active' : ''}>
+          <a href="#">{page}</a>
+        </li>
+      );
+    });
+
     return (
       <PageWrapper>
         <h2 style={{fontSize: '24px', margin: '20px 0'}}>All snippets:</h2>
@@ -64,7 +85,26 @@ export default class SnippetsIndex extends React.Component {
           {(() => {
             if(this.state.snippets.length > 0){
               return (
-                <SnippetsList snippets={this.state.snippets}/>
+                <div>
+                  <SnippetsList snippets={this.state.snippets}/>
+                  <nav>
+                    <ul className={'pagination'}>
+                      <li className={s.currentPage === 1 ? 'disabled' : ''}>
+                        <a href="#">
+                          <span aria-hidden="true">&laquo;</span>
+                          <span className="sr-only">Prev</span>
+                        </a>
+                      </li>
+                      {pages}
+                      <li className={s.currentPage === 5 ? 'disabled' : ''}>
+                        <a href="#">
+                          <span aria-hidden="true">&raquo;</span>
+                          <span className="sr-only">Next</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
               );
             } else {
               return (

@@ -24,7 +24,7 @@ class SnippetStore {
       const pageSnippets = data.results.snippets;
 
       this.setState({
-        snippets: snippets.concat(pageSnippets)
+        snippets: pageSnippets
       });
     }
   }
