@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import moment from 'moment';
 import Markdown from 'markdown-react-js';
 import Paper from 'material-ui/lib/paper';
@@ -31,13 +32,16 @@ export default class CommentList extends React.Component {
   }
 
   render() {
+    let comments = this.props.comments.map(function(comment) {
+      return (
+        <CommentListItem key={`comment-${comment.id}`} {...comment}/>
+      );
+    });
     return (
       <div style={{display: 'list', margin: '20px 0', listStyle: 'none'}}>
-        {this.props.comments.map(function(comment) {
-          return (
-            <CommentListItem key={`comment-${comment.id}`} {...comment}/>
-          );
-        })}
+        <ReactCSSTransitionGroup transitionName="comment" transitionEnterTimeout={500}>
+          {comments}
+        </ReactCSSTransitionGroup>
       </div>
     );
   }
