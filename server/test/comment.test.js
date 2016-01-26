@@ -14,7 +14,6 @@ var data = {
   content: 'great snippet'
 };
 
-
 factory.define('snippet', db.Snippet, {description: 'test', name: 'snippet'});
 factory.define('user', db.User, {name: 'user', email: 'test@example.com'});
 factory.define('comment', db.Comment, data);
