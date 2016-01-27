@@ -1,0 +1,38 @@
+.paginate-nav {
+  text-align: center;
+  width: 100%;
+}
+
+.pagination {
+  list-style: none;
+}
+
+.pagination > li {
+  border-color: #ccc;
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  position: relative;
+}
+
+.pagination > li+li {
+  margin-left: 2px;
+}
+
+.pagination > li > a {
+  background-color: transparent;
+  color: #18B8D0;
+  display: block;
+  padding: 10px 15px;
+  position: relative;
+  text-decoration: none;
+}
+
+.pagination > li.active > a {
+  background-color: #18B8D0;
+  color: #fff;
+}

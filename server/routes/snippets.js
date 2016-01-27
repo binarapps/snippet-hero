@@ -4,19 +4,8 @@ var models = require('../models');
 var slack = require('../services/slack-integration');
 var appLogger = require('../lib/logger');
 
-/* GET snippets listing. */
-router.get('/', function (req, res) {
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll().then(function (snippets) {
-    var mappedSnippets = snippets.map(function (s) {
-      return s.toJson();
-    });
-    res.send(mappedSnippets);
-  });
-});
-
-
 /* GET with pagination */
-router.get('/paginated', function (req, res) {
+router.get('/', function (req, res) {
   var results = req.query.results;
   var page = req.query.start;
 
@@ -28,10 +17,21 @@ router.get('/paginated', function (req, res) {
   });
 });
 
+
+/* Get snippets' count for pages count */
+router.get('/count', function (req, res) {
+  models.Snippet.count().then(function (c) {
+    res.status(200).send({count: c});
+  });
+});
+
 /*GET current user's snippet listing */
 router.get('/user', function (req, res) {
-  var user_id = req.user.get('id');
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ where : { UserId: user_id } }).then(function (snippets) {
+  var userId = req.user.get('id');
+  var results = req.query.results;
+  var page = req.query.start;
+  
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ where : { UserId: userId }, limit: results, offset: page }).then(function (snippets) {
     var mappedSnippets = snippets.map(function (s) {
       return s.toJson();
     });

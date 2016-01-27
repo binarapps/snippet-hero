@@ -12,20 +12,15 @@ class SnippetActions {
 
   getPaginatedSnippets(page, perPage){
     var start = (perPage*(page-1));
-    axios.get('/snippets/paginated?results='+ perPage +'&start='+ start)
+    axios.get('/snippets?results='+ perPage +'&start='+ start)
       .then(res => this.dispatch({ok: true, results: res.data}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
-  getAll() {
-    axios.get('/snippets')
-      .then(res => {
-        FlashMessages.pushMessage({ content: 'Here are all of the snippets!' });
-        this.dispatch({ok: true, snippets: res.data});
-      }).catch(err => {
-        FlashMessages.pushMessage({ content: 'Oops! Something went wrong :(' });
-        this.dispatch({ok: false, error: err});
-      });
+  getCount(){
+    axios.get('/snippets/count')
+      .then(res => this.dispatch({ok: true, count: res.data.count}))
+      .catch(err => this.dispatch({ok: false, error: err}));
   }
 
   getAllOfCurrentUser() {

@@ -28,7 +28,7 @@ function main () {
     <Router history={history}>
       <Route path="/" component={App} >
 
-        <Route path="/snippets" component={SnippetsIndex}/>
+        <Route path="/snippets" component={SnippetsIndex} perPage={2}/>
         <Route path="/snippets/user" component={UserSnippets}/>
         <Route path="/logout" component={Logout}/>
         <Route path="/login" component={Login}/>

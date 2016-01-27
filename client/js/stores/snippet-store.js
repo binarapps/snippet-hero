@@ -14,8 +14,17 @@ class SnippetStore {
       lastCreateSuccess: false,
       snippetCreated: false,
       snippetsAvg: {},
-      usersRatings: {}
+      usersRatings: {},
+      totalCount: 0
     };
+  }
+
+  getCount(data){
+    if(data.ok){
+      this.setState({
+        totalCount: data.count
+      });
+    }
   }
 
   getPaginatedSnippets(data) {
@@ -28,20 +37,6 @@ class SnippetStore {
       });
     }
   }
-
-  getAll (data) {
-    if (data.ok) {
-      const {snippets} = this.state;
-
-      this.setState({
-        snippets: snippets.concat(data.snippets)
-      });
-    } else {
-      // TODO react to errors
-      // console.log(data.error.message)
-    }
-  }
-
 
   create() {
     this.setState({
@@ -73,12 +68,16 @@ class SnippetStore {
   }
 
   onCreateSuccess(data) {
-    const {snippets} = this.state;
+    const newSnippets = this.state.snippets;
+    const counter = this.state.totalCount;
+
+    newSnippets.push(data.snippet);
 
     this.setState({
-      snippets: snippets.concat(data.snippet),
+      snippets: newSnippets,
       snippetCreated: true,
-      lastCreateSuccess: true
+      lastCreateSuccess: true,
+      totalCount: counter+1
     });
   }
 
