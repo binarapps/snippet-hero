@@ -89,7 +89,7 @@ export default class SnippetsIndex extends React.Component {
             if(s.snippets.length > 0){
               return (
                 <div>
-                  <SnippetsList snippets={s.snippets}/>
+                  <SnippetsList snippets={s.snippets} page={s.currentPage} perPage={perPage}/>
                   <Paginator
                     perPage={perPage}
                     totalCount={s.totalCount}
