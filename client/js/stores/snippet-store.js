@@ -29,7 +29,6 @@ class SnippetStore {
 
   getPaginatedSnippets(data) {
     if(data.ok){
-      const {snippets} = this.state;
       const pageSnippets = data.results.snippets;
 
       this.setState({

@@ -5,6 +5,7 @@ import SearchBar from '../search-bar';
 import SnippetActions from '../../actions/snippet-actions';
 import SnippetStore from '../../stores/snippet-store';
 import SnippetSearchStore from '../../stores/snippet-search-store';
+import Paginator from './paginator';
 
 export default class SnippetsIndex extends React.Component {
   constructor(props) {
@@ -13,6 +14,7 @@ export default class SnippetsIndex extends React.Component {
     this._searchSnippets = this._searchSnippets.bind(this);
     this._onChange = this._onChange.bind(this);
     this._onSearch = this._onSearch.bind(this);
+    this._goToPage = this._goToPage.bind(this);
   }
 
   componentDidMount() {
@@ -20,10 +22,10 @@ export default class SnippetsIndex extends React.Component {
     this.storeListeners.push(SnippetStore.listen(this._onChange));
     this.storeListeners.push(SnippetSearchStore.listen(this._onSearch));
     this._getPaginatedSnippets(1);
+    SnippetActions.getCount();
     this.setState({
       currentPage: 1
     });
-    SnippetActions.getCount();
   }
 
   _getPaginatedSnippets(page){
@@ -34,37 +36,14 @@ export default class SnippetsIndex extends React.Component {
     });
   }
 
-  _onClickNext(e){
-    e.preventDefault();
+  _goToPage(page){
     var perPage = this.props.route.perPage;
-    var next = this.state.currentPage + 1;
-    var all = Math.ceil(this.state.totalCount/perPage);
+    var allPages = Math.ceil(this.state.totalCount/perPage);
 
-    if(next < all){
-      this._getPaginatedSnippets(next);
+    if(page>0 && page <= allPages){
+      this._getPaginatedSnippets(page);
       this.setState({
-        currentPage: next
-      });
-    }
-  }
-
-  _goToPage(page, e){
-    e.preventDefault();
-
-    this._getPaginatedSnippets(page);
-    this.setState({
-      currentPage: page
-    });
-  }
-
-  _onClickPrev(e){
-    e.preventDefault();
-    var prev = this.state.currentPage - 1;
-
-    if(prev > 1){
-      this._getPaginatedSnippets(prev);
-      this.setState({
-        currentPage: prev
+        currentPage: page
       });
     }
   }
@@ -100,22 +79,6 @@ export default class SnippetsIndex extends React.Component {
   render() {
     let s = this.state;
     let perPage = this.props.route.perPage;
-    let allPages = Math.ceil(s.totalCount/perPage);
-    let pagesArray = Array.apply(null, Array(allPages)).map(function (x, i) { return i+1; });
-
-    const pages = pagesArray.map((page) => {
-      if(page ===  s.currentPage){
-        return (<li key={page} className={'active'}>
-            <a onClick={this._goToPage.bind(this, page)}>{page}</a>
-          </li>
-        );
-      } else {
-        return (<li key={page} className={''}>
-            <a onClick={this._goToPage.bind(this, page)}>{page}</a>
-          </li>
-        );
-      }
-    });
 
     return (
       <PageWrapper>
@@ -127,23 +90,11 @@ export default class SnippetsIndex extends React.Component {
               return (
                 <div>
                   <SnippetsList snippets={s.snippets}/>
-                  <nav className={'paginate-nav'}>
-                    <ul className={'pagination'}>
-                      <li className={s.currentPage === 1 ? 'disabled' : ''}>
-                        <a disabled={s.currentPage === 1} onClick={this._onClickPrev}>
-                          <span aria-hidden="true">&laquo;</span>
-                          <span className="sr-only">Prev</span>
-                        </a>
-                      </li>
-                      {pages}
-                      <li className={s.currentPage === allPages ? 'disabled' : ''}>
-                        <a disabled={s.currentPage === allPages} onClick={this._onClickNext}>
-                          <span className="sr-only">Next</span>
-                          <span aria-hidden="true">&raquo;</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </nav>
+                  <Paginator
+                    perPage={perPage}
+                    totalCount={s.totalCount}
+                    currentPage={s.currentPage}
+                    onClickPage={(page) => this._goToPage(page)}/>
                 </div>
               );
             } else {
