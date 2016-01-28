@@ -69,10 +69,10 @@ export default class UserSnippets extends React.Component {
         <h2 style={{fontSize: '24px', margin: '20px 0'}}>Your snippets:</h2>
         <div style={{clear: 'right'}}>
           {(() => {
-            if(this.state.currentUserSnippets.length > 0){
+            if(s.currentUserSnippets.length > 0){
               return (
                 <div>
-                  <UserList snippets={this.state.currentUserSnippets} page={s.currentPage} perPage={perPage}/>
+                  <UserList snippets={s.currentUserSnippets} page={s.currentPage} perPage={perPage}/>
                   <Paginator
                     perPage={perPage}
                     totalCount={s.totalCount}
