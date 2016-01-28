@@ -5,15 +5,17 @@ import FlashMessages from './flash-messages-actions';
 class UserSnippetsActions {
   constructor(){}
 
-  getAllOfCurrentUser() {
-    axios.get('/snippets/user')
-      .then(res => {
-        FlashMessages.pushMessage({ content: 'Here are your own snippets!' });
-        this.dispatch({ok: true, snippets: res.data});
-      }).catch(err => {
-        FlashMessages.pushMessage({ content: 'Oops! Something went wrong :(' });
-        this.dispatch({ok: false, error: err});
-      });
+  getPaginatedUserSnippets(page, perPage){
+    var start = (perPage*(page-1));
+    axios.get('/snippets/user?results='+ perPage +'&start='+ start)
+      .then(res => this.dispatch({ok: true, results: res.data}))
+      .catch(err => this.dispatch({ok: false, error: err}));
+  }
+
+  getCount(){
+    axios.get('/snippets/user/count')
+      .then(res => this.dispatch({ok: true, count: res.data.count}))
+      .catch(err => this.dispatch({ok: false, error: err}));
   }
 
   getAllComments(snippetId) {

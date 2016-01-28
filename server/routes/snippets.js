@@ -25,17 +25,26 @@ router.get('/count', function (req, res) {
   });
 });
 
-/*GET current user's snippet listing */
+/* GET current user's paginated snippets */
 router.get('/user', function (req, res) {
-  var userId = req.user.get('id');
   var results = req.query.results;
   var page = req.query.start;
-  
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ where : { UserId: userId }, limit: results, offset: page }).then(function (snippets) {
-    var mappedSnippets = snippets.map(function (s) {
+  var userId = req.user.get('id');
+
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ where: { UserId: userId }, limit: results, offset: page }).then(function (snippets) {
+    var mappedSnippets = snippets.map(function (s){
       return s.toJson();
     });
-    res.send(mappedSnippets);
+    res.status(200).send({snippets: mappedSnippets});
+  });
+});
+
+/* Get current user's snippets' count for pages count */
+router.get('/user/count', function (req, res) {
+  var userId = req.user.get('id');
+
+  models.Snippet.count({ where : {UserId: userId }}).then(function (c) {
+    res.status(200).send({count: c});
   });
 });
 

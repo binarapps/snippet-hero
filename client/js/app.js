@@ -29,7 +29,7 @@ function main () {
       <Route path="/" component={App} >
 
         <Route path="/snippets" component={SnippetsIndex} perPage={2}/>
-        <Route path="/snippets/user" component={UserSnippets}/>
+        <Route path="/snippets/user" component={UserSnippets} perPage={2}/>
         <Route path="/logout" component={Logout}/>
         <Route path="/login" component={Login}/>
         <Route path="/register" component={Register}/>

@@ -23,17 +23,6 @@ class SnippetActions {
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
-  getAllOfCurrentUser() {
-    axios.get('/snippets/user')
-      .then(res => {
-        FlashMessages.pushMessage({ content: 'Here are your own snippets!' });
-        this.dispatch({ok: true, snippets: res.data});
-      }).catch(err => {
-        FlashMessages.pushMessage({ content: 'Oops! Something went wrong :(' });
-        this.dispatch({ok: false, error: err});
-      });
-  }
-
   search(name) {
     axios.get('/snippets/search', {params: { name: name }})
       .then(res => this.dispatch({ok: true, snippets: res.data}))

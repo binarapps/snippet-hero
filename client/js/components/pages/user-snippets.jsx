@@ -3,18 +3,24 @@ import PageWrapper from '../page-wrapper';
 import UserList from '../snippets/user-list';
 import UserSnippetsActions from '../../actions/user-snippets-actions';
 import UserSnippetsStore from '../../stores/user-snippets-store';
+import Paginator from './paginator';
 
 export default class UserSnippets extends React.Component {
   constructor(props) {
     super(props);
     this.state = this.getPropsFromStores();
     this._onChange = this._onChange.bind(this);
+    this._goToPage = this._goToPage.bind(this);
   }
 
   componentDidMount() {
     this.storeListeners = [];
     this.storeListeners.push(UserSnippetsStore.listen(this._onChange));
-    UserSnippetsActions.getAllOfCurrentUser();
+    this._getPaginatedSnippets(1);
+    UserSnippetsActions.getCount();
+    this.setState({
+      currentPage: 1
+    });
   }
 
   getPropsFromStores() {
@@ -33,7 +39,31 @@ export default class UserSnippets extends React.Component {
     this.setState(this.getPropsFromStores(this.state, this.context));
   }
 
+  _getPaginatedSnippets(page){
+    UserSnippetsActions.getPaginatedUserSnippets(page, this.props.route.perPage);
+
+    this.setState({
+      currentPage: page
+    });
+  }
+
+  _goToPage(page){
+    var perPage = this.props.route.perPage;
+    var allPages = Math.ceil(this.state.totalCount/perPage);
+
+    if(page>0 && page <= allPages){
+      this._getPaginatedSnippets(page);
+      this.setState({
+        currentPage: page
+      });
+    }
+  }
+
   render() {
+
+    let s = this.state;
+    let perPage = this.props.route.perPage;
+
     return (
       <PageWrapper>
         <h2 style={{fontSize: '24px', margin: '20px 0'}}>Your snippets:</h2>
@@ -41,7 +71,14 @@ export default class UserSnippets extends React.Component {
           {(() => {
             if(this.state.currentUserSnippets.length > 0){
               return (
-                <UserList snippets={this.state.currentUserSnippets}/>
+                <div>
+                  <UserList snippets={this.state.currentUserSnippets}/>
+                  <Paginator
+                    perPage={perPage}
+                    totalCount={s.totalCount}
+                    currentPage={s.currentPage}
+                    onClickPage={(page) => this._goToPage(page)}/>
+                </div>
               );
             } else {
               return (
