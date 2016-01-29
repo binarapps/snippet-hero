@@ -1,0 +1,24 @@
+module.exports = {
+  development: {
+    username: 'user',
+    password: null,
+    database: snippethero_development,
+    host: '127.0.0.1',
+    dialect: 'postgres'
+  },
+  test: {
+    username: 'user',
+    password: null,
+    database: 'snippethero_test',
+    host: '127.0.0.1',
+    dialect: 'postgres',
+    logging: false
+  },
+  production: {
+    username: 'user',
+    database: 'snippethero_production',
+    host: '127.0.0.1',
+    password: null,
+    dialect: 'postgres'
+  }
+};

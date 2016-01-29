@@ -14,8 +14,15 @@ var users = require('./routes/users');
 var snippets = require('./routes/snippets');
 var ratings = require('./routes/ratings');
 var snippetComments = require('./routes/comments');
-var secrets = require('./config/secrets');
 
+var env = process.env.NODE_ENV;
+var secrets;
+
+if (env === 'production') {
+  secrets = require('./config/secrets-production');
+} else {
+  secrets = require('./config/secrets');
+}
 require('./config/passport_configuration');
 
 var app = express();
@@ -34,7 +41,7 @@ app.use(logger('combined', {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({ secret: secrets.sessionSecret }));
+app.use(session({ secret: secrets.sessionSecret, resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.resolve(__dirname, '../build')));
