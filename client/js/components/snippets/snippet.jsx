@@ -70,6 +70,8 @@ export default class Snippet extends React.Component {
     let author = (this.props.user ? this.props.user.name : (currentUser ? currentUser.name : 'author') );
     let enabled = this.checkRatingAbility();
 
+    const ratings = this.props.id ? <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={enabled}/>: '';
+
     let avatar = (<Avatar
           color={generateColor()}
           backgroundColor={generateColor()}>
@@ -88,7 +90,7 @@ export default class Snippet extends React.Component {
             subtitle= {author}
             avatar={avatar} />
           <div>
-            <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={enabled}/>
+            {ratings}
           </div>
         </div>
         {this.checkOwner() ? deleteButton : ''}

@@ -45,7 +45,7 @@ class SnippetActions {
     this.dispatch();
     axios.post('/snippets', snippet)
       .then(res => this.actions.onCreateSuccess(res))
-      .catch(res => this.actions.onCreateFail(res));
+      .catch(() => this.actions.onCreateFail());
   }
 
   onCreateSuccess(res) {

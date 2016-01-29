@@ -72,6 +72,7 @@ module.exports = function(sequelize, DataTypes) {
           content: '',
           versions: [],
           ratings: [],
+          comments: [],
           createdAt: this.get('createdAt')
         };
 
