@@ -14,7 +14,7 @@ class Paginator extends React.Component {
   render() {
     let p = this.props;
 
-    let perPage = this.props.perPage;
+    let perPage = p.perPage;
     let allPages = Math.ceil(p.totalCount/perPage);
     let pagesArray = Array.apply(null, Array(allPages)).map(function (x, i) { return i+1; });
 
