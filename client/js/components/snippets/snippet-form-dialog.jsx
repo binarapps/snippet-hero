@@ -13,7 +13,7 @@ import SnippetStore from '../../stores/snippet-store.js';
 export default class SnippetFormDialog extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {name: '', content: '', description: '', language: 0, isOpen: props.dialogOpen, createMessage: ''};
+    this.state = {name: '', content: '', description: '', language: 'text/plain', isOpen: props.dialogOpen, createMessage: ''};
     this.store = SnippetStore;
     this.listener = null;
 
