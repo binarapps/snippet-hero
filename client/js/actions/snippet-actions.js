@@ -70,6 +70,7 @@ class SnippetActions {
       .then(res => {
         FlashMessages.pushMessage({ content: 'Successfully deleted snippet!' });
         this.dispatch({ok: true, res: res.data.snippet});
+        this._destroyUserSnippet({ok: true, res: res.data.snippet});
       }).catch(() => {
         FlashMessages.pushMessage({ content: 'Something went wrong. Could not delete that snippet :(' });
         this.dispatch({ok: false});

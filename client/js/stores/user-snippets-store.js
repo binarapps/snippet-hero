@@ -47,7 +47,7 @@ class UserSnippetsStore {
     }
   }
 
-  destroySnippet (data) {
+  destroyUserSnippet (data) {
     if (data.ok){
       var oldUserSnippets = this.state.currentUserSnippets;
 

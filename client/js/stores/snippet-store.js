@@ -3,6 +3,7 @@ import update from 'react-addons-update';
 import _ from 'lodash';
 import SnippetActions from '../actions/snippet-actions';
 import RatingActions from '../actions/rating-actions';
+import UserSnippetsStore from './user-snippets-store';
 
 // TODO create tests
 class SnippetStore {
@@ -159,7 +160,6 @@ class SnippetStore {
   destroySnippet (data) {
     if (data.ok){
       var oldSnippets = this.state.snippets;
-      var oldUserSnippets = this.state.currentUserSnippets;
 
       oldSnippets.forEach(function (snippet) {
         if(snippet.id == data.res){
@@ -168,17 +168,10 @@ class SnippetStore {
         }
       });
 
-      oldUserSnippets.forEach(function (userSnippet) {
-        if(userSnippet.id == data.res){
-          var indexOfUserSnippet = oldUserSnippets.indexOf(userSnippet);
-          oldUserSnippets.splice(indexOfUserSnippet, 1);
-        }
-      });
-
       this.setState({
-        snippets: oldSnippets,
-        currentUserSnippets: oldUserSnippets
+        snippets: oldSnippets
       });
+      UserSnippetsStore.destroyUserSnippet(data);
     }
   }
 }
