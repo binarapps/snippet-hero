@@ -15,10 +15,10 @@ class UserSnippetsStore {
     };
   }
 
-  getPaginatedUserSnippets(data) {;
+  getPaginatedUserSnippets(data) {
     if(data.ok){
       const pageSnippets = data.results.snippets;
-      const count = data.results.count
+      const count = data.results.count;
 
       this.setState({
         currentUserSnippets: pageSnippets,
