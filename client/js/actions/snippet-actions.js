@@ -1,25 +1,15 @@
 import axios from 'axios';
 import alt from '../libs/alt';
 import FlashMessages from './flash-messages-actions';
+import {buildUrl} from '../libs/paginate';
 
 // TODO create tests
 class SnippetActions {
-  constructor() {
-    // this.generateActions(
-    //   'create'
-    // );
-  }
+  constructor() {}
 
   getPaginatedSnippets(page, perPage){
-    var start = (perPage*(page-1));
-    axios.get('/snippets?results='+ perPage +'&start='+ start)
+    axios.get('/snippets?'+ buildUrl(perPage, page))
       .then(res => this.dispatch({ok: true, results: res.data}))
-      .catch(err => this.dispatch({ok: false, error: err}));
-  }
-
-  getCount(){
-    axios.get('/snippets/count')
-      .then(res => this.dispatch({ok: true, count: res.data.count}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 

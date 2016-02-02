@@ -6,45 +6,32 @@ var appLogger = require('../lib/logger');
 
 /* GET with pagination */
 router.get('/', function (req, res) {
-  var results = req.query.results;
-  var page = req.query.start;
+  var perPage = req.query.results;
+  var page = req.query.offset;
 
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ limit: results, offset: page }).then(function (snippets) {
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ limit: perPage, offset: page }).then(function (snippets) {
     var mappedSnippets = snippets.map(function (s){
       return s.toJson();
     });
-    res.status(200).send({snippets: mappedSnippets});
-  });
-});
-
-
-/* Get snippets' count for pages count */
-router.get('/count', function (req, res) {
-  models.Snippet.count().then(function (c) {
-    res.status(200).send({count: c});
+    models.Snippet.count().then(function (c) {
+      res.status(200).send({snippets: mappedSnippets, count: c});
+    });
   });
 });
 
 /* GET current user's paginated snippets */
 router.get('/user', function (req, res) {
-  var results = req.query.results;
-  var page = req.query.start;
+  var perPage = req.query.results;
+  var page = req.query.offset;
   var userId = req.user.get('id');
 
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ where: { UserId: userId }, limit: results, offset: page }).then(function (snippets) {
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ where: { UserId: userId }, limit: perPage, offset: page }).then(function (snippets) {
     var mappedSnippets = snippets.map(function (s){
       return s.toJson();
     });
-    res.status(200).send({snippets: mappedSnippets});
-  });
-});
-
-/* Get current user's snippets' count for pages count */
-router.get('/user/count', function (req, res) {
-  var userId = req.user.get('id');
-
-  models.Snippet.count({ where : {UserId: userId }}).then(function (c) {
-    res.status(200).send({count: c});
+    models.Snippet.count({ where : {UserId: userId }}).then(function (c) {
+      res.status(200).send({snippets: mappedSnippets, count: c});
+    });
   });
 });
 

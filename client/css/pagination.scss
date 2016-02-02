@@ -1,3 +1,5 @@
+@import 'variables';
+
 .paginate-nav {
   text-align: center;
   width: 100%;
@@ -8,14 +10,13 @@
 }
 
 .pagination > li {
-  border-color: #ccc;
+  border-color: $primary-gray;
   border-radius: 4px;
   border-style: solid;
   border-width: 1px;
-  cursor: pointer;
   display: inline-block;
-  margin-top: 5px;
   margin-bottom: 5px;
+  margin-top: 5px;
   position: relative;
 }
 
@@ -25,14 +26,15 @@
 
 .pagination > li > a {
   background-color: transparent;
-  color: #18B8D0;
+  color: $nav-blue;
+  cursor: pointer;
   display: block;
-  padding: 10px 15px;
+  padding: $button-pad;
   position: relative;
   text-decoration: none;
 }
 
 .pagination > li.active > a {
-  background-color: #18B8D0;
-  color: #fff;
+  background-color: $nav-blue;
+  color: white;
 }

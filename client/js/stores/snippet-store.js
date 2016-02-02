@@ -19,20 +19,14 @@ class SnippetStore {
     };
   }
 
-  getCount(data){
-    if(data.ok){
-      this.setState({
-        totalCount: data.count
-      });
-    }
-  }
-
   getPaginatedSnippets(data) {
     if(data.ok){
       const pageSnippets = data.results.snippets;
+      const count = data.results.count;
 
       this.setState({
-        snippets: pageSnippets
+        snippets: pageSnippets,
+        totalCount: count
       });
     }
   }

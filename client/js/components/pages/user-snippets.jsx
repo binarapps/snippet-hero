@@ -17,10 +17,6 @@ export default class UserSnippets extends React.Component {
     this.storeListeners = [];
     this.storeListeners.push(UserSnippetsStore.listen(this._onChange));
     this._getPaginatedSnippets(1);
-    UserSnippetsActions.getCount();
-    this.setState({
-      currentPage: 1
-    });
   }
 
   getPropsFromStores() {
@@ -53,9 +49,6 @@ export default class UserSnippets extends React.Component {
 
     if(page>0 && page <= allPages){
       this._getPaginatedSnippets(page);
-      this.setState({
-        currentPage: page
-      });
     }
   }
 

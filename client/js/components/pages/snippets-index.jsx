@@ -22,10 +22,6 @@ export default class SnippetsIndex extends React.Component {
     this.storeListeners.push(SnippetStore.listen(this._onChange));
     this.storeListeners.push(SnippetSearchStore.listen(this._onSearch));
     this._getPaginatedSnippets(1);
-    SnippetActions.getCount();
-    this.setState({
-      currentPage: 1
-    });
   }
 
   _getPaginatedSnippets(page){
@@ -42,9 +38,6 @@ export default class SnippetsIndex extends React.Component {
 
     if(page>0 && page <= allPages){
       this._getPaginatedSnippets(page);
-      this.setState({
-        currentPage: page
-      });
     }
   }
 
