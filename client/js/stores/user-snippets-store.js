@@ -1,12 +1,12 @@
 import alt from '../libs/alt';
 import update from 'react-addons-update';
 import _ from 'lodash';
-import UserSnippetsActions from '../actions/user-snippets-actions';
+import SnippetActions from '../actions/snippet-actions';
 import RatingActions from '../actions/rating-actions';
 
 class UserSnippetsStore {
   constructor(){
-    this.bindActions(UserSnippetsActions);
+    this.bindActions(SnippetActions);
     this.bindActions(RatingActions);
     this.state = {
       currentUserSnippets: [],

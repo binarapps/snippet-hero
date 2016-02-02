@@ -1,7 +1,7 @@
 import React from 'react';
 import Markdown from 'markdown-react-js';
 import UserStore from '../../stores/user-store';
-import UserSnippetsActions from '../../actions/user-snippets-actions.js';
+import SnippetActions from '../../actions/snippet-actions.js';
 import Avatar from 'material-ui/lib/avatar';
 import Colors from 'material-ui/lib/styles/colors';
 import RaisedButton from 'material-ui/lib/raised-button';
@@ -23,7 +23,7 @@ export default class UserSnippet extends React.Component {
   }
 
   _deleteSnippet() {
-    UserSnippetsActions.destroySnippet(this.props.id);
+    SnippetActions.destroySnippet(this.props.id);
   }
 
   countAverage(){
