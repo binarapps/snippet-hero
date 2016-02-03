@@ -133,6 +133,8 @@ export default class Snippet extends React.Component {
       </div>
     );
 
+    const ratings = this.props.id ? <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={this.checkRatingAbility()}/>: '';
+
     let avatar = (
       <Avatar
         color={generateColor()}
@@ -149,7 +151,7 @@ export default class Snippet extends React.Component {
             subtitle= {author}
             avatar={avatar} />
           <div>
-            <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={this._checkRatingAbility()}/>
+            {ratings}
           </div>
         </div>
         {this.checkOwner() ? snippetActions : ''}
