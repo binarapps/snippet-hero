@@ -48,7 +48,6 @@
     "imports-loader": "0.6.5",
     "jade": "1.11.0",
     "json-loader": "0.5.4",
-    "libpq": "1.8.0",
     "lodash": "3.10.1",
     "markdown-react-js": "0.3.0",
     "material-ui": "0.13.4",
