@@ -50,10 +50,12 @@ class SnippetStore {
       var usersRatings = this.state.usersRatings;
       var userId = userRating.userId;
       var snippetRating = {};
-
-      if(usersRatings[userId]){
-        snippetRating = usersRatings[userId];
+      if(usersRatings.length){
+        if(usersRatings[userId] !== undefined){
+           snippetRating = usersRatings[userId];
+        }
       }
+
       snippetRating[snippetId] = userRating.grade;
       usersRatings[userId] = snippetRating;
 
@@ -61,12 +63,13 @@ class SnippetStore {
         snippetsAvg: snippetsAverage,
         usersRatings: usersRatings
       });
-    }
-    else {
+    } else {
       this.setState({
         snippetsAvg: snippetsAverage
       });
     }
+
+
   }
 
   createRating(data) {
@@ -134,59 +137,6 @@ class SnippetStore {
     } else {
       // TODO react to errors
       // console.log(data.error.message)
-    }
-  }
-
-  getSnippetRatings (data) {
-    if (data.ok) {
-      var snippetsAverage = this.state.snippetsAvg;
-      const snippetId = data.avg.snippetId;
-      const avarage = data.avg.avg;
-
-      snippetsAverage[snippetId] = avarage;
-
-      this.setState({
-        snippetsAvg: snippetsAverage
-      });
-    }
-  }
-
-  getUserSnippetRating (data) {
-    if (data.ok) {
-      var userId = data.userId;
-      var snippetId = data.snippetId;
-      var ratings = data.ratings;
-      var userRate = this.state.usersRatings;
-
-      if(userId != null && snippetId != null){
-        userRate[userId][snippetId] = ratings;
-      }
-
-      this.setState({
-        usersRatings: userRate
-      });
-    }
-  }
-
-  getCurrentUserRating (data) {
-    if (data.ok) {
-      var userId = data.grade.user;
-      var snippetId = data.grade.snippet;
-      var grade = data.grade.rate;
-      var userRate = this.state.usersRatings;
-
-      if (userId != null) {
-        var snippetRating = {};
-        if (userRate[userId]){
-          snippetRating = userRate[userId];
-        }
-        snippetRating[snippetId] = grade;
-        userRate[userId] = snippetRating;
-
-        this.setState({
-          usersRatings: userRate
-        });
-      }
     }
   }
 

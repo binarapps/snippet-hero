@@ -23,8 +23,6 @@ export default class Rating extends React.Component {
 
   componentWillMount () {
     this.setState({ currentUser: UserStore.state.currentUser });
-    // RatingActions.getSnippetRatings(this.props.snippetId);
-    // RatingActions.getCurrentUserRating(this.props.snippetId);
   }
 
   componentDidMount() {
@@ -40,38 +38,38 @@ export default class Rating extends React.Component {
     let currentUserId = this.state.currentUser.id;
     let grade = 0;
 
-    snippet.ratings.forEach(function (rating) {
-      sum += rating.value;
-      index++;
+    if(snippet.ratings){
+      snippet.ratings.forEach(function (rating) {
+        sum += rating.value;
+        index++;
 
-      if(rating.UserId == currentUserId){
-        currentRate.userId = rating.UserId;
-        currentRate.grade = rating.value;
-        grade = rating.value;
-      }
+        if(rating.UserId == currentUserId){
+          currentRate.userId = rating.UserId;
+          currentRate.grade = rating.value;
+          grade = rating.value;
+        }
+      });
+    }
+
+    avg = (index==0 ? 0 : sum/index).toFixed(2);
+    this.setState({
+      grade: grade
     });
-
-
-
-    // if(snipet.ratings){
-    //   snippet.ratings.forEach(function (rating) {
-    //     sum += rating.value;
-    //     index++;
-    //     if (rating.UserId == currentUserId){
-    //       currentRate = { userId: rating.UserId, grade: rating.value };
-    //     }
-    //   });
-    // }
-    
-    // avg = (index == 0 ? 0 : sum/index).toFixed(2);
-    // SnippetActions.countSnippetAverage(snippet.id, avg, currentRate)
+    SnippetActions.countSnippetAverage(snippet.id, avg, currentRate);
   }
 
   _handleMouseLeave(){
-    RatingActions.getCurrentUserRating(this.props.snippetId);
+    let rating = 0;
+    let userRates = this.props.usersRatings[this.state.currentUser.id] ;
+
+    if(userRates !== undefined){
+      if(userRates[this.props.snippetId] !== undefined){
+        rating = userRates[this.props.snippetId];
+      }
+    }
 
     this.setState({
-      grade: this.props.usersRatings[this.state.currentUser.id][this.props.snippetId]
+      grade: rating
     });
   }
 

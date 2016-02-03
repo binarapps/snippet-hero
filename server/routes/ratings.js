@@ -36,7 +36,7 @@ router.put('/:id', function (req, res) {
 
 /* POST new rating */
 router.post('/', function (req, res) {
-  var user_id = req.user.dataValues.id;
+  var user_id = req.user.get('id');
   var snippet_id = req.body.SnippetId;
   var sum_ratings = 0.0;
   models.Rating.findOne({ where : { SnippetId: snippet_id, UserId: user_id } }).then( function (rating) {
