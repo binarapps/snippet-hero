@@ -1,5 +1,6 @@
 import React from 'react';
 import RatingActions from '../../actions/rating-actions';
+import SnippetActions from '../../actions/snippet-actions';
 import Star from './star';
 import UserStore from '../../stores/user-store';
 
@@ -22,12 +23,48 @@ export default class Rating extends React.Component {
 
   componentWillMount () {
     this.setState({ currentUser: UserStore.state.currentUser });
-    RatingActions.getSnippetRatings(this.props.snippetId);
-    RatingActions.getCurrentUserRating(this.props.snippetId);
+    // RatingActions.getSnippetRatings(this.props.snippetId);
+    // RatingActions.getCurrentUserRating(this.props.snippetId);
   }
 
-  componentDidMount () {
-    this._setGradeOfUserRating();
+  componentDidMount() {
+    this._countSnippetAvg();
+  }
+
+  _countSnippetAvg () {
+    let snippet = this.props.snippet;
+    let sum = 0.0;
+    let index = 0;
+    let currentRate = {};
+    let avg;
+    let currentUserId = this.state.currentUser.id;
+    let grade = 0;
+
+    snippet.ratings.forEach(function (rating) {
+      sum += rating.value;
+      index++;
+
+      if(rating.UserId == currentUserId){
+        currentRate.userId = rating.UserId;
+        currentRate.grade = rating.value;
+        grade = rating.value;
+      }
+    });
+
+
+
+    // if(snipet.ratings){
+    //   snippet.ratings.forEach(function (rating) {
+    //     sum += rating.value;
+    //     index++;
+    //     if (rating.UserId == currentUserId){
+    //       currentRate = { userId: rating.UserId, grade: rating.value };
+    //     }
+    //   });
+    // }
+    
+    // avg = (index == 0 ? 0 : sum/index).toFixed(2);
+    // SnippetActions.countSnippetAverage(snippet.id, avg, currentRate)
   }
 
   _handleMouseLeave(){
