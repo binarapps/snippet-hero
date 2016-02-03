@@ -106,10 +106,10 @@ class SnippetStore {
   getSnippetRatings (data) {
     if (data.ok) {
       var snippetsAverage = this.state.snippetsAvg;
-      const snippet_id = data.avg.snippetId;
+      const snippetId = data.avg.snippetId;
       const avarage = data.avg.avg;
 
-      snippetsAverage[snippet_id] = avarage;
+      snippetsAverage[snippetId] = avarage;
 
       this.setState({
         snippetsAvg: snippetsAverage
@@ -119,13 +119,13 @@ class SnippetStore {
 
   getUserSnippetRating (data) {
     if (data.ok) {
-      var user = data.userId;
-      var snippet = data.snippetId;
+      var userId = data.userId;
+      var snippetId = data.snippetId;
       var ratings = data.ratings;
       var userRate = this.state.usersRatings;
 
-      if(user != null && snippet != null){
-        userRate[user][snippet] = ratings;
+      if(userId != null && snippetId != null){
+        userRate[userId][snippetId] = ratings;
       }
 
       this.setState({
@@ -136,18 +136,18 @@ class SnippetStore {
 
   getCurrentUserRating (data) {
     if (data.ok) {
-      var user_id = data.grade.user;
-      var snippet_id = data.grade.snippet;
+      var userId = data.grade.user;
+      var snippetId = data.grade.snippet;
       var grade = data.grade.rate;
       var userRate = this.state.usersRatings;
 
-      if (user_id != null) {
-        var snippet_rating = {};
-        if (userRate[user_id]){
-          snippet_rating = userRate[user_id];
+      if (userId != null) {
+        var snippetRating = {};
+        if (userRate[userId]){
+          snippetRating = userRate[userId];
         }
-        snippet_rating[snippet_id] = grade;
-        userRate[user_id] = snippet_rating;
+        snippetRating[snippetId] = grade;
+        userRate[userId] = snippetRating;
 
         this.setState({
           usersRatings: userRate
