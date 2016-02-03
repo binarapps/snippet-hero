@@ -14,7 +14,7 @@ class SnippetListItem extends React.Component{
     return (
       <li style={{position: 'relative', paddingLeft: '30px'}}>
         <span style={{position: 'absolute', left: 0}}>#{realIndex}</span>
-        <Snippet {...this.props.snippet} style={{marginBottom: '15px'}} />
+        <Snippet {...this.props.snippet} style={{marginBottom: '15px'}} perPage={perPage}/>
         <CommentBox snippetId={this.props.snippet.id} comments={this.props.snippet.comments}/>
       </li>
     );

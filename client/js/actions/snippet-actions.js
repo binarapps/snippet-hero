@@ -7,8 +7,8 @@ import {buildUrl} from '../libs/paginate';
 class SnippetActions {
   constructor() {}
 
-  getPaginatedSnippets(page, perPage){
-    axios.get('/snippets?'+ buildUrl(perPage, page))
+  getPaginatedSnippets(page, perPage, userId){
+    axios.get('/snippets?'+ buildUrl(perPage, page)+(userId ? '&userId='+userId : ''))
       .then(res => this.dispatch({ok: true, results: res.data}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
@@ -43,6 +43,10 @@ class SnippetActions {
   }
 
   onCreateFail() {
+    this.dispatch();
+  }
+
+  resetStore() {
     this.dispatch();
   }
 

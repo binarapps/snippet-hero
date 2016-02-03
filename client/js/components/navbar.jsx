@@ -4,6 +4,7 @@ import LeftNav from 'material-ui/lib/left-nav';
 import SnippetFormDialog from './snippets/snippet-form-dialog';
 import RaisedButton from 'material-ui/lib/raised-button';
 import {langs} from '../libs/languages';
+import SnippetActions from '../actions/snippet-actions';
 
 class Navbar extends React.Component {
 
@@ -15,6 +16,7 @@ class Navbar extends React.Component {
 
   onLeftNavChange (e, key, payload) {
     this.props.history.pushState(null, payload.route);
+    SnippetActions.resetStore();
   }
 
   handleClick (e) {

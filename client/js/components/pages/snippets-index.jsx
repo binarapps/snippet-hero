@@ -25,7 +25,7 @@ export default class SnippetsIndex extends React.Component {
   }
 
   _getPaginatedSnippets(page){
-    SnippetActions.getPaginatedSnippets(page, this.props.route.perPage);
+    SnippetActions.getPaginatedSnippets(page, this.props.route.perPage, this.state.current);
 
     this.setState({
       currentPage: page
@@ -72,10 +72,14 @@ export default class SnippetsIndex extends React.Component {
   render() {
     let s = this.state;
     let perPage = this.props.route.perPage;
+    let text = 'All snippets';
+    if (this.state.current != null){
+      text = ('All snippets of user ' + this.state.current + ':');
+    }
 
     return (
       <PageWrapper>
-        <h2 style={{fontSize: '24px', margin: '20px 0'}}>All snippets:</h2>
+        <h2 style={{fontSize: '24px', margin: '20px 0'}}>{text}</h2>
         <SearchBar label='Search by name:' onSearch={this._searchSnippets} />
         <div style={{clear: 'right'}}>
           {(() => {

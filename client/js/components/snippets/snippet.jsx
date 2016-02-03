@@ -15,17 +15,27 @@ import {modeFromMime} from '../../libs/languages';
 import UserStore from '../../stores/user-store';
 import SnippetActions from '../../actions/snippet-actions.js';
 import RaisedButton from 'material-ui/lib/raised-button';
+import FlashMessages from '../../actions/flash-messages-actions';
 
 // TODO create tests
 export default class Snippet extends React.Component {
   constructor(props) {
     super(props);
     this._deleteSnippet = this._deleteSnippet.bind(this);
+    this._getUserSnippet = this._getUserSnippet.bind(this);
   }
 
   _deleteSnippet() {
     SnippetActions.destroySnippet(this.props.id);
-  } 
+  }
+
+  _getUserSnippet(){
+    let p = this.props;
+    let currentUser = this.getCurrentUser;
+
+    SnippetActions.getPaginatedSnippets(1, p.perPage, (p.user ? p.user.id : currentUser.id));
+    FlashMessages.pushMessage({ content: ('Here are all snippets of user ' + (p.user ? p.user.name : currentUser.name)) });
+  }
 
   getCurrentUser(){
     return UserStore.state.currentUser;
@@ -74,7 +84,10 @@ export default class Snippet extends React.Component {
 
     let avatar = (<Avatar
           color={generateColor()}
-          backgroundColor={generateColor()}>
+          backgroundColor={generateColor()}
+          onClick={this._getUserSnippet}
+          style={{cursor: 'pointer'}}
+          title={('Click to see more ' + (this.props.user ? this.props.user.name : '') + ' snippets')}>
           {this.props.user ? this.props.user.name.split('')[0].toUpperCase() : (currentUser ? currentUser.name.split('')[0].toUpperCase() : '')}
         </Avatar>);
 

@@ -15,7 +15,8 @@ class SnippetStore {
       snippetCreated: false,
       snippetsAvg: {},
       usersRatings: {},
-      totalCount: 0
+      totalCount: 0,
+      current: null
     };
   }
 
@@ -23,10 +24,12 @@ class SnippetStore {
     if(data.ok){
       const pageSnippets = data.results.snippets;
       const count = data.results.count;
+      var user = data.results.userId ? data.results.userId : null;
 
       this.setState({
         snippets: pageSnippets,
-        totalCount: count
+        totalCount: count,
+        current: user
       });
     }
   }
@@ -157,6 +160,12 @@ class SnippetStore {
         });
       }
     }
+  }
+
+  resetStore() {
+    this.setState({
+      current: null
+    });
   }
 
   destroySnippet (data) {
