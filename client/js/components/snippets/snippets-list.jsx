@@ -4,9 +4,16 @@ import CommentBox from '../comments/comment-box';
 
 class SnippetListItem extends React.Component{
   render() {
+
+    let page = this.props.page;
+    let perPage = this.props.perPage;
+    let index = this.props.index;
+
+    let realIndex = (page-1)*perPage+index+1;
+
     return (
       <li style={{position: 'relative', paddingLeft: '30px'}}>
-        <span style={{position: 'absolute', left: 0}}>#{this.props.index+1}</span>
+        <span style={{position: 'absolute', left: 0}}>#{realIndex}</span>
         <Snippet {...this.props.snippet} style={{marginBottom: '15px'}} />
         <CommentBox snippetId={this.props.snippet.id} comments={this.props.snippet.comments}/>
       </li>
@@ -21,11 +28,15 @@ export default class SnippetsList extends React.Component {
   }
 
   render() {
+
+    let page = this.props.page;
+    let perPage = this.props.perPage;
+
     return (
       <ul>
         {this.props.snippets.map(function(snippet, index) {
           return (
-            <SnippetListItem key={`snippet-${snippet.id}`} snippet={snippet} index={index}/>
+            <SnippetListItem key={`snippet-${snippet.id}`} snippet={snippet} index={index} page={page} perPage={perPage}/>
           );
         })}
       </ul>

@@ -1,34 +1,16 @@
 import axios from 'axios';
 import alt from '../libs/alt';
 import FlashMessages from './flash-messages-actions';
+import {buildUrl} from '../libs/paginate';
 
 // TODO create tests
 class SnippetActions {
-  constructor() {
-    // this.generateActions(
-    //   'create'
-    // );
-  }
+  constructor() {}
 
-  getAll() {
-    axios.get('/snippets')
-      .then(res => {
-        this.dispatch({ok: true, snippets: res.data});
-      }).catch(err => {
-        FlashMessages.pushMessage({ content: 'Oops! Something went wrong :(' });
-        this.dispatch({ok: false, error: err});
-      });
-  }
-
-  getAllOfCurrentUser() {
-    axios.get('/snippets/user')
-      .then(res => {
-        FlashMessages.pushMessage({ content: 'Here are your own snippets!' });
-        this.dispatch({ok: true, snippets: res.data});
-      }).catch(err => {
-        FlashMessages.pushMessage({ content: 'Oops! Something went wrong :(' });
-        this.dispatch({ok: false, error: err});
-      });
+  getPaginatedSnippets(page, perPage){
+    axios.get('/snippets?'+ buildUrl(perPage, page))
+      .then(res => this.dispatch({ok: true, results: res.data}))
+      .catch(err => this.dispatch({ok: false, error: err}));
   }
 
   search(name) {

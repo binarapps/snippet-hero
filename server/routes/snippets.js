@@ -14,22 +14,32 @@ var authChecker = function(req, res, next) {
 
 /* GET snippets listing. */
 router.get('/', function (req, res) {
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll().then(function (snippets) {
-    var mappedSnippets = snippets.map(function (s) {
+  var perPage = req.query.results;
+  var page = req.query.offset;
+
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ limit: perPage, offset: page }).then(function (snippets) {
+    var mappedSnippets = snippets.map(function (s){
       return s.toJson();
     });
-    res.send(mappedSnippets);
+    models.Snippet.count().then(function (c) {
+      res.status(200).send({snippets: mappedSnippets, count: c});
+    });
   });
 });
 
-/*GET current user's snippet listing */
-router.get('/user', authChecker, function (req, res) {
-  var user_id = req.user.get('id');
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ where : { UserId: user_id } }).then(function (snippets) {
-    var mappedSnippets = snippets.map(function (s) {
+/* GET current user's paginated snippets */
+router.get('/user', function (req, res) {
+  var perPage = req.query.results;
+  var page = req.query.offset;
+  var userId = req.user.get('id');
+
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ where: { UserId: userId }, limit: perPage, offset: page }).then(function (snippets) {
+    var mappedSnippets = snippets.map(function (s){
       return s.toJson();
     });
-    res.send(mappedSnippets);
+    models.Snippet.count({ where : {UserId: userId }}).then(function (c) {
+      res.status(200).send({snippets: mappedSnippets, count: c});
+    });
   });
 });
 

@@ -1,3 +1,5 @@
+@import 'variables';
+
 html {
   font-size: 0.625rem; // it is 10px
 }
@@ -18,7 +20,7 @@ body {
 .snippet-description {
   quotes: "\201C""\201D""\201C""\201D";
   &:before {
-    color: #ccc;
+    color: $primary-gray;
     content: open-quote;
     font-size: 4rem;
     line-height: .1rem;

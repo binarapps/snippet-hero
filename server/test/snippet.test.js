@@ -76,11 +76,10 @@ describe('Snippets routes', function() {
         .expect(200)
         .end(function (err, res) {
           if (err) {return done(err);}
+          expect(res.body.snippets).to.be.an.array;
+          expect(res.body.snippets.length).to.be.equal(2);
 
-          expect(res.body).to.be.an.array;
-          expect(res.body.length).to.be.equal(2);
-
-          var snippet  = res.body[0];
+          var snippet  = res.body.snippets[0];
 
           expect(snippet).to.be.a.object;
           expect(snippet.id).to.be.ok;
