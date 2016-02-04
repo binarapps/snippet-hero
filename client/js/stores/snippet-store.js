@@ -52,7 +52,7 @@ class SnippetStore {
       var snippetRating = {};
       if(usersRatings.length){
         if(usersRatings[userId] !== undefined){
-           snippetRating = usersRatings[userId];
+          snippetRating = usersRatings[userId];
         }
       }
 

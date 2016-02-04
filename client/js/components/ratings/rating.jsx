@@ -10,6 +10,7 @@ export default class Rating extends React.Component {
     this._handleMouseOver = this._handleMouseOver.bind(this);
     this._handleClick = this._handleClick.bind(this);
     this._handleMouseLeave = this._handleMouseLeave.bind(this);
+    this._countSnippetAvg = this._countSnippetAvg.bind(this);
     this.state = {grade: 0, currentUser: UserStore.state.currentUser};
     this.style = {
       starBlack: {
@@ -26,7 +27,7 @@ export default class Rating extends React.Component {
   }
 
   componentDidMount() {
-    this._countSnippetAvg();
+    setTimeout(this._countSnippetAvg);
   }
 
   _countSnippetAvg () {
