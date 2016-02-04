@@ -24,38 +24,6 @@ describe('SnippetActions', function() {
     alt.dispatch.reset();
   });
 
-  describe('Get snippets collection', () => {
-    let snippets;
-    before(() => {
-      snippets = [
-        { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript'},
-        { id: 2, content: 'test', name: 'test', description: 'test', language: 'javascript'}
-      ];
-      sinon.stub(axios, 'get', () => {
-        return new Promise(function(resolve) {
-          resolve({data: snippets});
-        });
-      });
-    });
-
-    it('should dispatch all snippets list from server', (done) => {
-      SnippetActions.getAll();
-      setTimeout(function () {
-        expect(alt.dispatch.calledOnce).to.be.true;
-        expect(alt.dispatch.getCall(0).args[1].snippets).to.deep.equal(snippets);
-        done();
-      });
-    });
-
-    it('should dispatch all snippets with name from server', (done) => {
-      SnippetActions.search('test');
-      setTimeout(function () {
-        expect(alt.dispatch.calledOnce).to.be.true;
-        expect(alt.dispatch.getCall(0).args[1].snippets).to.deep.equal(snippets);
-        done();
-      });
-    });
-  });
 
   describe('Create snippet', function() {
     let snippet;
@@ -78,6 +46,39 @@ describe('SnippetActions', function() {
     });
   });
 
+  // don't know why, but if this tests is run as first one, it makes other tests fail (adds a dispatch)
+  describe('Get snippets collection', () => {
+    let snippets;
+    before(() => {
+      snippets = [
+        { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript'},
+        { id: 2, content: 'test', name: 'test', description: 'test', language: 'javascript'}
+      ];
+      sinon.stub(axios, 'get', () => {
+        return new Promise(function(resolve) {
+          resolve({data: snippets});
+        });
+      });
+    });
+
+    it('should dispatch all snippets list from server', (done) => {
+      SnippetActions.getPaginatedSnippets();
+      setTimeout(function () {
+        expect(alt.dispatch.calledOnce).to.be.true;
+        expect(alt.dispatch.getCall(0).args[1].results).to.deep.equal(snippets);
+        done();
+      });
+    });
+
+    it('should dispatch all snippets with name from server', (done) => {
+      SnippetActions.search('test');
+      setTimeout(function () {
+        expect(alt.dispatch.calledOnce).to.be.true;
+        expect(alt.dispatch.getCall(0).args[1].snippets).to.deep.equal(snippets);
+        done();
+      });
+    });
+  });
   describe('Delete snippet', function(){
     before(function(){
       let snippet = {id: 1, content: 'test content', name: 'test snippet', description: 'test description', language: 'javascript'};

@@ -10,16 +10,21 @@ class UserSnippetsStore {
     this.bindActions(RatingActions);
     this.state = {
       currentUserSnippets: [],
-      snippetsAvg: {}
+      snippetsAvg: {},
+      totalCount: 0
     };
   }
 
-  getAllOfCurrentUser (data){
-    if (data.ok) {
+  getPaginatedUserSnippets(data) {
+    if(data.ok){
+      const pageSnippets = data.results.snippets;
+      const count = data.results.count;
+
       this.setState({
-        currentUserSnippets: data.snippets
+        currentUserSnippets: pageSnippets,
+        totalCount: count
       });
-    } 
+    }
   }
 
   getAllComments(data) {

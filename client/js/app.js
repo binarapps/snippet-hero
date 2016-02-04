@@ -28,8 +28,8 @@ function main () {
     <Router history={history}>
       <Route path="/" component={App} >
 
-        <Route path="/snippets" component={SnippetsIndex}/>
-        <Route path="/snippets/user" component={UserSnippets}/>
+        <Route path="/snippets" component={SnippetsIndex} perPage={10}/>
+        <Route path="/snippets/user" component={UserSnippets} perPage={10}/>
         <Route path="/logout" component={Logout}/>
         <Route path="/login" component={Login}/>
         <Route path="/register" component={Register}/>
