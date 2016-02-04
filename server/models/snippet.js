@@ -107,7 +107,7 @@ module.exports = function(sequelize, DataTypes) {
             index++;
           });
 
-          json.avg = (sum/index).toFixed(2);
+          json.avg = (sum==0 ? 0 : sum/index).toFixed(2);
         }
 
         return json;
