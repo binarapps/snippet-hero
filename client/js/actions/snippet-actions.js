@@ -9,7 +9,8 @@ class SnippetActions {
 
   getPaginatedSnippets(page, perPage){
     axios.get('/snippets?'+ buildUrl(perPage, page))
-      .then(res => this.dispatch({ok: true, results: res.data}));
+      .then(res => this.dispatch({ok: true, results: res.data}))
+      .catch(err => this.dispatch({ok: false, error: err}));
   }
 
   search(name) {

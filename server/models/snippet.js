@@ -105,9 +105,9 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         this.belongsTo(models.User);
-        this.hasMany(models.SnippetVersion, {onDelete: 'cascade'});
-        this.hasMany(models.Rating, {onDelete: 'cascade'});
-        this.hasMany(models.Comment, {onDelete: 'cascade'});
+        this.hasMany(models.SnippetVersion, {onDelete: 'cascade', hooks: true});
+        this.hasMany(models.Rating, {onDelete: 'cascade', hooks: true});
+        this.hasMany(models.Comment, {onDelete: 'cascade', hooks: true});
       }
     }
   });
