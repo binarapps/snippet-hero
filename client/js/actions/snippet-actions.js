@@ -39,7 +39,7 @@ class SnippetActions {
   }
 
   countSnippetAverage(snippetId, avg, userRating){
-    this.dispatch({snippetId: snippetId, avarage: avg, userRate: userRating});
+    this.dispatch({snippetId: snippetId, average: avg, userRate: userRating});
   }
 
   onCreateSuccess(res) {

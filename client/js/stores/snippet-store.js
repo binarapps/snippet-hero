@@ -41,7 +41,7 @@ class SnippetStore {
   countSnippetAverage(data) {
     var snippetId = data.snippetId;
     var userRating = data.userRate;
-    var avg = data.avarage;
+    var avg = data.average;
     var snippetsAverage = this.state.snippetsAvg;
 
     snippetsAverage[snippetId] = avg;
