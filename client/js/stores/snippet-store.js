@@ -23,11 +23,40 @@ class SnippetStore {
     if(data.ok){
       const pageSnippets = data.results.snippets;
       const count = data.results.count;
+      const currentUserId = data.currentUser.id;
+
+      var snippetsAverage = this.state.snippetsAvg;
+      var usersRatings = this.state.usersRatings;
+      var snippetRating = {};
+
+      pageSnippets.forEach(function (snippet) {
+        snippetsAverage[snippet.id] = snippet.avg;
+        snippet.ratings.forEach(function (rating) {
+          if(rating.UserId == currentUserId) {
+            console.log('weszłem!');
+            if(usersRatings[currentUserId] !== undefined){
+              console.log('som juz jakies oceny tego jusera');
+            //   snippetRating = usersRatings[userId];
+            }
+            snippetRating[snippet.id] = rating.value;
+            usersRatings[currentUserId] = snippetRating;
+            console.log('USER RATING:');
+            console.log(usersRatings);
+          }
+        });
+      });
+
+      console.log('a tera za blokiem');
+      console.log(usersRatings);
 
       this.setState({
         snippets: pageSnippets,
-        totalCount: count
+        totalCount: count,
+        snippetsAvg: snippetsAverage,
+        usersRatings: usersRatings
       });
+      console.log('a tera stan');
+      console.log(this.state.usersRatings);
     }
   }
 

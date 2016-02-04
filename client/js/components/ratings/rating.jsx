@@ -27,29 +27,16 @@ export default class Rating extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(this._countSnippetAvg);
+    // setTimeout(this._countSnippetAvg);
+    setTimeout(this._countSnippetAvg, 1000);
   }
 
   _countSnippetAvg () {
-    let snippet = this.props.snippet;
-    let currentRate = {};
-    let currentUserId = this.state.currentUser.id;
-    let grade = 0;
-
-    if(snippet.ratings){
-      snippet.ratings.forEach(function (rating) {
-        if(rating.UserId == currentUserId){
-          currentRate.userId = rating.UserId;
-          currentRate.grade = rating.value;
-          grade = rating.value;
-        }
-      });
-    }
-
+    var userRates = this.props.usersRatings[this.state.currentUser.id];
+    var rating = (userRates !== undefined ? userRates[this.props.snippet.id] : 0);
     this.setState({
-      grade: grade
+      grade: rating
     });
-    SnippetActions.countSnippetAverage(snippet.id, snippet.avg, currentRate);
   }
 
   _handleMouseLeave(){
