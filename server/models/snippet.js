@@ -73,6 +73,7 @@ module.exports = function(sequelize, DataTypes) {
           versions: [],
           ratings: [],
           comments: [],
+          avg: 0,
           createdAt: this.get('createdAt')
         };
 
@@ -97,6 +98,16 @@ module.exports = function(sequelize, DataTypes) {
           json.ratings = this.Ratings.map(function (r) {
             return r.toJson();
           });
+
+          var sum = 0;
+          var index = 0;
+
+          this.Ratings.forEach(function (r){
+            sum += r.value;
+            index++;
+          });
+
+          json.avg = (sum/index).toFixed(2);
         }
 
         return json;
