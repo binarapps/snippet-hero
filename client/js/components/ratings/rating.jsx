@@ -32,8 +32,6 @@ export default class Rating extends React.Component {
 
   _countSnippetAvg () {
     let snippet = this.props.snippet;
-    let sum = 0.0;
-    let index = 0;
     let currentRate = {};
     let avg;
     let currentUserId = this.state.currentUser.id;
@@ -41,9 +39,6 @@ export default class Rating extends React.Component {
 
     if(snippet.ratings){
       snippet.ratings.forEach(function (rating) {
-        sum += rating.value;
-        index++;
-
         if(rating.UserId == currentUserId){
           currentRate.userId = rating.UserId;
           currentRate.grade = rating.value;
@@ -52,7 +47,7 @@ export default class Rating extends React.Component {
       });
     }
 
-    avg = (index==0 ? 0 : sum/index).toFixed(2);
+    avg = (snippet.avg).toFixed(2);
     this.setState({
       grade: grade
     });
