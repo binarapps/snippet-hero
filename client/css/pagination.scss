@@ -1,0 +1,40 @@
+@import 'variables';
+
+.paginate-nav {
+  text-align: center;
+  width: 100%;
+}
+
+.pagination {
+  list-style: none;
+}
+
+.pagination > li {
+  border-color: $primary-gray;
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  display: inline-block;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  position: relative;
+}
+
+.pagination > li+li {
+  margin-left: 2px;
+}
+
+.pagination > li > a {
+  background-color: transparent;
+  color: $nav-blue;
+  cursor: pointer;
+  display: block;
+  padding: $button-pad;
+  position: relative;
+  text-decoration: none;
+}
+
+.pagination > li.active > a {
+  background-color: $nav-blue;
+  color: white;
+}
