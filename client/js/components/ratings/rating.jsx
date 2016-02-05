@@ -10,8 +10,9 @@ export default class Rating extends React.Component {
     this._handleMouseOver = this._handleMouseOver.bind(this);
     this._handleClick = this._handleClick.bind(this);
     this._handleMouseLeave = this._handleMouseLeave.bind(this);
-    this._countSnippetAvg = this._countSnippetAvg.bind(this);
-    this.state = {grade: 0, currentUser: UserStore.state.currentUser};
+    var user = UserStore.getState().currentUser;
+    this.state = {grade: 0, currentUser: user};
+
     this.style = {
       starBlack: {
         fill: 'rgba(135, 135, 135, 0.8)'
@@ -22,16 +23,11 @@ export default class Rating extends React.Component {
     };
   }
 
-  componentWillMount () {
-    this.setState({ currentUser: UserStore.state.currentUser });
+  componentDidMount(){
+    setTimeout(this._handleMouseLeave, 1000);
   }
 
-  componentDidMount() {
-    // setTimeout(this._countSnippetAvg);
-    setTimeout(this._countSnippetAvg, 1000);
-  }
-
-  _countSnippetAvg () {
+  _handleMouseLeave(){
     var userRates = this.props.usersRatings[this.state.currentUser.id];
     var rating = (userRates !== undefined ? userRates[this.props.snippet.id] : 0);
     this.setState({
@@ -39,20 +35,6 @@ export default class Rating extends React.Component {
     });
   }
 
-  _handleMouseLeave(){
-    let rating = 0;
-    let userRates = this.props.usersRatings[this.state.currentUser.id] ;
-
-    if(userRates !== undefined){
-      if(userRates[this.props.snippetId] !== undefined){
-        rating = userRates[this.props.snippetId];
-      }
-    }
-
-    this.setState({
-      grade: rating
-    });
-  }
 
   _handleMouseOver(g){
     this.setState({grade: g});
@@ -70,22 +52,6 @@ export default class Rating extends React.Component {
     return grade > this.state.grade ? this.style.starBlack : this.style.starYellow;
   }
 
-  _setGradeOfUserRating(){
-    let newGrade = 0;
-    const user_id = this.state.currentUser.id;
-
-    if(this.props.snippet.ratings){
-      (this.props.snippet.ratings).forEach(function (r){
-        if(r.UserId == user_id){
-          newGrade = r.value;
-        }
-      });
-    }
-
-    this.setState({
-      grade: newGrade
-    });
-  }
 
   render() {
     const stars = [1,2,3,4,5].map((rating) => {

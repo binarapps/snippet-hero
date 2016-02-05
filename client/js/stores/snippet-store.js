@@ -25,29 +25,27 @@ class SnippetStore {
       const count = data.results.count;
       const currentUserId = data.currentUser.id;
 
-      var snippetsAverage = this.state.snippetsAvg;
-      var usersRatings = this.state.usersRatings;
-      var snippetRating = {};
+      let snippetsAverage = this.state.snippetsAvg;
+      let usersRatings = this.state.usersRatings;
+      let snippetRating = {};
 
       pageSnippets.forEach(function (snippet) {
         snippetsAverage[snippet.id] = snippet.avg;
-        snippet.ratings.forEach(function (rating) {
-          if(rating.UserId == currentUserId) {
-            console.log('weszłem!');
-            if(usersRatings[currentUserId] !== undefined){
-              console.log('som juz jakies oceny tego jusera');
-            //   snippetRating = usersRatings[userId];
-            }
-            snippetRating[snippet.id] = rating.value;
-            usersRatings[currentUserId] = snippetRating;
-            console.log('USER RATING:');
-            console.log(usersRatings);
-          }
-        });
-      });
 
-      console.log('a tera za blokiem');
-      console.log(usersRatings);
+        let curentUserRating = snippet.ratings.filter(function(rating, index, array){
+          return rating.UserId == currentUserId;
+        });
+
+        if(curentUserRating.length){
+          let rating = curentUserRating[0];
+
+          if(usersRatings[currentUserId] !== undefined){
+            snippetRating = usersRatings[currentUserId];
+          }
+          snippetRating[rating.SnippetId] = rating.value;
+          usersRatings[currentUserId] = snippetRating;
+        }
+      });
 
       this.setState({
         snippets: pageSnippets,
@@ -55,8 +53,6 @@ class SnippetStore {
         snippetsAvg: snippetsAverage,
         usersRatings: usersRatings
       });
-      console.log('a tera stan');
-      console.log(this.state.usersRatings);
     }
   }
 
