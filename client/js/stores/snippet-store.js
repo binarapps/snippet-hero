@@ -63,40 +63,6 @@ class SnippetStore {
     this.preventDefault();
   }
 
-  countSnippetAverage(data) {
-    var snippetId = data.snippetId;
-    var userRating = data.userRate;
-    var avg = data.average;
-    var snippetsAverage = this.state.snippetsAvg;
-
-    snippetsAverage[snippetId] = avg;
-
-    if(userRating.userId){
-      var usersRatings = this.state.usersRatings;
-      var userId = userRating.userId;
-      var snippetRating = {};
-      if(usersRatings.length){
-        if(usersRatings[userId] !== undefined){
-          snippetRating = usersRatings[userId];
-        }
-      }
-
-      snippetRating[snippetId] = userRating.grade;
-      usersRatings[userId] = snippetRating;
-
-      this.setState({
-        snippetsAvg: snippetsAverage,
-        usersRatings: usersRatings
-      });
-    } else {
-      this.setState({
-        snippetsAvg: snippetsAverage
-      });
-    }
-
-
-  }
-
   createRating(data) {
     if (data.ok) {
       const ratings = this.state.ratings;

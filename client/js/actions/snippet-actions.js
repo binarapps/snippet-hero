@@ -38,10 +38,6 @@ class SnippetActions {
       .catch(() => this.actions.onCreateFail());
   }
 
-  countSnippetAverage(snippetId, avg, userRating){
-    this.dispatch({snippetId: snippetId, average: avg, userRate: userRating});
-  }
-
   onCreateSuccess(res) {
     this.dispatch({snippet: res.data});
   }
