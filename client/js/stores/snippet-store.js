@@ -32,7 +32,7 @@ class SnippetStore {
       pageSnippets.forEach(function (snippet) {
         snippetsAverage[snippet.id] = snippet.avg;
 
-        let curentUserRating = snippet.ratings.filter(function(rating, index, array){
+        let curentUserRating = snippet.ratings.filter(function(rating){
           return rating.UserId == currentUserId;
         });
 

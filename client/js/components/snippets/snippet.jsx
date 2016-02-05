@@ -57,7 +57,6 @@ export default class Snippet extends React.Component {
   }
 
   render() {
-    console.log('render snippet');
     let codeOptions = {
       readOnly: true,
       lineNumbers: true,
