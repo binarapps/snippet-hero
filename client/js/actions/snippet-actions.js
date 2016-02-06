@@ -7,7 +7,7 @@ import {buildUrl} from '../libs/paginate';
 class SnippetActions {
   constructor() {}
 
-  getPaginatedSnippets(page, perPage){
+  getPaginatedSnippets(page, perPage) {
     axios.get('/snippets?'+ buildUrl(perPage, page))
       .then(res => this.dispatch({ok: true, results: res.data}))
       .catch(err => this.dispatch({ok: false, error: err}));
@@ -27,8 +27,13 @@ class SnippetActions {
 
   commentSnippet(comment, snippetId) {
     axios.post('/snippets/' + snippetId + '/comments', comment)
-      .then(res => this.dispatch({ok: true, comment: res.data}))
-      .catch(res => this.dispatch({ok: false, comment: res.data}));
+      .then(res => {
+        FlashMessages.pushMessage({ content: 'Comment added!' });
+        this.dispatch({ok: true, comment: res.data});
+      }).catch(res => {
+        FlashMessages.pushMessage({ content: 'Something went wrong. Could not comment that snippet :(' });
+        this.dispatch({ok: false, comment: res.data});
+      });
   }
 
   create(snippet) {

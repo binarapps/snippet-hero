@@ -12,9 +12,9 @@ class SnippetListItem extends React.Component{
     let realIndex = (page-1)*perPage+index+1;
 
     return (
-      <li style={{position: 'relative', paddingLeft: '30px'}}>
+      <li style={{position: 'relative', paddingLeft: '30px', marginBottom: '25px'}}>
         <span style={{position: 'absolute', left: 0}}>#{realIndex}</span>
-        <Snippet {...this.props.snippet} style={{marginBottom: '15px'}} />
+        <Snippet {...this.props.snippet} style={{marginBottom: '5px'}} />
         <CommentBox snippetId={this.props.snippet.id} comments={this.props.snippet.comments}/>
       </li>
     );
