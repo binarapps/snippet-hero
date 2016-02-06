@@ -7,3 +7,5 @@ html
   body
     block content
     script(src='/app.js')
+    script.
+      main({ currentUser: !{JSON.stringify(currentUser)}});

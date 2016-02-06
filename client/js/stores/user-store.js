@@ -4,7 +4,7 @@ import UserActions from '../actions/user-actions';
 class UserStore {
   constructor() {
     this.bindActions(UserActions);
-    this.state = { currentUser: false };
+    this.state = { currentUser: null };
   }
 
   login(data) {
@@ -19,9 +19,13 @@ class UserStore {
     }
   }
 
+  setUser(user) {
+    this.setState({ currentUser: user });
+  }
+
   logout(data) {
     if (data.ok) {
-      this.setState({ currentUser: false });
+      this.setState({ currentUser: null });
     }
   }
 

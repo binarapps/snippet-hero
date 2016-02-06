@@ -1,9 +1,12 @@
 var express = require('express');
 var session = require('express-session');
+var pgSession = require('connect-pg-simple')(session);
 var path = require('path');
 // var favicon = require('serve-favicon');
 var logger = require('morgan');
 var appLogger = require('./lib/logger');
+var pg = require('pg');
+var dbConfig = require('./config/config.json');
 
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -34,7 +37,13 @@ app.use(logger('combined', {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({ secret: secrets.sessionSecret }));
+app.use(session({
+  secret: secrets.sessionSecret,
+  store: new pgSession({
+    pg : pg,
+    conString : dbConfig['development']
+  })
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.resolve(__dirname, '../build')));
