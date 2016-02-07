@@ -8,6 +8,7 @@ import {generateColor} from '../mixins/color-generate';
 
 class CommentListItem extends React.Component{
   render() {
+    let snippetInfo = this.props.withSnippetName ? (<span>, for: {this.props.Snippet.name}</span>) : '';
     return (
       <Paper zDepth={2} style={{display:'list-item', padding: '10px', marginBottom: '10px'}}>
         <Avatar
@@ -16,8 +17,9 @@ class CommentListItem extends React.Component{
           backgroundColor={generateColor()}>
           {this.props.User.name.split('')[0].toUpperCase()}
         </Avatar>
-        <div style={{marginLeft: '60px'}}>
-          <span style={{fontSize: '1.2rem', fontWeight: 'bold'}}>{this.props.User.name}, posted on: {moment(this.props.createdAt).format('DD-MM-YYYY HH:mm')}</span>
+        <div style={{marginLeft: '60px', fontSize: '1.2rem', fontWeight: 'bold'}}>
+          <span>{this.props.User.name}, posted on: {moment(this.props.createdAt).format('DD-MM-YYYY HH:mm')}</span>
+          { snippetInfo }
           <Markdown text={this.props.content} className="markdown" />
         </div>
       </Paper>
@@ -26,20 +28,16 @@ class CommentListItem extends React.Component{
 }
 
 export default class CommentList extends React.Component {
-  shouldComponentUpdate(nextProps) {
-    if(nextProps.comments !== this.props.comments) return true;
-    else return false;
-  }
-
   render() {
-    let comments = this.props.comments.map(function(comment) {
+    let comments = this.props.comments.map((comment) => {
       return (
-        <CommentListItem key={`comment-${comment.id}`} {...comment}/>
+        <CommentListItem key={`comment-${comment.id}`} withSnippetName={this.props.withSnippetName} {...comment}/>
       );
     });
+
     return (
       <div style={{display: 'list', margin: '20px 0', listStyle: 'none'}}>
-        <ReactCSSTransitionGroup transitionName="comment" transitionEnterTimeout={500}>
+        <ReactCSSTransitionGroup transitionName="comment" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
           {comments}
         </ReactCSSTransitionGroup>
       </div>

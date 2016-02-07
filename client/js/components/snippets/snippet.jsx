@@ -25,7 +25,7 @@ export default class Snippet extends React.Component {
 
   _deleteSnippet() {
     SnippetActions.destroySnippet(this.props.id);
-  } 
+  }
 
   getCurrentUser(){
     return UserStore.state.currentUser;
@@ -70,7 +70,7 @@ export default class Snippet extends React.Component {
     let author = (this.props.user ? this.props.user.name : (currentUser ? currentUser.name : 'author') );
     let enabled = this.checkRatingAbility();
 
-    const ratings = this.props.id ? <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={enabled}/>: '';
+    let ratings = this.props.id ? <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={enabled}/>: '';
 
     let avatar = (<Avatar
           color={generateColor()}
@@ -89,9 +89,16 @@ export default class Snippet extends React.Component {
             title={this.props.name || 'No title'}
             subtitle= {author}
             avatar={avatar} />
-          <div>
-            {ratings}
-          </div>
+          { (() => {
+            if (this.props.withRatings) {
+              return (
+                <div>
+                  {ratings}
+                </div>
+              );
+            }
+          })()}
+
         </div>
         {this.checkOwner() ? deleteButton : ''}
         <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300 }}>

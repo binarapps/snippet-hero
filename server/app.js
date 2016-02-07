@@ -14,6 +14,7 @@ var passport = require('passport');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var dashboard = require('./routes/dashboard');
 var snippets = require('./routes/snippets');
 var ratings = require('./routes/ratings');
 var snippetComments = require('./routes/comments');
@@ -50,6 +51,7 @@ app.use(express.static(path.resolve(__dirname, '../build')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/dashboard', dashboard);
 app.use('/snippets', snippets);
 app.use('/ratings', ratings);
 app.use('/snippets', snippetComments);
