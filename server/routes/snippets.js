@@ -88,13 +88,15 @@ router.post('/', function (req, res) {
 /* DELETE snippet and it's ratings/versions/comments */
 router.delete('/:id', function (req, res){
   var snippetId = req.params.id;
-  models.Snippet.findById(snippetId).then(function (snippet){
+  models.Snippet.findById(snippetId).then(function (snippet) {
     snippet.destroy().then(function () {
       res.status(200).send({snippet: snippetId});
     }).catch( function (err) {
+      appLogger.debug(err.message);
       res.status(422).send(err);
     });
   }).catch(function (err) {
+    appLogger.debug(err.message);
     res.status(422).send(err);
   });
 });
