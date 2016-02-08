@@ -5,7 +5,6 @@ var path = require('path');
 // var favicon = require('serve-favicon');
 var logger = require('morgan');
 var appLogger = require('./lib/logger');
-var pg = require('pg');
 var dbConfig = require('./config/config.json');
 
 var cookieParser = require('cookie-parser');
@@ -50,7 +49,6 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   store: new pgSession({
-    pg : pg,
     conString : dbConfig[env]
   })
 }));
