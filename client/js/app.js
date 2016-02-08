@@ -38,4 +38,4 @@ window.main = function (options) {
     </Router>,
     app
   );
-}
+};
