@@ -39,10 +39,12 @@ class SnippetActions {
   }
 
   onCreateSuccess(res) {
+    FlashMessages.pushMessage({ content: 'Snippet created successfuly!' });
     this.dispatch({snippet: res.data});
   }
 
   onCreateFail() {
+    FlashMessages.pushMessage({ content: 'There was an error while creating snippet!' });
     this.dispatch();
   }
 

@@ -11,8 +11,6 @@ class SnippetStore {
     this.bindActions(RatingActions);
     this.state = {
       snippets: [],
-      lastCreateSuccess: false,
-      snippetCreated: false,
       snippetsAvg: {},
       usersRatings: {},
       totalCount: 0
@@ -86,24 +84,16 @@ class SnippetStore {
   }
 
   onCreateSuccess(data) {
-    const newSnippets = this.state.snippets;
+    const newSnippets = update(this.state.snippets, { $unshift: [data.snippet] });
     const counter = this.state.totalCount;
-
-    newSnippets.push(data.snippet);
 
     this.setState({
       snippets: newSnippets,
-      snippetCreated: true,
-      lastCreateSuccess: true,
       totalCount: counter+1
     });
   }
 
   onCreateFail() {
-    this.setState({
-      snippetCreated: true,
-      lastCreateSuccess: false
-    });
   }
 
   getAllComments(data) {
