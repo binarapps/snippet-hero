@@ -24,6 +24,10 @@ class UserActions {
       });
   }
 
+  setUser(user) {
+    this.dispatch(user);
+  }
+
   logout() {
     axios.delete('/users/logout')
       .then(() => {

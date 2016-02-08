@@ -80,7 +80,6 @@ module.exports = function(sequelize, DataTypes) {
         if(this.User) {
           json.user = this.User.toJson();
         }
-
         if (this.SnippetVersions) {
           json.content = this.SnippetVersions.length ? this.SnippetVersions[0].content : '';
           json.versions = this.SnippetVersions.map(function (v) {
