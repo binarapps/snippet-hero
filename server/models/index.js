@@ -9,6 +9,7 @@ var config = require(path.resolve(__dirname, '../config/config.json'))[env];
 var db        = {};
 var sequelize = null;
 
+console.log(JSON.stringify(config));
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable]);
 } else {
