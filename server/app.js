@@ -41,6 +41,13 @@ app.use(logger('combined', {
   stream: appLogger.stream
 }));
 
+var conStringPgSession;
+if (env === 'production') {
+  conStringPgSession = process.env[dbConfig[env].use_env_variable];
+} else {
+  conStringPgSession = dbConfig[env];
+}
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -49,7 +56,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true,
   store: new pgSession({
-    conString : dbConfig[env]
+    conString : conStringPgSession
   })
 }));
 app.use(passport.initialize());
