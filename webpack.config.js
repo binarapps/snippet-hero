@@ -20,7 +20,6 @@ const config = {
     filename: 'app.js'
   },
   module: {
-    noParse: [],
     loaders: [
       { test: /\.json$/, loader: 'json' },
       {
