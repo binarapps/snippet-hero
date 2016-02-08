@@ -19,7 +19,7 @@ var snippets = require('./routes/snippets');
 var ratings = require('./routes/ratings');
 var snippetComments = require('./routes/comments');
 
-var env = process.env.NODE_ENV;
+var env = process.env.NODE_ENV || 'development';
 var secrets;
 
 if (env === 'production') {
@@ -51,7 +51,7 @@ app.use(session({
   saveUninitialized: true,
   store: new pgSession({
     pg : pg,
-    conString : dbConfig['development']
+    conString : dbConfig[env]
   })
 }));
 app.use(passport.initialize());
