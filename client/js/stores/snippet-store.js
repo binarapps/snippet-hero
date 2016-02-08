@@ -11,8 +11,6 @@ class SnippetStore {
     this.bindActions(RatingActions);
     this.state = {
       snippets: [],
-      lastCreateSuccess: false,
-      snippetCreated: false,
       snippetsAvg: {},
       usersRatings: {},
       totalCount: 0
@@ -23,10 +21,35 @@ class SnippetStore {
     if(data.ok){
       const pageSnippets = data.results.snippets;
       const count = data.results.count;
+      const currentUserId = data.currentUser.id;
+
+      let snippetsAverage = this.state.snippetsAvg;
+      let usersRatings = this.state.usersRatings;
+      let snippetRating = {};
+
+      pageSnippets.forEach(function (snippet) {
+        snippetsAverage[snippet.id] = snippet.avg;
+
+        let curentUserRating = snippet.ratings.filter(function(rating){
+          return rating.UserId == currentUserId;
+        });
+
+        if(curentUserRating.length){
+          let rating = curentUserRating[0];
+
+          if(usersRatings[currentUserId] !== undefined){
+            snippetRating = usersRatings[currentUserId];
+          }
+          snippetRating[rating.SnippetId] = rating.value;
+          usersRatings[currentUserId] = snippetRating;
+        }
+      });
 
       this.setState({
         snippets: pageSnippets,
-        totalCount: count
+        totalCount: count,
+        snippetsAvg: snippetsAverage,
+        usersRatings: usersRatings
       });
     }
   }
@@ -61,24 +84,16 @@ class SnippetStore {
   }
 
   onCreateSuccess(data) {
-    const newSnippets = this.state.snippets;
+    const newSnippets = update(this.state.snippets, { $unshift: [data.snippet] });
     const counter = this.state.totalCount;
-
-    newSnippets.push(data.snippet);
 
     this.setState({
       snippets: newSnippets,
-      snippetCreated: true,
-      lastCreateSuccess: true,
       totalCount: counter+1
     });
   }
 
   onCreateFail() {
-    this.setState({
-      snippetCreated: true,
-      lastCreateSuccess: false
-    });
   }
 
   getAllComments(data) {
@@ -103,59 +118,6 @@ class SnippetStore {
     } else {
       // TODO react to errors
       // console.log(data.error.message)
-    }
-  }
-
-  getSnippetRatings (data) {
-    if (data.ok) {
-      var snippetsAverage = this.state.snippetsAvg;
-      const snippet_id = data.avg.snippetId;
-      const avarage = data.avg.avg;
-
-      snippetsAverage[snippet_id] = avarage;
-
-      this.setState({
-        snippetsAvg: snippetsAverage
-      });
-    }
-  }
-
-  getUserSnippetRating (data) {
-    if (data.ok) {
-      var user = data.userId;
-      var snippet = data.snippetId;
-      var ratings = data.ratings;
-      var userRate = this.state.usersRatings;
-
-      if(user != null && snippet != null){
-        userRate[user][snippet] = ratings;
-      }
-
-      this.setState({
-        usersRatings: userRate
-      });
-    }
-  }
-
-  getCurrentUserRating (data) {
-    if (data.ok) {
-      var user_id = data.grade.user;
-      var snippet_id = data.grade.snippet;
-      var grade = data.grade.rate;
-      var userRate = this.state.usersRatings;
-
-      if (user_id != null) {
-        var snippet_rating = {};
-        if (userRate[user_id]){
-          snippet_rating = userRate[user_id];
-        }
-        snippet_rating[snippet_id] = grade;
-        userRate[user_id] = snippet_rating;
-
-        this.setState({
-          usersRatings: userRate
-        });
-      }
     }
   }
 

@@ -73,6 +73,7 @@ module.exports = function(sequelize, DataTypes) {
           versions: [],
           ratings: [],
           comments: [],
+          avg: 0,
           createdAt: this.get('createdAt')
         };
 
@@ -96,6 +97,16 @@ module.exports = function(sequelize, DataTypes) {
           json.ratings = this.Ratings.map(function (r) {
             return r.toJson();
           });
+
+          var sum = 0;
+          var index = 0;
+
+          this.Ratings.forEach(function (r){
+            sum += r.value;
+            index++;
+          });
+
+          json.avg = (sum==0 ? 0 : sum/index).toFixed(2);
         }
 
         return json;
@@ -104,9 +115,9 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         this.belongsTo(models.User);
-        this.hasMany(models.SnippetVersion, {onDelete: 'cascade'});
-        this.hasMany(models.Rating, {onDelete: 'cascade'});
-        this.hasMany(models.Comment, {onDelete: 'cascade'});
+        this.hasMany(models.SnippetVersion, {onDelete: 'cascade', hooks: true});
+        this.hasMany(models.Rating, {onDelete: 'cascade', hooks: true});
+        this.hasMany(models.Comment, {onDelete: 'cascade', hooks: true});
       }
     }
   });

@@ -18,8 +18,15 @@ var dashboard = require('./routes/dashboard');
 var snippets = require('./routes/snippets');
 var ratings = require('./routes/ratings');
 var snippetComments = require('./routes/comments');
-var secrets = require('./config/secrets');
 
+var env = process.env.NODE_ENV;
+var secrets;
+
+if (env === 'production') {
+  secrets = require('./config/secrets-production');
+} else {
+  secrets = require('./config/secrets');
+}
 require('./config/passport_configuration');
 
 var app = express();
@@ -40,6 +47,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
   secret: secrets.sessionSecret,
+  resave: true,
+  saveUninitialized: true,
   store: new pgSession({
     pg : pg,
     conString : dbConfig['development']

@@ -41,10 +41,10 @@ class UserSnippetsStore {
   getSnippetRatings (data) {
     if (data.ok) {
       var snippetsAverage = this.state.snippetsAvg;
-      const snippet_id = data.avg.snippetId;
+      const snippetId = data.avg.snippetId;
       const avarage = data.avg.avg;
 
-      snippetsAverage[snippet_id] = avarage;
+      snippetsAverage[snippetId] = avarage;
 
       this.setState({
         snippetsAvg: snippetsAverage

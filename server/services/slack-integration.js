@@ -1,7 +1,14 @@
 var request = require('request');
-var secrets = require('../config/secrets');
 var settings = require('../config/settings');
 var appLogger = require('../lib/logger');
+var env = process.env.NODE_ENV;
+var secrets;
+
+if (env === 'production') {
+  secrets = require('../config/secrets-production');
+} else {
+  secrets = require('../config/secrets');
+}
 
 var SlackIntegration = {
   link: function(url, linkName) {
@@ -15,7 +22,7 @@ var SlackIntegration = {
   notify: function(text) {
     this.send({ text: text });
   },
-  send: function(data) {
+  send: function(data)  {
     if(!secrets.slackHookUrl) { throw new Error('No slackHookUrl was provided in \'config/secrets.json\'.'); }
     var payload = {
       channel: data.channel || settings.slack.defaultChannel,
