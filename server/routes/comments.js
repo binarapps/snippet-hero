@@ -17,7 +17,8 @@ router.get('/:snippetId/comments', function (req, res) {
   models.Comment.scope(['withUser']).findAll({
     where: {
       SnippetId: req.params.snippetId
-    }
+    },
+    order: [['createdAt', 'DESC']]
   }).then(function (comments) {
     var mappedComments = comments.map(function (c) {
       return c.toJson();
