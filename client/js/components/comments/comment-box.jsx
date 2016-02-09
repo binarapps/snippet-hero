@@ -55,11 +55,11 @@ export default class CommentBox extends React.Component {
           content={this.state.content}
           onSubmit={this._handleFormSubmit} />
         <CommentList comments={this.state.comments}/>
-        {() => {
-          if (this.state.comments === 5) {
+        {(() => {
+          if (this.state.comments.length === 5) {
             return (<div style={{cursor: 'pointer'}} onClick={this._loadMoreComments}>Load more comments...</div>);
           }
-        }}
+        })()}
       </div>
     );
   }
