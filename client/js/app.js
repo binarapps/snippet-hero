@@ -11,6 +11,7 @@ import Login from './components/pages/login';
 import Register from './components/pages/register';
 import createHistory from 'history/lib/createHashHistory';
 import UserSnippets from './components/pages/user-snippets';
+import Profile from './components/pages/profile';
 
 main();
 
@@ -33,6 +34,7 @@ function main () {
         <Route path="/logout" component={Logout}/>
         <Route path="/login" component={Login}/>
         <Route path="/register" component={Register}/>
+        <Route path="/profiles" component={Profile}/>
       </Route>
     </Router>,
     app

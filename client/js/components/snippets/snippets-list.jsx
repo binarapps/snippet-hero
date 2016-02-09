@@ -14,7 +14,7 @@ class SnippetListItem extends React.Component{
     return (
       <li style={{position: 'relative', paddingLeft: '30px'}}>
         <span style={{position: 'absolute', left: 0}}>#{realIndex}</span>
-        <Snippet {...this.props.snippet} style={{marginBottom: '15px'}} perPage={perPage}/>
+        <Snippet {...this.props.snippet} style={{marginBottom: '15px'}} perPage={perPage} history={this.props.history} />
         <CommentBox snippetId={this.props.snippet.id} comments={this.props.snippet.comments}/>
       </li>
     );
@@ -31,12 +31,13 @@ export default class SnippetsList extends React.Component {
 
     let page = this.props.page;
     let perPage = this.props.perPage;
+    let history = this.props.history;
 
     return (
       <ul>
         {this.props.snippets.map(function(snippet, index) {
           return (
-            <SnippetListItem key={`snippet-${index}`} snippet={snippet} index={index} page={page} perPage={perPage}/>
+            <SnippetListItem key={`snippet-${index}`} snippet={snippet} index={index} page={page} perPage={perPage} history={history}/>
           );
         })}
       </ul>

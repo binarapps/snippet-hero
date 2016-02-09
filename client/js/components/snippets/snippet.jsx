@@ -15,7 +15,6 @@ import {modeFromMime} from '../../libs/languages';
 import UserStore from '../../stores/user-store';
 import SnippetActions from '../../actions/snippet-actions.js';
 import RaisedButton from 'material-ui/lib/raised-button';
-import FlashMessages from '../../actions/flash-messages-actions';
 
 // TODO create tests
 export default class Snippet extends React.Component {
@@ -30,11 +29,14 @@ export default class Snippet extends React.Component {
   }
 
   _getUserSnippet(){
-    let p = this.props;
-    let currentUser = this.getCurrentUser;
 
-    SnippetActions.getPaginatedSnippets(1, p.perPage, (p.user ? p.user.id : currentUser.id));
-    FlashMessages.pushMessage({ content: ('Here are all snippets of user ' + (p.user ? p.user.name : currentUser.name)) });
+    this.props.history.pushState(null, '/profiles');
+    //window.location = '/profiles';
+    // let p = this.props;
+    // let currentUser = this.getCurrentUser;
+
+    // SnippetActions.getPaginatedSnippets(1, p.perPage, (p.user ? p.user.id : currentUser.id));
+    // FlashMessages.pushMessage({ content: ('Here are all snippets of user ' + (p.user ? p.user.name : currentUser.name)) });
   }
 
   getCurrentUser(){

@@ -1,0 +1,17 @@
+@import 'variables';
+
+.profile-summary > *:first-child { width: 100%; }
+
+.numberAchievementEven {
+  color: $primary-pink;
+  font-size: 60px;
+}
+
+.numberAchievementOdd {
+  color: $nav-blue;
+  font-size: 60px;
+}
+
+.subtitleAchievement {
+  font-size: 16px;
+}
