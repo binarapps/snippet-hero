@@ -1,9 +1,11 @@
 var express = require('express');
 var session = require('express-session');
+var pgSession = require('connect-pg-simple')(session);
 var path = require('path');
 // var favicon = require('serve-favicon');
 var logger = require('morgan');
 var appLogger = require('./lib/logger');
+var dbConfig = require('./config/config.json');
 
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -11,11 +13,19 @@ var passport = require('passport');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var dashboard = require('./routes/dashboard');
 var snippets = require('./routes/snippets');
 var ratings = require('./routes/ratings');
 var snippetComments = require('./routes/comments');
-var secrets = require('./config/secrets');
 
+var env = process.env.NODE_ENV || 'development';
+var secrets;
+
+if (env === 'production') {
+  secrets = require('./config/secrets-production');
+} else {
+  secrets = require('./config/secrets');
+}
 require('./config/passport_configuration');
 
 var app = express();
@@ -31,16 +41,31 @@ app.use(logger('combined', {
   stream: appLogger.stream
 }));
 
+var conStringPgSession;
+if (env === 'production') {
+  conStringPgSession = process.env[dbConfig[env].use_env_variable];
+} else {
+  conStringPgSession = dbConfig[env];
+}
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({ secret: secrets.sessionSecret }));
+app.use(session({
+  secret: secrets.sessionSecret,
+  resave: true,
+  saveUninitialized: true,
+  store: new pgSession({
+    conString : conStringPgSession
+  })
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.resolve(__dirname, '../build')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/dashboard', dashboard);
 app.use('/snippets', snippets);
 app.use('/ratings', ratings);
 app.use('/snippets', snippetComments);

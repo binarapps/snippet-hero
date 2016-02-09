@@ -7,9 +7,9 @@ import {buildUrl} from '../libs/paginate';
 class SnippetActions {
   constructor() {}
 
-  getPaginatedSnippets(page, perPage){
+  getPaginatedSnippets(page, perPage, currentUser){
     axios.get('/snippets?'+ buildUrl(perPage, page))
-      .then(res => this.dispatch({ok: true, results: res.data}))
+      .then(res => this.dispatch({ok: true, results: res.data, currentUser: currentUser}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
@@ -27,42 +27,37 @@ class SnippetActions {
 
   commentSnippet(comment, snippetId) {
     axios.post('/snippets/' + snippetId + '/comments', comment)
-      .then(res => this.dispatch({ok: true, comment: res.data}))
-      .catch(res => this.dispatch({ok: false, comment: res.data}));
+      .then(res => {
+        FlashMessages.pushMessage({ content: 'Comment added!' });
+        this.dispatch({ok: true, comment: res.data});
+      }).catch(res => {
+        FlashMessages.pushMessage({ content: 'Something went wrong. Could not comment that snippet :(' });
+        this.dispatch({ok: false, comment: res.data});
+      });
   }
 
   create(snippet) {
-    this.dispatch();
     axios.post('/snippets', snippet)
-      .then(res => this.actions.onCreateSuccess(res))
-      .catch(() => this.actions.onCreateFail());
+      .then(res => {
+        FlashMessages.pushMessage({ content: 'Snippet created successfuly!' });
+        this.dispatch({ ok: true, snippet: res.data });
+      })
+      .catch(err => {
+        FlashMessages.pushMessage({ content: 'There was an error while creating snippet.' });
+        this.actions.onCreateFail({ ok: false, err: err });
+      });
   }
 
-  onCreateSuccess(res) {
-    FlashMessages.pushMessage({ content: 'Snippet created successfully!' });
-    this.dispatch({snippet: res.data});
-  }
-
-  onCreateFail() {
-    FlashMessages.pushMessage({ content: 'There was an error while creating snippet.' });
-    this.dispatch();
-  }
-
-  update(data) {
-    this.dispatch();
-    axios.put('/snippets/' + data.id, data)
-      .then(res => this.actions.onUpdateSuccess(res))
-      .catch(res => this.actions.onUpdateFail(res));
-  }
-
-  onUpdateSuccess(res) {
-    FlashMessages.pushMessage({ content: 'Snippet updated successfully!' });
-    this.dispatch({snippet: res.data});
-  }
-
-  onUpdateFail() {
-    FlashMessages.pushMessage({ content: 'There was an error while updating snippet.' });
-    this.dispatch();
+  update(snippet) {
+    axios.put('/snippets/' + snippet.id, snippet)
+      .then(res => {
+        FlashMessages.pushMessage({ content: 'Snippet updated successfully!' });
+        this.dispatch({ ok: true, snippet: res.data });
+      })
+      .catch(err => {
+        FlashMessages.pushMessage({ content: 'There was an error while updating snippet.' });
+        this.dispatch({ ok: false, err: err });
+      });
   }
 
   destroySnippet(snippetId) {

@@ -26,21 +26,20 @@ describe('SnippetActions', function() {
 
 
   describe('Create snippet', function() {
-    let snippet;
-    before( function() {
-      snippet = { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript'};
+    before( () => {
+      this.snippet = { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript'};
       sinon.stub(axios, 'post', () => {
-        return new Promise(function(resolve) {
-          resolve({data: snippet});
+        return new Promise((resolve) => {
+          resolve({data: this.snippet});
         });
       });
     });
 
-    it('should dispatch created snippet', function(done) {
-      SnippetActions.create(snippet);
-      setTimeout(function() {
-        expect(alt.dispatch.calledTwice).to.be.true;
-        expect(alt.dispatch.getCall(1).args[1].snippet).to.deep.equal(snippet);
+    it('should dispatch created snippet', (done) => {
+      SnippetActions.create(this.snippet);
+      setTimeout(() => {
+        expect(alt.dispatch.calledOnce).to.be.true;
+        expect(alt.dispatch.getCall(0).args[1].snippet).to.deep.equal(this.snippet);
         done();
       });
     });
@@ -53,23 +52,30 @@ describe('SnippetActions', function() {
         { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript'},
         { id: 2, content: 'test', name: 'test', description: 'test', language: 'javascript'}
       ];
-      sinon.stub(axios, 'get', () => {
-        return new Promise((resolve) => {
-          resolve({data: this.snippets});
-        });
-      });
+      this.sandbox = sinon.sandbox.create();
     });
 
     it('should dispatch all snippets list from server', (done) => {
+      this.sandbox.stub(axios, 'get', () => {
+        return new Promise((resolve) => {
+          resolve({data: { snippets: this.snippets, count: 3 }});
+        });
+      });
       SnippetActions.getPaginatedSnippets();
-      setTimeout(function () {
-        expect(alt.dispatch.calledOnce).to.be.true;
-        expect(alt.dispatch.getCall(0).args[1].snippets).to.deep.equal(this.snippets);
+      setTimeout( () => {
+        expect(alt.dispatch.calledTwice).to.be.true;
+        expect(alt.dispatch.getCall(0).args[1].results.snippets).to.deep.equal(this.snippets);
         done();
       });
     });
 
     it('should dispatch all snippets with name from server', (done) => {
+      this.sandbox.restore();
+      this.sandbox.stub(axios, 'get', () => {
+        return new Promise((resolve) => {
+          resolve({data: this.snippets });
+        });
+      });
       SnippetActions.search('test');
       setTimeout(() => {
         expect(alt.dispatch.calledOnce).to.be.true;
@@ -88,8 +94,8 @@ describe('SnippetActions', function() {
       SnippetActions.create(this.snippet);
       setTimeout(() => {
         // TODO: fix to correct call number
-        expect(alt.dispatch.calledThrice).to.be.true;
-        expect(alt.dispatch.getCall(1).args[1].snippet).to.deep.equal(this.snippet);
+        expect(alt.dispatch.calledOnce).to.be.true;
+        expect(alt.dispatch.getCall(0).args[1].snippet).to.deep.equal(this.snippet);
         done();
       });
     });
@@ -108,7 +114,7 @@ describe('SnippetActions', function() {
       SnippetActions.destroySnippet();
       setTimeout(() => {
         // TODO: fix to correct call number
-        expect(alt.dispatch.calledTwice).to.be.true;
+        expect(alt.dispatch.calledOnce).to.be.true;
         done();
       });
     });
@@ -119,7 +125,7 @@ describe('SnippetActions', function() {
       this.snippet = { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript'};
       sinon.stub(axios, 'put', () => {
         return new Promise((resolve) => {
-          resolve({data: this.snippet});
+          resolve({ data: this.snippet });
         });
       });
     });
@@ -128,8 +134,8 @@ describe('SnippetActions', function() {
       SnippetActions.update(this.snippet);
       setTimeout(() => {
         // TODO: fix to correct call number
-        expect(alt.dispatch.calledThrice).to.be.true;
-        expect(alt.dispatch.getCall(1).args[1].snippet).to.deep.equal(this.snippet);
+        expect(alt.dispatch.calledOnce).to.be.true;
+        expect(alt.dispatch.getCall(0).args[1].snippet).to.deep.equal(this.snippet);
         done();
       });
     });

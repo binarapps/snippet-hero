@@ -11,17 +11,31 @@ module.exports = function(sequelize, DataTypes) {
         return {
           include: sequelize.models.User
         };
+      },
+      withSnippet: function () {
+        return {
+          include: sequelize.models.Snippet
+        };
       }
     },
     instanceMethods: {
       toJson: function () {
-        return {
+        let json = {
           content: this.get('content'),
           id: this.get('id'),
           SnippetId: this.get('SnippetId'),
-          createdAt: this.get('createdAt'),
-          User: this.User.toJson()
+          createdAt: this.get('createdAt')
         };
+
+        if (this.User) {
+          json.User = { name: this.User.toJson().name };
+        }
+
+        if (this.Snippet) {
+          json.Snippet = { name: this.Snippet.toJson().name };
+        }
+
+        return json;
       }
     },
     classMethods: {

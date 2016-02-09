@@ -9,7 +9,8 @@ export default class Rating extends React.Component {
     this._handleMouseOver = this._handleMouseOver.bind(this);
     this._handleClick = this._handleClick.bind(this);
     this._handleMouseLeave = this._handleMouseLeave.bind(this);
-    this.state = {grade: 0, currentUser: UserStore.state.currentUser};
+    this.state = { grade: 0 };
+
     this.style = {
       starBlack: {
         fill: 'rgba(135, 135, 135, 0.8)'
@@ -20,56 +21,36 @@ export default class Rating extends React.Component {
     };
   }
 
-  componentWillMount () {
-    this.setState({ currentUser: UserStore.state.currentUser });
-    RatingActions.getSnippetRatings(this.props.snippetId);
-    RatingActions.getCurrentUserRating(this.props.snippetId);
-  }
-
-  componentDidMount () {
-    this._setGradeOfUserRating();
+  componentDidMount(){
+    setTimeout(this._handleMouseLeave, 1000);
   }
 
   _handleMouseLeave(){
-    RatingActions.getCurrentUserRating(this.props.snippetId);
-
+    var user = UserStore.getState().currentUser;
+    var userRates = this.props.usersRatings[user.id];
+    var rating = (userRates !== undefined ? userRates[this.props.snippet.id] : 0);
     this.setState({
-      grade: this.props.usersRatings[this.state.currentUser.id][this.props.snippetId]
+      grade: rating || 0
     });
   }
 
-  _handleMouseOver(g){
-    this.setState({grade: g});
+
+  _handleMouseOver(g) {
+    this.setState({ grade: g });
   }
 
-  _handleClick(g){
+  _handleClick(g) {
     RatingActions.createRating({
       value: g,
       SnippetId: this.props.snippetId
     });
-    this.setState({grade: g});
+    this.setState({ grade: g });
   }
 
-  _gradeToStyle(grade){
+  _gradeToStyle(grade) {
     return grade > this.state.grade ? this.style.starBlack : this.style.starYellow;
   }
 
-  _setGradeOfUserRating(){
-    let newGrade = 0;
-    const user_id = this.state.currentUser.id;
-
-    if(this.props.snippet.ratings){
-      (this.props.snippet.ratings).forEach(function (r){
-        if(r.UserId == user_id){
-          newGrade = r.value;
-        }
-      });
-    }
-
-    this.setState({
-      grade: newGrade
-    });
-  }
 
   render() {
     const stars = [1,2,3,4,5].map((rating) => {

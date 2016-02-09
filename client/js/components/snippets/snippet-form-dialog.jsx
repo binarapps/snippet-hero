@@ -3,7 +3,6 @@ import Dialog from 'material-ui/lib/dialog';
 import Tabs from 'material-ui/lib/tabs/tabs';
 import Tab from 'material-ui/lib/tabs/tab';
 import FlatButton from 'material-ui/lib/flat-button';
-import Snackbar from 'material-ui/lib/snackbar';
 import Snippet from './snippet';
 import SnippetForm from './snippet-form';
 import SnippetActions from '../../actions/snippet-actions.js';
@@ -14,30 +13,13 @@ import UserStore from '../../stores/user-store';
 export default class SnippetFormDialog extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {name: '', content: '', description: '', language: 'text/plain', isOpen: props.dialogOpen, createMessage: ''};
+    this.state = {name: '', content: '', description: '', language: 'text/plain', isOpen: props.dialogOpen};
     this.store = SnippetStore;
     this.listener = null;
 
     this._handleFormChange = this._handleFormChange.bind(this);
     this._handleSubmit = this._handleSubmit.bind(this);
-    this._onCreate = this._onCreate.bind(this);
     this._showSnackbarMessage = this._showSnackbarMessage.bind(this);
-  }
-
-  componentDidMount() {
-    SnippetStore.listen(this._onCreate);
-  }
-
-  componentWillUnmount() {
-    SnippetStore.unlisten(this._onCreate);
-  }
-
-  _onCreate(nextState) {
-    if(nextState.snippetCreated && nextState.lastCreateSuccess) {
-      this._showSnackbarMessage('Snippet created successfuly!');
-    } else if(nextState.snippetCreated && !nextState.lastCreateSuccess) {
-      this._showSnackbarMessage('There was an error while creating snippet!');
-    }
   }
 
   _showSnackbarMessage(msg) {
@@ -107,9 +89,6 @@ export default class SnippetFormDialog extends React.Component {
             </Tab>
           </Tabs>
         </Dialog>
-        <Snackbar message={this.state.createMessage}
-                  ref="snackbar"
-                  autoHideDuration={5000}/>
       </div>
     );
   }

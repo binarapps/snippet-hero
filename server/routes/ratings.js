@@ -36,19 +36,19 @@ router.put('/:id', function (req, res) {
 
 /* POST new rating */
 router.post('/', function (req, res) {
-  var user_id = req.user.dataValues.id;
-  var snippet_id = req.body.SnippetId;
-  var sum_ratings = 0.0;
-  models.Rating.findOne({ where : { SnippetId: snippet_id, UserId: user_id } }).then( function (rating) {
+  var userId = req.user.get('id');
+  var snippetId = req.body.SnippetId;
+  var sumRatings = 0.0;
+  models.Rating.findOne({ where : { SnippetId: snippetId, UserId: userId } }).then( function (rating) {
     if (rating) {
       rating.value = req.body.value;
       rating.save({ validate: false, logging: true}).then(function () {
-        models.Rating.sum('value', { where : { SnippetId: snippet_id } }).then( function (sum) {
-          sum_ratings = sum;
-          models.Rating.count({ where : { SnippetId: snippet_id } }).then( function (c){
+        models.Rating.sum('value', { where : { SnippetId: snippetId } }).then( function (sum) {
+          sumRatings = sum;
+          models.Rating.count({ where : { SnippetId: snippetId } }).then( function (c){
             var average = 0;
             if(c>0){
-              average = (sum_ratings/c);
+              average = (sumRatings/c);
             }
             res.status(200).send({rating: rating, avg: average.toFixed(2)});
           });
@@ -58,18 +58,18 @@ router.post('/', function (req, res) {
       });
     } else {
       var attributes = {
-        SnippetId: snippet_id,
+        SnippetId: snippetId,
         value: req.body.value,
-        UserId: user_id
+        UserId: userId
       };
       var new_rating = models.Rating.build(attributes);
       new_rating.save({ validate: false, logging: true}).then(function (new_rating) {
-        models.Rating.sum('value', { where : { SnippetId: snippet_id } }).then( function (sum) {
-          sum_ratings = sum;
-          models.Rating.count({ where : { SnippetId: snippet_id } }).then( function (c){
+        models.Rating.sum('value', { where : { SnippetId: snippetId } }).then( function (sum) {
+          sumRatings = sum;
+          models.Rating.count({ where : { SnippetId: snippetId } }).then( function (c){
             var average = 0;
             if(c>0){
-              average = (sum_ratings/c);
+              average = (sumRatings/c);
             }
             res.status(200).send({rating: new_rating, avg: average.toFixed(2)});
           });

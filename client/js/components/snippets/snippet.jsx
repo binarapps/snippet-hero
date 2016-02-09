@@ -133,7 +133,7 @@ export default class Snippet extends React.Component {
       </div>
     );
 
-    const ratings = this.props.id ? <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={this.checkRatingAbility()}/>: '';
+    let ratings = this.props.id ? <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={this._checkRatingAbility()}/>: '';
 
     let avatar = (
       <Avatar
@@ -150,9 +150,16 @@ export default class Snippet extends React.Component {
             title={this.props.name || 'No title'}
             subtitle= {author}
             avatar={avatar} />
-          <div>
-            {ratings}
-          </div>
+          { (() => {
+            if (this.props.withRatings) {
+              return (
+                <div>
+                  {ratings}
+                </div>
+              );
+            }
+          })()}
+
         </div>
         {this.checkOwner() ? snippetActions : ''}
         <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300 }}>
