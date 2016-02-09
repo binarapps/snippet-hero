@@ -5,6 +5,7 @@ import SearchBar from '../search-bar';
 import SnippetActions from '../../actions/snippet-actions';
 import SnippetStore from '../../stores/snippet-store';
 import SnippetSearchStore from '../../stores/snippet-search-store';
+import UserStore from '../../stores/user-store';
 import Paginator from './paginator';
 
 export default class SnippetsIndex extends React.Component {
@@ -25,11 +26,15 @@ export default class SnippetsIndex extends React.Component {
   }
 
   _getPaginatedSnippets(page){
-    SnippetActions.getPaginatedSnippets(page, this.props.route.perPage, this.state.current);
+    SnippetActions.getPaginatedSnippets(page, this.props.route.perPage, this.getCurrentUser());
 
     this.setState({
       currentPage: page
     });
+  }
+
+  getCurrentUser(){
+    return UserStore.state.currentUser;
   }
 
   _goToPage(page){

@@ -7,9 +7,9 @@ import {buildUrl} from '../libs/paginate';
 class SnippetActions {
   constructor() {}
 
-  getPaginatedSnippets(page, perPage, userId){
-    axios.get('/snippets?'+ buildUrl(perPage, page)+(userId ? '&userId='+userId : ''))
-      .then(res => this.dispatch({ok: true, results: res.data}))
+  getPaginatedSnippets(page, perPage, currentUser){
+    axios.get('/snippets?'+ buildUrl(perPage, page))
+      .then(res => this.dispatch({ok: true, results: res.data, currentUser: currentUser}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
@@ -27,8 +27,13 @@ class SnippetActions {
 
   commentSnippet(comment, snippetId) {
     axios.post('/snippets/' + snippetId + '/comments', comment)
-      .then(res => this.dispatch({ok: true, comment: res.data}))
-      .catch(res => this.dispatch({ok: false, comment: res.data}));
+      .then(res => {
+        FlashMessages.pushMessage({ content: 'Comment added!' });
+        this.dispatch({ok: true, comment: res.data});
+      }).catch(res => {
+        FlashMessages.pushMessage({ content: 'Something went wrong. Could not comment that snippet :(' });
+        this.dispatch({ok: false, comment: res.data});
+      });
   }
 
   create(snippet) {
@@ -39,10 +44,12 @@ class SnippetActions {
   }
 
   onCreateSuccess(res) {
+    FlashMessages.pushMessage({ content: 'Snippet created successfuly!' });
     this.dispatch({snippet: res.data});
   }
 
   onCreateFail() {
+    FlashMessages.pushMessage({ content: 'There was an error while creating snippet!' });
     this.dispatch();
   }
 
@@ -50,11 +57,12 @@ class SnippetActions {
     this.dispatch();
   }
 
-  destroySnippet(snippet_id) {
-    axios.delete('/snippets/' + snippet_id)
-      .then(res => {
+  destroySnippet(snippetId) {
+    axios.delete('/snippets/' + snippetId)
+      .then(() => {
+
         FlashMessages.pushMessage({ content: 'Successfully deleted snippet!' });
-        this.dispatch({ok: true, res: res.data.snippet});
+        this.dispatch({ok: true, snippetId: snippetId});
       }).catch(() => {
         FlashMessages.pushMessage({ content: 'Something went wrong. Could not delete that snippet :(' });
         this.dispatch({ok: false});

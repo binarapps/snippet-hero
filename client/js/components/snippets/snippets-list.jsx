@@ -1,21 +1,18 @@
 import React from 'react';
+import _ from 'lodash';
 import Snippet from './snippet';
 import CommentBox from '../comments/comment-box';
 
 class SnippetListItem extends React.Component{
   render() {
-
-    let page = this.props.page;
-    let perPage = this.props.perPage;
-    let index = this.props.index;
-
-    let realIndex = (page-1)*perPage+index+1;
-
     return (
-      <li style={{position: 'relative', paddingLeft: '30px'}}>
-        <span style={{position: 'absolute', left: 0}}>#{realIndex}</span>
-        <Snippet {...this.props.snippet} style={{marginBottom: '15px'}} perPage={perPage} history={this.props.history} />
-        <CommentBox snippetId={this.props.snippet.id} comments={this.props.snippet.comments}/>
+      <li style={{position: 'relative', marginBottom: '25px'}}>
+        <Snippet {...this.props.snippet} withRatings={this.props.withRatings} style={{marginBottom: '5px'}} history={this.props.history} />
+        { (() => {
+          if (this.props.withComments) {
+            return (<CommentBox snippetId={this.props.snippet.id} comments={this.props.snippet.comments}/>);
+          }
+        })()}
       </li>
     );
   }
@@ -29,15 +26,20 @@ export default class SnippetsList extends React.Component {
 
   render() {
 
-    let page = this.props.page;
-    let perPage = this.props.perPage;
     let history = this.props.history;
+    let withComments = _.isUndefined(this.props.withComments) ? true : this.props.withComments;
+    let withRatings = _.isUndefined(this.props.withRatings) ? true : this.props.withComments;
 
     return (
-      <ul>
+      <ul style={{padding: 0}}>
         {this.props.snippets.map(function(snippet, index) {
           return (
-            <SnippetListItem key={`snippet-${index}`} snippet={snippet} index={index} page={page} perPage={perPage} history={history}/>
+            <SnippetListItem key={`snippet-${index}`}
+                             withRatings={withRatings}
+                             withComments={withComments}
+                             snippet={snippet}
+                             index={index} 
+                             history={history} />
           );
         })}
       </ul>

@@ -29,14 +29,7 @@ export default class Snippet extends React.Component {
   }
 
   _getUserSnippet(){
-
     this.props.history.pushState(null, '/profiles');
-    //window.location = '/profiles';
-    // let p = this.props;
-    // let currentUser = this.getCurrentUser;
-
-    // SnippetActions.getPaginatedSnippets(1, p.perPage, (p.user ? p.user.id : currentUser.id));
-    // FlashMessages.pushMessage({ content: ('Here are all snippets of user ' + (p.user ? p.user.name : currentUser.name)) });
   }
 
   getCurrentUser(){
@@ -76,13 +69,10 @@ export default class Snippet extends React.Component {
       mime: this.props.language
     };
     let { style } = this.props;
-
     let currentUser = this.getCurrentUser();
-
     let author = (this.props.user ? this.props.user.name : (currentUser ? currentUser.name : 'author') );
     let enabled = this.checkRatingAbility();
-
-    const ratings = this.props.id ? <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={enabled}/>: '';
+    let ratings = this.props.id ? <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={enabled}/>: '';
 
     let avatar = (<Avatar
           color={generateColor()}
@@ -104,9 +94,16 @@ export default class Snippet extends React.Component {
             title={this.props.name || 'No title'}
             subtitle= {author}
             avatar={avatar} />
-          <div>
-            {ratings}
-          </div>
+          { (() => {
+            if (this.props.withRatings) {
+              return (
+                <div>
+                  {ratings}
+                </div>
+              );
+            }
+          })()}
+
         </div>
         {this.checkOwner() ? deleteButton : ''}
         <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300 }}>

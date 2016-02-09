@@ -1,20 +1,18 @@
 import React from 'react';
 import Navbar from './navbar';
 import UserStore from '../stores/user-store';
-import UserActions from '../actions/user-actions';
 import FlashMessages from './flash-messages';
 
 export default class App extends React.Component {
 
   constructor() {
     super();
-    this.state = { currentUser: UserStore.state.currentUser };
+    this.state = { currentUser: UserStore.getState().currentUser };
 
     this._onChange = this._onChange.bind(this);
 
     this.historyListtenerWasAttached = false;
 
-    UserActions.fetchCurrent();
     UserStore.listen(this._onChange);
     setTimeout(() => { this._onChange(); });
   }
@@ -31,7 +29,7 @@ export default class App extends React.Component {
   }
 
   _onChange() {
-    this.setState({ currentUser: UserStore.state.currentUser });
+    this.setState({ currentUser: UserStore.getState().currentUser });
     setTimeout(() => {
       var currentPath = this.props.location.pathname;
 
