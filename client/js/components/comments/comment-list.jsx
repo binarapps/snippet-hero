@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import shallowCompare from 'react-addons-shallow-compare';
 import moment from 'moment';
 import Markdown from 'markdown-react-js';
 import Paper from 'material-ui/lib/paper';
@@ -28,6 +29,10 @@ class CommentListItem extends React.Component{
 }
 
 export default class CommentList extends React.Component {
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+
   render() {
     let comments = this.props.comments.map((comment) => {
       return (
