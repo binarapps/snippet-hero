@@ -9,8 +9,7 @@ export default class Rating extends React.Component {
     this._handleMouseOver = this._handleMouseOver.bind(this);
     this._handleClick = this._handleClick.bind(this);
     this._handleMouseLeave = this._handleMouseLeave.bind(this);
-    var user = UserStore.getState().currentUser;
-    this.state = {grade: 0, currentUser: user};
+    this.state = { grade: 0 };
 
     this.style = {
       starBlack: {
@@ -27,27 +26,28 @@ export default class Rating extends React.Component {
   }
 
   _handleMouseLeave(){
-    var userRates = this.props.usersRatings[this.state.currentUser.id];
+    var user = UserStore.getState().currentUser;
+    var userRates = this.props.usersRatings[user.id];
     var rating = (userRates !== undefined ? userRates[this.props.snippet.id] : 0);
     this.setState({
-      grade: rating
+      grade: rating || 0
     });
   }
 
 
-  _handleMouseOver(g){
-    this.setState({grade: g});
+  _handleMouseOver(g) {
+    this.setState({ grade: g });
   }
 
-  _handleClick(g){
+  _handleClick(g) {
     RatingActions.createRating({
       value: g,
       SnippetId: this.props.snippetId
     });
-    this.setState({grade: g});
+    this.setState({ grade: g });
   }
 
-  _gradeToStyle(grade){
+  _gradeToStyle(grade) {
     return grade > this.state.grade ? this.style.starBlack : this.style.starYellow;
   }
 
