@@ -23,7 +23,6 @@ class SnippetStore {
       const count = data.results.count;
       const currentUserId = data.currentUser.id;
 
-      let user = data.results.userId ? data.results.userId : null;
       let snippetsAverage = this.state.snippetsAvg;
       let usersRatings = this.state.usersRatings;
       let snippetRating = {};

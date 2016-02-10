@@ -16,7 +16,6 @@ import UserStore from '../../stores/user-store';
 import SnippetActions from '../../actions/snippet-actions.js';
 import RaisedButton from 'material-ui/lib/raised-button';
 import TextField from 'material-ui/lib/text-field';
-import ProfileActions from '../../actions/profile-actions';
 
 // TODO create tests
 export default class Snippet extends React.Component {
