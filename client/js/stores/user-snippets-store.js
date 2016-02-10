@@ -53,7 +53,7 @@ class UserSnippetsStore {
   }
 
   destroySnippet (data) {
-    if (data.ok){
+    if (data.ok) {
       var oldUserSnippets = this.state.currentUserSnippets;
 
       oldUserSnippets.forEach(function (userSnippet) {

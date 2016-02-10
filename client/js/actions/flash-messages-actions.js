@@ -1,10 +1,10 @@
 import alt from '../libs/alt';
 
-class flashMessagesActions {
+class FlashMessagesActions {
 
   pushMessage(message) {
     this.dispatch(message);
   }
 
 }
-export default alt.createActions(flashMessagesActions);
+export default alt.createActions(FlashMessagesActions);

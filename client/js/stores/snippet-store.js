@@ -19,7 +19,7 @@ class SnippetStore {
   }
 
   getPaginatedSnippets(data) {
-    if(data.ok){
+    if (data.ok) {
       const pageSnippets = data.results.snippets;
       const count = data.results.count;
       const currentUserId = data.currentUser.id;
@@ -32,14 +32,14 @@ class SnippetStore {
       pageSnippets.forEach(function (snippet) {
         snippetsAverage[snippet.id] = snippet.avg;
 
-        let curentUserRating = snippet.ratings.filter(function(rating){
+        let curentUserRating = snippet.ratings.filter(function(rating) {
           return rating.UserId == currentUserId;
         });
 
-        if(curentUserRating.length){
+        if (curentUserRating.length) {
           let rating = curentUserRating[0];
 
-          if(usersRatings[currentUserId] !== undefined){
+          if (usersRatings[currentUserId] !== undefined) {
             snippetRating = usersRatings[currentUserId];
           }
           snippetRating[rating.SnippetId] = rating.value;
@@ -55,13 +55,6 @@ class SnippetStore {
         usersRatings: usersRatings
       });
     }
-  }
-
-  create() {
-    this.setState({
-      snippetCreated: false
-    });
-    this.preventDefault();
   }
 
   createRating(data) {
@@ -86,17 +79,25 @@ class SnippetStore {
     }
   }
 
-  onCreateSuccess(data) {
-    const newSnippets = update(this.state.snippets, { $unshift: [data.snippet] });
-    const counter = this.state.totalCount;
-
-    this.setState({
-      snippets: newSnippets,
-      totalCount: counter+1
-    });
+  create(data) {
+    if (data.ok) {
+      const newSnippets = update(this.state.snippets, { $unshift: [data.snippet] });
+      this.setState({
+        snippets: newSnippets,
+        totalCount: this.state.totalCount + 1
+      });
+    }
   }
 
-  onCreateFail() {
+  update(data) {
+    if (data.ok) {
+      const {snippets} = this.state;
+      let snippetIndex = _.findIndex(snippets, 'id', data.snippet.id);
+      let newSnippets = update(snippets, {[snippetIndex]: {$set: data.snippet}});
+      this.setState({
+        snippets: newSnippets
+      });
+    }
   }
 
   getAllComments(data) {
@@ -127,9 +128,8 @@ class SnippetStore {
   destroySnippet (data) {
     if (data.ok){
       let snippets = this.state.snippets;
-      let newSnippets;
       let indexOfSnippet = _.findIndex(snippets, _.find(snippets, { id: data.snippetId }));
-      newSnippets = update(snippets, { $splice: [[indexOfSnippet, 1]] });
+      let newSnippets = update(snippets, { $splice: [[indexOfSnippet, 1]] });
 
       this.setState({
         snippets: newSnippets
