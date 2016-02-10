@@ -24,7 +24,7 @@ export default class Snippet extends React.Component {
     super(props);
     this.state = {isEditing: false, name: props.name, description: props.description, content: props.content};
     this._deleteSnippet = this._deleteSnippet.bind(this);
-    this._getUserSnippet = this._getUserSnippet.bind(this);
+    this._getUserProfile = this._getUserProfile.bind(this);
     this._editSnippet = this._editSnippet.bind(this);
     this._updateSnippet = this._updateSnippet.bind(this);
     this._getShowSnippet = this._getShowSnippet.bind(this);
@@ -52,7 +52,7 @@ export default class Snippet extends React.Component {
     SnippetActions.destroySnippet(this.props.id);
   }
 
-  _getUserSnippet(){
+  _getUserProfile(){
     let userId = (this.props.user ? this.props.user.id : this.getCurrentUser().id);
     this.props.history.pushState(null, '/profiles/'+userId);
   }
@@ -145,7 +145,7 @@ export default class Snippet extends React.Component {
       <Avatar
         color={generateColor()}
         backgroundColor={generateColor()}
-        onClick={this._getUserSnippet}
+        onClick={this._getUserProfile}
         style={{cursor: 'pointer'}}
         title={('Click to see more ' + author + ' snippets')}>
         {author.split('')[0].toUpperCase()}

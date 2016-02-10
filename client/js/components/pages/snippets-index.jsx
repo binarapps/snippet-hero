@@ -77,14 +77,10 @@ export default class SnippetsIndex extends React.Component {
   render() {
     let s = this.state;
     let perPage = this.props.route.perPage;
-    let text = 'All snippets';
-    if (this.state.current != null){
-      text = ('All snippets of user ' + this.state.current + ':');
-    }
 
     return (
       <PageWrapper>
-        <h2 style={{fontSize: '24px', margin: '20px 0'}}>{text}</h2>
+        <h2 style={{fontSize: '24px', margin: '20px 0'}}>All snippets:</h2>
         <SearchBar label='Search by name:' onSearch={this._searchSnippets} />
         <div style={{clear: 'right'}}>
           {(() => {

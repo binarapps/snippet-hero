@@ -16,21 +16,15 @@ var authChecker = function(req, res, next) {
 router.get('/', function (req, res) {
   var perPage = req.query.results;
   var page = req.query.offset;
-  var userId = req.query.userId ? req.query.userId : null;
   var options = { limit : perPage, offset : page };
   var currentUserId = req.user.get('id');
-  var countOptions = null;
-  if(userId) {
-    options['where'] = { UserId : userId };
-    countOptions = { where : { UserId : userId }};
-  }
 
   models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll(options).then(function (snippets) {
     var mappedSnippets = snippets.map(function (s){
       return s.toJson(currentUserId);
     });
-    models.Snippet.count(countOptions).then(function (c) {
-      res.status(200).send({snippets: mappedSnippets, count: c, userId: userId});
+    models.Snippet.count().then(function (c) {
+      res.status(200).send({snippets: mappedSnippets, count: c});
     });
   });
 });
