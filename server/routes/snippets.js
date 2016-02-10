@@ -34,7 +34,7 @@ router.get('/user', function (req, res) {
 
   models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ where: { UserId: userId }, limit: perPage, offset: page }).then(function (snippets) {
     var mappedSnippets = snippets.map(function (s){
-      return s.toJson();
+      return s.toJson(userId);
     });
     models.Snippet.count({ where : {UserId: userId }}).then(function (c) {
       res.status(200).send({snippets: mappedSnippets, count: c});

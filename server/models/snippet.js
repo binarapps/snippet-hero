@@ -63,7 +63,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     instanceMethods: {
-      toJson: function () {
+      toJson: function (currentUserId) {
         var json = {
           id: this.get('id'),
           name: this.get('name'),
@@ -74,7 +74,8 @@ module.exports = function(sequelize, DataTypes) {
           ratings: [],
           comments: [],
           avg: 0,
-          createdAt: this.get('createdAt')
+          createdAt: this.get('createdAt'),
+          currentUserRating: 0
         };
 
         if(this.User) {
@@ -95,6 +96,11 @@ module.exports = function(sequelize, DataTypes) {
 
         if (this.Ratings) {
           json.ratings = this.Ratings.map(function (r) {
+          if(currentUserId){
+            if(r.UserId == currentUserId){
+              json.currentUserRating = r.toJson();
+            }
+          }
             return r.toJson();
           });
 
