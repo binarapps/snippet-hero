@@ -71,7 +71,6 @@ module.exports = function(sequelize, DataTypes) {
           language: this.get('language'),
           content: '',
           versions: [],
-          ratings: [],
           comments: [],
           avg: 0,
           createdAt: this.get('createdAt'),
@@ -95,14 +94,12 @@ module.exports = function(sequelize, DataTypes) {
         }
 
         if (this.Ratings) {
-          json.ratings = this.Ratings.map(function (r) {
+          this.Ratings.map(function (r) {
           if(currentUserId){
             if(r.UserId == currentUserId){
-              json.currentUserRating = r.toJson();
+              json.currentUserRating = r.value;
             }
-          }
-            return r.toJson();
-          });
+          }});
 
           var sum = 0;
           var index = 0;

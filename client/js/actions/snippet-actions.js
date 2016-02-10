@@ -60,10 +60,6 @@ class SnippetActions {
       });
   }
 
-  resetStore() {
-    this.dispatch();
-  }
-
   destroySnippet(snippetId) {
     axios.delete('/snippets/' + snippetId)
       .then(() => {

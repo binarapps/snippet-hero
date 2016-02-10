@@ -13,8 +13,7 @@ class SnippetStore {
       snippets: [],
       snippetsAvg: {},
       usersRatings: {},
-      totalCount: 0,
-      current: null
+      totalCount: 0
     };
   }
 
@@ -32,25 +31,18 @@ class SnippetStore {
       pageSnippets.forEach(function (snippet) {
         snippetsAverage[snippet.id] = snippet.avg;
 
-        let curentUserRating = snippet.ratings.filter(function(rating) {
-          return rating.UserId == currentUserId;
-        });
+        let curentUserRating = snippet.currentUserRating;
 
-        if (curentUserRating.length) {
-          let rating = curentUserRating[0];
-
-          if (usersRatings[currentUserId] !== undefined) {
-            snippetRating = usersRatings[currentUserId];
-          }
-          snippetRating[rating.SnippetId] = rating.value;
-          usersRatings[currentUserId] = snippetRating;
+        if (usersRatings[currentUserId] !== undefined) {
+          snippetRating = usersRatings[currentUserId];
         }
+        snippetRating[snippet.id] = curentUserRating;
+        usersRatings[currentUserId] = snippetRating;
       });
 
       this.setState({
         snippets: pageSnippets,
         totalCount: count,
-        current: user,
         snippetsAvg: snippetsAverage,
         usersRatings: usersRatings
       });
