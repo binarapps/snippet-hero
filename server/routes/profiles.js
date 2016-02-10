@@ -12,22 +12,12 @@ var models = require('../models');
     var userId = req.params.id;
     var currentUserId = req.user.get('id');
 
-    models.User.findById(userId)
+    models.User.scope(['withSnippets', 'withComments', 'withRatings']).findById(userId)
       .then(function (user) {
-        models.Comment.count({ where : {UserId: userId }})
-        .then(function (commentCount){
-          models.Rating.count({ where : {UserId: userId}})
-          .then(function (ratingCount) {
-            models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ where: { UserId: userId }})
-            .then(function (snippets) {
-              var currentUserRating = 0;
-              var mappedSnippets = snippets.map( function (s) {
-                return s.toJson;
-              });
-            }).catch();
-          }).catch();
-        }).catch();
-      }).catch();
+        res.status(200).send(user.toJson(currentUserId));
+      }).catch(function (err){
+        res.send({err: err});
+      });
   });
 
 module.exports = router;

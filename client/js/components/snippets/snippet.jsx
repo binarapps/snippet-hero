@@ -16,6 +16,7 @@ import UserStore from '../../stores/user-store';
 import SnippetActions from '../../actions/snippet-actions.js';
 import RaisedButton from 'material-ui/lib/raised-button';
 import TextField from 'material-ui/lib/text-field';
+import ProfileActions from '../../actions/profile-actions';
 
 // TODO create tests
 export default class Snippet extends React.Component {
@@ -52,7 +53,8 @@ export default class Snippet extends React.Component {
   }
 
   _getUserSnippet(){
-    this.props.history.pushState(null, '/profiles');
+    let userId = (this.props.user ? this.props.user.id : this.getCurrentUser().id);
+    this.props.history.pushState(null, '/profiles/'+userId);
   }
 
   getCurrentUser() {
@@ -142,8 +144,8 @@ export default class Snippet extends React.Component {
     let avatar = (
       <Avatar
         color={generateColor()}
-        backgroundColor={generateColor()
-        onClick={this._getUserSnippet}}
+        backgroundColor={generateColor()}
+        onClick={this._getUserSnippet}
         style={{cursor: 'pointer'}}
         title={('Click to see more ' + author + ' snippets')}>
         {author.split('')[0].toUpperCase()}

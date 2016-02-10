@@ -17,6 +17,7 @@ var dashboard = require('./routes/dashboard');
 var snippets = require('./routes/snippets');
 var ratings = require('./routes/ratings');
 var snippetComments = require('./routes/comments');
+var profiles = require('./routes/profiles');
 
 var env = process.env.NODE_ENV || 'development';
 var secrets;
@@ -69,6 +70,7 @@ app.use('/dashboard', dashboard);
 app.use('/snippets', snippets);
 app.use('/ratings', ratings);
 app.use('/snippets', snippetComments);
+app.use('/profiles', profiles);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
