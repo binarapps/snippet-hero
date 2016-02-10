@@ -37,20 +37,27 @@ class SnippetActions {
   }
 
   create(snippet) {
-    this.dispatch();
     axios.post('/snippets', snippet)
-      .then(res => this.actions.onCreateSuccess(res))
-      .catch(() => this.actions.onCreateFail());
+      .then(res => {
+        FlashMessages.pushMessage({ content: 'Snippet created successfuly!' });
+        this.dispatch({ ok: true, snippet: res.data });
+      })
+      .catch(err => {
+        FlashMessages.pushMessage({ content: 'There was an error while creating snippet.' });
+        this.actions.onCreateFail({ ok: false, err: err });
+      });
   }
 
-  onCreateSuccess(res) {
-    FlashMessages.pushMessage({ content: 'Snippet created successfuly!' });
-    this.dispatch({snippet: res.data});
-  }
-
-  onCreateFail() {
-    FlashMessages.pushMessage({ content: 'There was an error while creating snippet!' });
-    this.dispatch();
+  update(snippet) {
+    axios.put('/snippets/' + snippet.id, snippet)
+      .then(res => {
+        FlashMessages.pushMessage({ content: 'Snippet updated successfully!' });
+        this.dispatch({ ok: true, snippet: res.data });
+      })
+      .catch(err => {
+        FlashMessages.pushMessage({ content: 'There was an error while updating snippet.' });
+        this.dispatch({ ok: false, err: err });
+      });
   }
 
   destroySnippet(snippetId) {
