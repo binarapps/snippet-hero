@@ -132,7 +132,7 @@ export default class Snippet extends React.Component {
     let { style } = this.props;
     let currentUser = this.getCurrentUser();
     let author = this.props.user || currentUser;
-    let authorName = (author && author.name) || 'author'
+    let authorName = (author && author.name) || 'author';
     let snippetActions = (
       <div style={{display: 'table', background: Colors.grey100, width: '100%'}}>
         <RaisedButton style={{float: 'right', margin: '0 10px 5px 0'}} onClick={this._editSnippet} label='Edit' secondary={true} />

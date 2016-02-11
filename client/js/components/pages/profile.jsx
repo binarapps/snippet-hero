@@ -33,6 +33,14 @@ export default class Profile extends React.Component {
   getPropsFromStores() {
     return ProfileStore.getState();
   }
+  
+  componentWillReceiveProps(nextProps) {
+    this.setState(this.getPropsFromStores(nextProps, this.context));
+  }
+
+  componentWillUnmount() {
+    this.storeListeners.forEach(unlisten => unlisten());
+  }
 
   render(){
     let s = this.state;
@@ -62,6 +70,9 @@ export default class Profile extends React.Component {
         </Avatar>);
 
     let achievementStyle = {height: 'auto', width: 'auto', margin: '20px 50px', textAlign: 'center', display: 'inline-block', padding: '20px'};
+    let numberAchievementEvenStyle = {color: '#FC2C7A', fontSize: '60px'};
+    let numberAchievementOddStyle = {color: '#18B8D0', fontSize: '60px'};
+    let subtitleAchievementStyle = {fontSize: '16px'};
     let snippetListing = (<Card>
           <CardTitle title="Snippets:" />
           <CardText>
@@ -82,20 +93,20 @@ export default class Profile extends React.Component {
           <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300}}/>
           <CardText className="profile-stats" >
             <Paper style={achievementStyle} zDepth={2} circle={true}>
-              <span className="numberAchievementOdd">{snippets.length}</span><br/>
-              <span className="subtitleAchievement"> snippets added </span>
+              <span style={numberAchievementOddStyle}>{snippets.length}</span><br/>
+              <span style={subtitleAchievementStyle}> snippets added </span>
             </Paper>
             <Paper style={achievementStyle} zDepth={2} circle={true}>
-              <span className="numberAchievementEven">{commentCount}</span><br/>
-              <span className="subtitleAchievement"> comments added </span>
+              <span style={numberAchievementEvenStyle}>{commentCount}</span><br/>
+              <span style={subtitleAchievementStyle}> comments added </span>
             </Paper>
             <Paper style={achievementStyle} zDepth={2} circle={true}>
-              <span className="numberAchievementOdd">{ratingCount}</span><br/>
-              <span className="subtitleAchievement"> snippets rated on </span>
+              <span style={numberAchievementOddStyle}>{ratingCount}</span><br/>
+              <span style={subtitleAchievementStyle}> snippets rated on </span>
             </Paper>
             <Paper style={achievementStyle} zDepth={2} circle={true}>
-              <span className="numberAchievementEven">{totalAvg}</span><br/>
-              <span className="subtitleAchievement"> avarage rating </span>
+              <span style={numberAchievementEvenStyle}>{totalAvg}</span><br/>
+              <span style={subtitleAchievementStyle}> avarage rating </span>
             </Paper>
           </CardText>
         </Card>
