@@ -27,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
         return {
           include: {
             model: sequelize.models.Snippet,
-            include: [sequelize.models.SnippetVersion, sequelize.models.Rating],
+            include: [sequelize.models.SnippetVersion, sequelize.models.Rating, sequelize.models.User],
             order: [['createdAt', 'DESC']]
           },
           order: [['createdAt', 'DESC']]
@@ -64,8 +64,10 @@ module.exports = function(sequelize, DataTypes) {
         if (this.Snippets){
           var allSnippets = this.Snippets.map(function (snippet) {
             var s = snippet.toJson(currentUserId);
-            sum += s.avg;
-            index++;
+            if (parseFloat(s.avg) != 0){
+              sum += parseFloat(s.avg);
+              index++;
+            }
             return s;
           });
           json.snippets = allSnippets;

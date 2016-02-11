@@ -52,11 +52,10 @@ export default class Profile extends React.Component {
         </Avatar>);
 
     let achievementStyle = {height: 'auto', width: 'auto', margin: '20px 50px', textAlign: 'center', display: 'inline-block', padding: '20px'};
-
     let snippetListing = (<Card>
-          <CardTitle title={'Snippets:' } />
+          <CardTitle title="Snippets:" />
           <CardText>
-            <SnippetsList snippets={snippets} withComments={false} withRatings={false} ></SnippetsList>
+            <SnippetsList snippets={snippets} withComments={false} withRatings={false} page={1} perPage={10} history={this.props.history}></SnippetsList>
           </CardText>
         </Card>);
 
@@ -90,11 +89,7 @@ export default class Profile extends React.Component {
             </Paper>
           </CardText>
         </Card>
-        {(() => {
-          if(snippets.length > 0){
-            return snippetListing;
-          }
-        })()}
+        { snippets.length > 0 ? snippetListing : '' }
       </PageWrapper>
     );
   }

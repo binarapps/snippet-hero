@@ -4,6 +4,9 @@ import Snippet from './snippet';
 import CommentBox from '../comments/comment-box';
 
 class SnippetListItem extends React.Component{
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
       <li style={{position: 'relative', marginBottom: '25px'}}>

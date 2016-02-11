@@ -94,23 +94,21 @@ module.exports = function(sequelize, DataTypes) {
         }
 
         if (this.Ratings) {
+          var sum = 0;
+          var index = 0;
+
           this.Ratings.map(function (r) {
             if(currentUserId){
               if(r.UserId == currentUserId){
                 json.currentUserRating = r.value;
               }
             }
-          });
-
-          var sum = 0;
-          var index = 0;
-
-          this.Ratings.forEach(function (r){
             sum += r.value;
             index++;
+            return r.toJson();
           });
 
-          json.avg = (sum==0 ? 0 : sum/index).toFixed(2);
+          json.avg = (index==0 ? 0 : sum/index).toFixed(2);
         }
 
         return json;
