@@ -131,7 +131,8 @@ export default class Snippet extends React.Component {
     };
     let { style } = this.props;
     let currentUser = this.getCurrentUser();
-    let author = (this.props.user ? this.props.user.name : (currentUser ? currentUser.name : 'author') );
+    let author = this.props.user || currentUser;
+    let authorName = (author && author.name) || 'author'
     let snippetActions = (
       <div style={{display: 'table', background: Colors.grey100, width: '100%'}}>
         <RaisedButton style={{float: 'right', margin: '0 10px 5px 0'}} onClick={this._editSnippet} label='Edit' secondary={true} />
@@ -146,8 +147,8 @@ export default class Snippet extends React.Component {
         backgroundColor={generateColor()}
         onClick={this._getUserProfile}
         style={{cursor: 'pointer'}}
-        title={('Click to see more ' + author + ' snippets')}>
-        {author.split('')[0].toUpperCase()}
+        title={('Click to see more ' + authorName + ' snippets')}>
+        {authorName.split('')[0].toUpperCase()}
       </Avatar>
     );
 
@@ -156,7 +157,7 @@ export default class Snippet extends React.Component {
         <div style={{display: 'inline-flex', background: Colors.grey100, width: '100%'}}>
           <CardHeader
             title={this.props.name || 'No title'}
-            subtitle= {author}
+            subtitle= {authorName}
             avatar={avatar} />
           { (() => {
             if (this.props.withRatings) {

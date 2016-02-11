@@ -22,8 +22,7 @@ export default class Profile extends React.Component {
   componentDidMount(){
     this.storeListeners = [];
     this.storeListeners.push(ProfileStore.listen(this._onChange));
-    var reg = new RegExp('profiles\/([0-9]+)');
-    var userId = (this.props.location.pathname).match(reg)[1];
+    var userId = (this.props.routeParams.id);
     ProfileActions.getProfile(userId);
   }
 
@@ -37,12 +36,23 @@ export default class Profile extends React.Component {
 
   render(){
     let s = this.state;
-    let userName = (s.profile ? s.profile.name : '');
-    let userEmail = (s.profile ? s.profile.email : '');
-    let commentCount = (s.profile ? s.profile.commentsCount : 0);
-    let ratingCount = (s.profile ? s.profile.ratingsCount : 0);
-    let snippets = (s.profile && s.profile.snippets ? s.profile.snippets : {});
-    let totalAvg = (s.profile ? s.profile.totalAvg : 0);
+    let userName = '';
+    let userEmail = '';
+    let commentCount = 0;
+    let ratingCount = 0;
+    let totalAvg = 0;
+    let snippets = {};
+
+    if(s.profile) {
+      userName = s.profile.name;
+      userEmail = s.profile.email;
+      commentCount = s.profile.commentsCount;
+      ratingCount = s.profile.ratingsCount;
+      totalAvg = s.profile.totalAvg;
+      if(s.profile.snippets){
+        snippets = s.profile.snippets;
+      }
+    }
 
     let avatar = (<Avatar
           color={generateColor()}
