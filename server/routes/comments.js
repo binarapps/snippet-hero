@@ -35,12 +35,11 @@ router.post('/:snippetId/comments', authChecker, function (req, res) {
     SnippetId: req.params.snippetId,
     UserId: req.user.id
   };
-  models.Comment.create(attributes)
-  .then(function (comment) {
-    models.Comment.scope(['withUser']).findById(comment.id).then(function (c) {
-      res.status(201).send(c.toJson());
-      slack.notify('New comment to snippet was added! ' + slack.link('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'See it!'));
-    });
+  models.Comment.create(attributes).then(function (comment) {
+    return models.Comment.scope(['withUser']).findById(comment.id);
+  }).then(function (c) {
+    res.status(201).send(c.toJson());
+    slack.notify('New comment to snippet was added! ' + slack.link('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'See it!'));
   }).catch(function (err) {
     res.status(422).send(err.message);
   });
