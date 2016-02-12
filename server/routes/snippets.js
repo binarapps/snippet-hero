@@ -16,16 +16,18 @@ var authChecker = function(req, res, next) {
 router.get('/', function (req, res) {
   var perPage = req.query.results;
   var page = req.query.offset;
-  var options = { limit : perPage, offset : page };
+  var mappedSnippets;
 
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }]).findAll(options).then(function (snippets) {
-    var mappedSnippets = snippets.map(function (s){
-      return s.toJson();
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }])
+    .findAll({ limit: perPage, offset: page })
+    .then(function (snippets) {
+      mappedSnippets = snippets.map(function (s) {
+        return s.toJson();
+      });
+      return models.Snippet.count();
+    }).then(function (c) {
+      res.status(200).send({ snippets: mappedSnippets, count: c });
     });
-    models.Snippet.count().then(function (c) {
-      res.status(200).send({snippets: mappedSnippets, count: c});
-    });
-  });
 });
 
 router.get('/search', function (req, res) {
@@ -33,20 +35,23 @@ router.get('/search', function (req, res) {
   if (req.query.name) {
     options.where = { name: req.query.name };
   }
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll(options).then(function (snippets) {
-    var mappedSnippets = snippets.map(function (s) {
-      return s.toJson();
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings'])
+    .findAll(options)
+    .then(function (snippets) {
+      var mappedSnippets = snippets.map(function (s) {
+        return s.toJson();
+      });
+      res.send(mappedSnippets);
     });
-
-    res.send(mappedSnippets);
-  });
 });
 
 /* GET snippet by id */
 router.get('/:id', function (req, res) {
-  models.Snippet.findById(req.params.id, {include: [models.SnippetVersion]}).then(function (s) {
-    res.send(s.toJson());
-  });
+  models.Snippet.scope('withVersions')
+    .findById(req.params.id)
+    .then(function (s) {
+      res.send(s.toJson());
+    });
 });
 
 /* POST new snippet  */
@@ -110,22 +115,19 @@ router.put('/:id', authChecker, function (req, res) {
   });
 });
 
-
-
 /* DELETE snippet and it's ratings/versions/comments */
 router.delete('/:id', function (req, res){
   var snippetId = req.params.id;
-  models.Snippet.findById(snippetId).then(function (snippet) {
-    snippet.destroy().then(function () {
+  models.Snippet
+    .findById(snippetId)
+    .then(function (snippet) {
+      return snippet.destroy();
+    }).then(function () {
       res.status(200).send({snippet: snippetId});
-    }).catch( function (err) {
+    }).catch(function (err) {
       appLogger.debug(err.message);
       res.status(422).send(err);
     });
-  }).catch(function (err) {
-    appLogger.debug(err.message);
-    res.status(422).send(err);
-  });
 });
 
 module.exports = router;
