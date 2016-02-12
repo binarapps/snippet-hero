@@ -1,9 +1,11 @@
 'use strict';
 
+var models = require('../models');
+
 module.exports = {
   up: function (queryInterface, Sequelize) {
     queryInterface.addColumn(
-      'Snippets',
+      'Users',
       'avg',
       {
         type: Sequelize.FLOAT,
@@ -11,19 +13,19 @@ module.exports = {
         defaultValue: 0.0
       }
     );
-    models.Snippet.findAll()
-    .then( function(snippets) {
-      snippets.map(function(snippet) {
-        models.Ratings.aggregate('value', 'avg', { where : { SnippetId : snippet.id } })
+    models.User.findAll()
+    .then( function(users) {
+      users.map(function(user) {
+        models.Snippet.aggregate('avg', 'avg', { where : { UserId : user.id } })
         .then(function(average) {
-          snippet.avg = average;
-          snippet.save();
+          user.avg = average;
+          user.save();
         });
       });
     });
   },
 
   down: function (queryInterface) {
-    queryInterface.removeColumn('Snippets', 'avg');
+    queryInterface.removeColumn('Users', 'avg');
   }
 };

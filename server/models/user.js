@@ -8,7 +8,8 @@ module.exports = function(sequelize, DataTypes) {
     authToken: DataTypes.STRING,
     meerkatUserId: DataTypes.INTEGER,
     encryptedPassword: DataTypes.STRING,
-    passwordSalt: DataTypes.STRING
+    passwordSalt: DataTypes.STRING,
+    avg: DataTypes.FLOAT
   }, {
     scopes: {
       withComments: function () {
@@ -53,26 +54,17 @@ module.exports = function(sequelize, DataTypes) {
           id: this.get('id'),
           email: this.get('email'),
           name: this.get('name'),
-          totalAvg: 0.0,
+          totalAvg: this.get('avg'),
           commentsCount: 0,
           ratingsCount: 0,
           snippets: {}
         };
-        var sum = 0.0;
-        var index = 0;
 
         if (this.Snippets){
-          var allSnippets = this.Snippets.map(function (snippet) {
-            var s = snippet.toJson();
-            if (parseFloat(s.avg) != 0){
-              sum += parseFloat(s.avg);
-              index++;
-            }
-            return s;
+          json.snippets = this.Snippets.map(function (snippet) {
+            return snippet.toJson();
           });
-          json.snippets = allSnippets;
         }
-        json.totalAvg = ( index == 0 ? 0 : (sum/index) ).toFixed(2);
 
         if (this.Comments){
           json.commentsCount = this.Comments.length;
