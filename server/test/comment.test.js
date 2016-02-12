@@ -14,7 +14,7 @@ var data = {
   content: 'great snippet'
 };
 
-factory.define('snippet', db.Snippet, {description: 'test', name: 'snippet'});
+factory.define('snippet', db.Snippet, {description: 'test', name: 'snippet', avg: 0.0});
 factory.define('user', db.User, {name: 'user', email: 'test@example.com'});
 factory.define('comment', db.Comment, data);
 factory.define('commentWithUser', db.Comment, {
