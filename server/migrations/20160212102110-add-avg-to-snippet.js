@@ -13,7 +13,7 @@ module.exports = {
     );
   },
 
-  down: function (queryInterface, Sequelize) {
+  down: function (queryInterface) {
     queryInterface.removeColumn('Snippets', 'avg');
   }
 };

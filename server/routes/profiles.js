@@ -5,7 +5,6 @@ var models = require('../models');
 /* GET profile page (with user's ratings/comments/snippets) */
 router.get('/:id', function (req, res) {
   var userId = req.params.id;
-  var currentUserId = req.user.get('id');
 
   models.User.scope(['withSnippets', 'withComments', 'withRatings']).findById(userId)
     .then(function (user) {

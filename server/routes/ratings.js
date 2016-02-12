@@ -24,7 +24,6 @@ router.get('/:id', function (req, res) {
 router.post('/', function (req, res) {
   var userId = req.user.get('id');
   var snippetId = req.body.SnippetId;
-  var sumRatings = 0.0;
   models.Rating.findOne({ where : { SnippetId: snippetId, UserId: userId } }).then( function (rating) {
     if (rating) {
       rating.value = req.body.value;
@@ -34,7 +33,7 @@ router.post('/', function (req, res) {
             s.avg = avg.toFixed(2);
             s.save({ validate: false, logging: true});
           });
-          res.status(200).send({rating: rating, avg: avg.toFixed(2)})
+          res.status(200).send({rating: rating, avg: avg.toFixed(2)});
         });
       }).catch(function () {
         res.status(422).send('error');
@@ -52,7 +51,7 @@ router.post('/', function (req, res) {
             s.avg = avg.toFixed(2);
             s.save({ validate: false, logging: true});
           });
-          res.status(200).send({rating: new_rating, avg: avg.toFixed(2)})
+          res.status(200).send({rating: new_rating, avg: avg.toFixed(2)});
         });
       }).catch(function () {
         res.status(422).send('error');
