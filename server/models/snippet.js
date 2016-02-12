@@ -20,7 +20,8 @@ module.exports = function(sequelize, DataTypes) {
       'text/x-sql',
       'text/x-yaml'
     ),
-    UserId: DataTypes.INTEGER
+    UserId: DataTypes.INTEGER,
+    avg: DataTypes.FLOAT
   }, {
     scopes: {
       withComments: function () {
@@ -51,7 +52,6 @@ module.exports = function(sequelize, DataTypes) {
         };
       },
       withAuthor: function () {
-        console.log('WOŁAM AUTORA');
         return {
           include: [sequelize.models.User]
         };
@@ -79,10 +79,10 @@ module.exports = function(sequelize, DataTypes) {
           name: this.get('name'),
           description: this.get('description'),
           language: this.get('language'),
+          avg: this.get('avg').toFixed(2),
           content: '',
           versions: [],
           comments: [],
-          avg: 0,
           createdAt: this.get('createdAt'),
           currentUserRating: 0
         };

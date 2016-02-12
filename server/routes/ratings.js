@@ -20,20 +20,6 @@ router.get('/:id', function (req, res) {
   });
 });
 
-/* UPDATE user's rating for snippet*/
-router.put('/:id', function (req, res) {
-  models.Rating.findById(req.params.id).then( function (rating) {
-    rating.value = req.body.value;
-    rating.save({ validate: false, logging: true}).then(function () {
-      res.status(200).send('ok');
-    }).catch(function () {
-      res.status(422).send('error');
-    });
-  }).catch(function () {
-    res.status(422).send('error');
-  });
-});
-
 /* POST new rating */
 router.post('/', function (req, res) {
   var userId = req.user.get('id');
@@ -43,15 +29,12 @@ router.post('/', function (req, res) {
     if (rating) {
       rating.value = req.body.value;
       rating.save({ validate: false, logging: true}).then(function () {
-        models.Rating.sum('value', { where : { SnippetId: snippetId } }).then( function (sum) {
-          sumRatings = sum;
-          models.Rating.count({ where : { SnippetId: snippetId } }).then( function (c){
-            var average = 0;
-            if(c>0){
-              average = (sumRatings/c);
-            }
-            res.status(200).send({rating: rating, avg: average.toFixed(2)});
+        models.Rating.aggregate('value', 'avg', { where : { SnippetId : snippetId } }).then( function (avg) {
+          models.Snippet.findById(snippetId).then(function (s) {
+            s.avg = avg.toFixed(2);
+            s.save({ validate: false, logging: true});
           });
+          res.status(200).send({rating: rating, avg: avg.toFixed(2)})
         });
       }).catch(function () {
         res.status(422).send('error');
@@ -64,15 +47,12 @@ router.post('/', function (req, res) {
       };
       var new_rating = models.Rating.build(attributes);
       new_rating.save({ validate: false, logging: true}).then(function (new_rating) {
-        models.Rating.sum('value', { where : { SnippetId: snippetId } }).then( function (sum) {
-          sumRatings = sum;
-          models.Rating.count({ where : { SnippetId: snippetId } }).then( function (c){
-            var average = 0;
-            if(c>0){
-              average = (sumRatings/c);
-            }
-            res.status(200).send({rating: new_rating, avg: average.toFixed(2)});
+        models.Rating.aggregate('value', 'avg', { where : { SnippetId : snippetId } }).then( function (avg) {
+          models.Snippet.findById(snippetId).then(function (s) {
+            s.avg = avg.toFixed(2);
+            s.save({ validate: false, logging: true});
           });
+          res.status(200).send({rating: new_rating, avg: avg.toFixed(2)})
         });
       }).catch(function () {
         res.status(422).send('error');

@@ -28,22 +28,6 @@ router.get('/', function (req, res) {
   });
 });
 
-/* GET current user's paginated snippets */
-router.get('/user', function (req, res) {
-  var perPage = req.query.results;
-  var page = req.query.offset;
-  var userId = req.user.get('id');
-
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ where: { UserId: userId }, limit: perPage, offset: page }).then(function (snippets) {
-    var mappedSnippets = snippets.map(function (s){
-      return s.toJson();
-    });
-    models.Snippet.count({ where : {UserId: userId }}).then(function (c) {
-      res.status(200).send({snippets: mappedSnippets, count: c});
-    });
-  });
-});
-
 router.get('/search', function (req, res) {
   var options = {};
   if (req.query.name) {
