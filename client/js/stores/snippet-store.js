@@ -50,10 +50,9 @@ class SnippetStore {
 
   createRating(data) {
     if (data.ok) {
-      const ratings = this.state.ratings;
       const createdRating = data.rating.rating;
       var snippetsAverage = this.state.snippetsAvg;
-      snippetsAverage[createdRating.SnippetId] = data.rating.avg;
+      snippetsAverage[createdRating.SnippetId] = data.rating.avg.toFixed(2);
 
       var allRatings = this.state.usersRatings;
       var userRating = allRatings[createdRating.UserId];
@@ -61,7 +60,6 @@ class SnippetStore {
       allRatings[createdRating.UserId] = userRating;
 
       this.setState({
-        ratings: ratings.concat(createdRating),
         snippetsAvg: snippetsAverage,
         usersRatings: allRatings
       });

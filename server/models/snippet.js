@@ -79,7 +79,7 @@ module.exports = function(sequelize, DataTypes) {
           name: this.get('name'),
           description: this.get('description'),
           language: this.get('language'),
-          avg: this.get('avg'),
+          avg: this.get('avg').toFixed(2),
           content: '',
           versions: [],
           comments: [],
@@ -104,7 +104,6 @@ module.exports = function(sequelize, DataTypes) {
         }
 
         if (this.Ratings) {
-
           this.Ratings.map(function (r) {
             json.currentUserRating = r.value;
           });

@@ -56,7 +56,7 @@ export default class Profile extends React.Component {
       userEmail = s.profile.email;
       commentCount = s.profile.commentsCount;
       ratingCount = s.profile.ratingsCount;
-      totalAvg = s.profile.totalAvg;
+      totalAvg = s.profile.totalAvg.toFixed(2);
       if(s.profile.snippets){
         snippets = s.profile.snippets;
       }

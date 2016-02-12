@@ -28,10 +28,17 @@ router.post('/', function (req, res) {
     if (rating) {
       rating.value = req.body.value;
       rating.save({ validate: false, logging: true}).then(function () {
-        models.Rating.aggregate('value', 'avg', { where : { SnippetId : snippetId } }).then( function (avg) {
+        models.Rating.aggregate('value', 'avg', { where : { SnippetId : snippetId }, dataType: 'float' }).then( function (avg) {
           models.Snippet.findById(snippetId).then(function (s) {
             s.avg = avg.toFixed(2);
-            s.save({ validate: false, logging: true});
+            s.save({ validate: false, logging: true}).then(function(){
+              models.User.findById(s.UserId).then(function (user){
+                models.Snippet.aggregate('avg', 'avg', { where : { UserId : user.id }, dataType: 'float' }).then(function (totalAvg){
+                  user.avg = totalAvg;
+                  user.save({ validate: false, logging: true});
+                });
+              });
+            });
           });
           res.status(200).send({rating: rating, avg: avg.toFixed(2)});
         });
@@ -46,10 +53,17 @@ router.post('/', function (req, res) {
       };
       var new_rating = models.Rating.build(attributes);
       new_rating.save({ validate: false, logging: true}).then(function (new_rating) {
-        models.Rating.aggregate('value', 'avg', { where : { SnippetId : snippetId } }).then( function (avg) {
+        models.Rating.aggregate('value', 'avg', { where : { SnippetId : snippetId }, dataType: 'float' }).then( function (avg) {
           models.Snippet.findById(snippetId).then(function (s) {
             s.avg = avg.toFixed(2);
-            s.save({ validate: false, logging: true});
+            s.save({ validate: false, logging: true}).then(function(){
+              models.User.findById(s.UserId).then(function (user){
+                models.Snippet.aggregate('avg', 'avg', { where : { UserId : user.id }, dataType: 'float' }).then(function (totalAvg){
+                  user.avg = totalAvg;
+                  user.save({ validate: false, logging: true});
+                });
+              });
+            });
           });
           res.status(200).send({rating: new_rating, avg: avg.toFixed(2)});
         });

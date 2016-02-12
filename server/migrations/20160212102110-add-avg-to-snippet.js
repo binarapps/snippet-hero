@@ -1,5 +1,7 @@
 'use strict';
 
+var models = require('../models');
+
 module.exports = {
   up: function (queryInterface, Sequelize) {
     queryInterface.addColumn(
@@ -12,10 +14,10 @@ module.exports = {
       }
     );
     models.Snippet.findAll()
-    .then( function(snippets) {
+    .then(function(snippets) {
       snippets.map(function(snippet) {
-        models.Ratings.aggregate('value', 'avg', { where : { SnippetId : snippet.id } })
-        .then(function(average) {
+        models.Rating.aggregate('value', 'avg', {where: {SnippetId: snippet.id}})
+        .then(average => {
           snippet.avg = average;
           snippet.save();
         });

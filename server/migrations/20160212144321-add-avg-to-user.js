@@ -14,9 +14,9 @@ module.exports = {
       }
     );
     models.User.findAll()
-    .then( function(users) {
+    .then(function(users) { 
       users.map(function(user) {
-        models.Snippet.aggregate('avg', 'avg', { where : { UserId : user.id } })
+        models.Snippet.aggregate('avg', 'avg', {where: {UserId: user.id}})
         .then(function(average) {
           user.avg = average;
           user.save();
