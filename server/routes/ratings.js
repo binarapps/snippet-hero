@@ -13,13 +13,6 @@ router.get('/', function (req, res) {
   });
 });
 
-/* GET rating by id */
-router.get('/:id', function (req, res) {
-  models.Rating.findById(req.params.id).then( function (rating) {
-    res.send(rating.toJson());
-  });
-});
-
 /* POST new rating */
 router.post('/', function (req, res) {
   var userId = req.user.get('id');
