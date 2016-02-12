@@ -33,7 +33,7 @@ export default class Profile extends React.Component {
   getPropsFromStores() {
     return ProfileStore.getState();
   }
-  
+
   componentWillReceiveProps(nextProps) {
     this.setState(this.getPropsFromStores(nextProps, this.context));
   }
@@ -76,7 +76,7 @@ export default class Profile extends React.Component {
     let snippetListing = (<Card>
           <CardTitle title="Snippets:" />
           <CardText>
-            <SnippetsList snippets={snippets} withComments={false} withRatings={false} page={1} perPage={10} history={this.props.history}></SnippetsList>
+            <SnippetsList snippets={snippets} withComments={true} withRatings={true} history={this.props.history}></SnippetsList>
           </CardText>
         </Card>);
 

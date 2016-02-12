@@ -51,19 +51,29 @@ module.exports = function(sequelize, DataTypes) {
         };
       },
       withAuthor: function () {
+        console.log('WOŁAM AUTORA');
         return {
           include: [sequelize.models.User]
         };
       },
-      withRatings: function () {
-        return {
-          include: [sequelize.models.Rating],
-          order: [['createdAt', 'DESC'], [sequelize.models.Rating, 'createdAt', 'ASC']]
-        };
+      withRatings: function (currentUserId) {
+        if (currentUserId) {
+          return {
+            include: [{
+              model: sequelize.models.Rating,
+              required: false,
+              where: {UserId: currentUserId}
+            }]
+          };
+        } else {
+          return {
+            include: [sequelize.models.Rating]
+          };
+        }
       }
     },
     instanceMethods: {
-      toJson: function (currentUserId) {
+      toJson: function () {
         var json = {
           id: this.get('id'),
           name: this.get('name'),
@@ -94,21 +104,10 @@ module.exports = function(sequelize, DataTypes) {
         }
 
         if (this.Ratings) {
-          var sum = 0;
-          var index = 0;
 
           this.Ratings.map(function (r) {
-            if(currentUserId){
-              if(r.UserId == currentUserId){
-                json.currentUserRating = r.value;
-              }
-            }
-            sum += r.value;
-            index++;
-            return r.toJson();
+            json.currentUserRating = r.value;
           });
-
-          json.avg = (index==0 ? 0 : sum/index).toFixed(2);
         }
 
         return json;

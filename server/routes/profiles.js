@@ -9,7 +9,7 @@ router.get('/:id', function (req, res) {
 
   models.User.scope(['withSnippets', 'withComments', 'withRatings']).findById(userId)
     .then(function (user) {
-      res.status(200).send(user.toJson(currentUserId));
+      res.status(200).send(user.toJson());
     }).catch(function (err){
       res.send({err: err});
     });

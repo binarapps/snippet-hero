@@ -17,11 +17,10 @@ router.get('/', function (req, res) {
   var perPage = req.query.results;
   var page = req.query.offset;
   var options = { limit : perPage, offset : page };
-  var currentUserId = req.user.get('id');
 
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll(options).then(function (snippets) {
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }]).findAll(options).then(function (snippets) {
     var mappedSnippets = snippets.map(function (s){
-      return s.toJson(currentUserId);
+      return s.toJson();
     });
     models.Snippet.count().then(function (c) {
       res.status(200).send({snippets: mappedSnippets, count: c});
@@ -37,7 +36,7 @@ router.get('/user', function (req, res) {
 
   models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings']).findAll({ where: { UserId: userId }, limit: perPage, offset: page }).then(function (snippets) {
     var mappedSnippets = snippets.map(function (s){
-      return s.toJson(userId);
+      return s.toJson();
     });
     models.Snippet.count({ where : {UserId: userId }}).then(function (c) {
       res.status(200).send({snippets: mappedSnippets, count: c});

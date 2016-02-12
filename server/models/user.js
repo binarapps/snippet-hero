@@ -48,7 +48,7 @@ module.exports = function(sequelize, DataTypes) {
           callback(res);
         });
       },
-      toJson: function(currentUserId) {
+      toJson: function() {
         var json = {
           id: this.get('id'),
           email: this.get('email'),
@@ -63,7 +63,7 @@ module.exports = function(sequelize, DataTypes) {
 
         if (this.Snippets){
           var allSnippets = this.Snippets.map(function (snippet) {
-            var s = snippet.toJson(currentUserId);
+            var s = snippet.toJson();
             if (parseFloat(s.avg) != 0){
               sum += parseFloat(s.avg);
               index++;
