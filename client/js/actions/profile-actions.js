@@ -8,7 +8,6 @@ class ProfileActions {
   getProfile(userId) {
     axios.get('/profiles/' + userId)
       .then((res) => {
-        FlashMessages.pushMessage({ content: 'Here are all the stats!' });
         this.dispatch({ ok: true, profile: res.data });
       }).catch((err) => {
         FlashMessages.pushMessage({ content: err.data});
