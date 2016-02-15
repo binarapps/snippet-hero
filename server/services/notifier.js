@@ -6,9 +6,9 @@ var Comment = models.Comment;
 var slack = require('./slack-integration');
 
 function randomPositiveAdjs() {
-  const positiveAdjs = ["amazing", "awesome", "blithesome", "excellent", "fabulous", "fantastic", "favorable",
-    "fortuitous", "great", "incredible", "ineffable", "mirthful", "outstanding", "perfect", "propitious", "remarkable",
-    "smart", "spectacular", "splendid", "stellar", "stupendous", "super", "ultimate", "unbelievable", "wondrous"];
+  const positiveAdjs = ['amazing', 'awesome', 'blithesome', 'excellent', 'fabulous', 'fantastic', 'favorable',
+    'fortuitous', 'great', 'incredible', 'ineffable', 'mirthful', 'outstanding', 'perfect', 'propitious', 'remarkable',
+    'smart', 'spectacular', 'splendid', 'stellar', 'stupendous', 'super', 'ultimate', 'unbelievable', 'wondrous'];
   return positiveAdjs[Math.floor(positiveAdjs.length * Math.random())];
 }
 
@@ -30,11 +30,11 @@ class Notifier {
   }
 
   textifySnippet(snippet) {
-    return `New ${ randomPositiveAdjs() } ${ snippet.get('language') } snippet named "${ snippet.get('name') }" was added by ${ snippet.User.get('name') }`
+    return `New ${ randomPositiveAdjs() } ${ snippet.get('language') } snippet named "${ snippet.get('name') }" was added by ${ snippet.User.get('name') }`;
   }
 
   textifyComment(comment) {
-    return `"${ comment.Snippet.get('name') }" was commented by ${ comment.User.get('name') }`
+    return `"${ comment.Snippet.get('name') }" was commented by ${ comment.User.get('name') }`;
   }
 
   execute() {
@@ -49,7 +49,7 @@ class Notifier {
         output = ['Some serious events happened in last 24h on SnippetHero', '---']
           .concat(snippetEvents)
           .concat(commentEvents)
-          .join("\n");
+          .join('\n');
         slack.notify(output);
       }
     }).catch(console.error);
@@ -57,4 +57,4 @@ class Notifier {
 }
 
 var notifier = new Notifier();
-notifier.execute()
+notifier.execute();
