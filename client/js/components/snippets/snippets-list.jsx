@@ -7,7 +7,7 @@ class SnippetListItem extends React.Component{
   render() {
     return (
       <li style={{position: 'relative', marginBottom: '25px'}}>
-        <Snippet {...this.props.snippet} withRatings={this.props.withRatings} style={{marginBottom: '5px'}} />
+        <Snippet {...this.props.snippet} withRatings={this.props.withRatings} style={{marginBottom: '5px'}} history={this.props.history}/>
         { (() => {
           if (this.props.withComments) {
             return (<CommentBox snippetId={this.props.snippet.id} comments={this.props.snippet.comments}/>);
@@ -27,6 +27,7 @@ export default class SnippetsList extends React.Component {
   render() {
     let withComments = _.isUndefined(this.props.withComments) ? true : this.props.withComments;
     let withRatings = _.isUndefined(this.props.withRatings) ? true : this.props.withComments;
+    let history = this.props.history;
 
     return (
       <ul style={{padding: 0}}>
@@ -36,7 +37,8 @@ export default class SnippetsList extends React.Component {
                              withRatings={withRatings}
                              withComments={withComments}
                              snippet={snippet}
-                             index={index} />
+                             index={index}
+                             history={history} />
           );
         })}
       </ul>

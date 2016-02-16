@@ -14,8 +14,8 @@ var authChecker = function(req, res, next) {
 
 /* GET snippets listing. */
 router.get('/', function (req, res) {
-  var perPage = req.query.results;
-  var page = req.query.offset;
+  var perPage = req.query.results || 0;
+  var page = req.query.offset || 0;
   var mappedSnippets;
 
   models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings'])
@@ -66,7 +66,7 @@ router.get('/search', function (req, res) {
 
 /* GET snippet by id */
 router.get('/:id', function (req, res) {
-  models.Snippet.scope('withVersions')
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings'])
     .findById(req.params.id)
     .then(function (s) {
       res.send(s.toJson());

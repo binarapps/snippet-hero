@@ -13,6 +13,7 @@ import Login from './components/pages/login';
 import Register from './components/pages/register';
 import UserSnippets from './components/pages/user-snippets';
 import Dashboard from './components/pages/dashboard';
+import SnippetPage from './components/pages/snippet-page';
 
 window.main = function (options) {
   // it is neccessary to proper work with material ui
@@ -34,6 +35,7 @@ window.main = function (options) {
         <Route path="/logout" component={Logout}/>
         <Route path="/login" component={Login}/>
         <Route path="/register" component={Register}/>
+        <Route path="/snippets/:id" component={SnippetPage}/>
       </Route>
     </Router>,
     app

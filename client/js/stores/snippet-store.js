@@ -54,6 +54,23 @@ class SnippetStore {
     }
   }
 
+  getOneSnippet(data){
+    if(data.ok){
+      const addedSnippet = data.snippet;
+      const snippets = this.state.snippets;
+
+      let foundSnippet = snippets.filter(function (snippet){
+        return snippet.id == addedSnippet.id;
+      });
+
+      if(foundSnippet.length == 0){
+        this.setState({
+          snippets: snippets.concat(addedSnippet)
+        });
+      }
+    }
+  }
+
   createRating(data) {
     if (data.ok) {
       const ratings = this.state.ratings;

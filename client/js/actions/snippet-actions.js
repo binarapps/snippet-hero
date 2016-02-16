@@ -7,6 +7,12 @@ import {buildUrl} from '../libs/paginate';
 class SnippetActions {
   constructor() {}
 
+  getOneSnippet(snippetId){
+    axios.get('/snippets/'+snippetId)
+      .then(res => this.dispatch({ok: true, snippet: res.data}))
+      .catch(err => this.dispatch({ok: false, error: err}));
+  }
+
   getPaginatedSnippets(page, perPage, currentUser){
     axios.get('/snippets?'+ buildUrl(perPage, page))
       .then(res => this.dispatch({ok: true, results: res.data, currentUser: currentUser}))
