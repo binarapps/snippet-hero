@@ -27,7 +27,7 @@ export default class CommentBox extends React.Component {
   _onChange() {
     let snippets = SnippetStore.getState().snippets;
     let snippet = _.findWhere(snippets, {id: this.props.snippetId});
-    this.setState({comments: snippet.comments});
+    this.setState({comments: snippet && snippet.comments});
   }
 
   _handleFormSubmit(e) {
@@ -56,7 +56,7 @@ export default class CommentBox extends React.Component {
           onSubmit={this._handleFormSubmit} />
         <CommentList comments={this.state.comments}/>
         {(() => {
-          if (this.state.comments.length === 5) {
+          if (this.state.comments && this.state.comments.length === 5) {
             return (<div style={{cursor: 'pointer'}} onClick={this._loadMoreComments}>Load more comments...</div>);
           }
         })()}

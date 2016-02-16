@@ -31,7 +31,7 @@ export default class SnippetsList extends React.Component {
 
     let history = this.props.history;
     let withComments = _.isUndefined(this.props.withComments) ? true : this.props.withComments;
-    let withRatings = _.isUndefined(this.props.withRatings) ? true : this.props.withComments;
+    let withRatings = _.isUndefined(this.props.withRatings) ? true : this.props.withRatings;
 
     return (
       <ul style={{padding: 0}}>
@@ -42,7 +42,7 @@ export default class SnippetsList extends React.Component {
                              withComments={withComments}
                              snippet={snippet}
                              index={index} 
-                             history={history} />
+                             history={history}/>
           );
         })}
       </ul>

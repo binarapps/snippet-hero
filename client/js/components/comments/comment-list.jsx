@@ -34,7 +34,7 @@ export default class CommentList extends React.Component {
   }
 
   render() {
-    let comments = this.props.comments.map((comment) => {
+    let comments = this.props.comments && this.props.comments.map((comment) => {
       return (
         <CommentListItem key={`comment-${comment.id}`} withSnippetName={this.props.withSnippetName} {...comment}/>
       );
