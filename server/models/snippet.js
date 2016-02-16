@@ -79,7 +79,7 @@ module.exports = function(sequelize, DataTypes) {
           name: this.get('name'),
           description: this.get('description'),
           language: this.get('language'),
-          avg: this.get('avg').toFixed(2),
+          avg: this.get('avg') && this.get('avg').toFixed(2),
           content: '',
           versions: [],
           comments: [],
