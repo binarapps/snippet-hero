@@ -5,6 +5,7 @@ const Snippet = models.Snippet;
 const Comment = models.Comment;
 const slack = require('./slack-integration');
 const appLogger = require('../lib/logger');
+const pathsHelper = require('./paths-helper');
 
 function randomPositiveAdjs() {
   const positiveAdjs = ['amazing', 'awesome', 'blithesome', 'excellent', 'fabulous', 'fantastic', 'favorable',
@@ -50,6 +51,7 @@ class Notifier {
         output = ['Some serious events happened in last 24h on SnippetHero', '---']
           .concat(snippetEvents)
           .concat(commentEvents)
+          .push('---', slack.link(pathsHelper.snippetsUrl(), 'See all snippets!'))
           .join('\n');
         slack.notify(output);
       }
