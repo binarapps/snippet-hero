@@ -51,7 +51,7 @@ class Notifier {
         output = ['Some serious events happened in last 24h on SnippetHero', '---']
           .concat(snippetEvents)
           .concat(commentEvents)
-          .push('---', slack.link(pathsHelper.snippetsUrl(), 'See all snippets!'))
+          .concat(['---', slack.link(pathsHelper.snippetsUrl(), 'See all snippets!')])
           .join('\n');
         slack.notify(output);
       }
