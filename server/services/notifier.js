@@ -1,9 +1,10 @@
 'use strict';
 
-var models = require('../models');
-var Snippet = models.Snippet;
-var Comment = models.Comment;
-var slack = require('./slack-integration');
+const models = require('../models');
+const Snippet = models.Snippet;
+const Comment = models.Comment;
+const slack = require('./slack-integration');
+const appLogger = require('../lib/logger');
 
 function randomPositiveAdjs() {
   const positiveAdjs = ['amazing', 'awesome', 'blithesome', 'excellent', 'fabulous', 'fantastic', 'favorable',
@@ -52,9 +53,10 @@ class Notifier {
           .join('\n');
         slack.notify(output);
       }
-    }).catch(console.error);
+    }).catch((err) => {
+      appLogger.debug(err.message);
+    });
   }
 }
 
-var notifier = new Notifier();
-notifier.execute();
+module.exports = new Notifier();
