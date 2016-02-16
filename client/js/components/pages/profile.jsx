@@ -68,7 +68,6 @@ export default class Profile extends React.Component {
           style={{height: '75px', width: '75px', lineHeight: '75px', fontSize: '48px'}}>
           {userName ? userName.split('')[0].toUpperCase() : 'X'}
         </Avatar>);
-
     let achievementStyle = {height: 'auto', width: 'auto', margin: '20px 50px', textAlign: 'center', display: 'inline-block', padding: '20px'};
     let numberAchievementEvenStyle = {color: '#FC2C7A', fontSize: '60px'};
     let numberAchievementOddStyle = {color: '#18B8D0', fontSize: '60px'};
