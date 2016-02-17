@@ -51,11 +51,11 @@ class SnippetStore {
   createRating(data) {
     if (data.ok) {
       const createdRating = data.rating.rating;
-      var snippetsAverage = this.state.snippetsAvg;
-      snippetsAverage[createdRating.SnippetId] = data.rating.avg.toFixed(2);
+      let snippetsAverage = this.state.snippetsAvg;
+      snippetsAverage[createdRating.SnippetId] = data.rating.avg;
 
-      var allRatings = this.state.usersRatings;
-      var userRating = allRatings[createdRating.UserId];
+      let allRatings = this.state.usersRatings;
+      let userRating = allRatings[createdRating.UserId];
       userRating[createdRating.SnippetId] = createdRating.value;
       allRatings[createdRating.UserId] = userRating;
 
@@ -63,9 +63,7 @@ class SnippetStore {
         snippetsAvg: snippetsAverage,
         usersRatings: allRatings
       });
-    } else {
-      // TODO
-    }
+    } 
   }
 
   create(data) {

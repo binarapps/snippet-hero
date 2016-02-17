@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models');
+var appLogger = require('../lib/logger');
 
 /* GET ratings listing. */
 router.get('/', function (req, res) {
@@ -17,53 +18,56 @@ router.get('/', function (req, res) {
 router.post('/', function (req, res) {
   var userId = req.user.get('id');
   var snippetId = req.body.SnippetId;
-  models.Rating.findOne({ where : { SnippetId: snippetId, UserId: userId } }).then( function (rating) {
-    if (rating) {
-      rating.value = req.body.value;
-      rating.save({ validate: false, logging: true}).then(function () {
-        models.Rating.aggregate('value', 'avg', { where : { SnippetId : snippetId }, dataType: 'float' }).then( function (avg) {
-          models.Snippet.findById(snippetId).then(function (s) {
-            s.avg = avg.toFixed(2);
-            s.save({ validate: false, logging: true}).then(function(){
-              models.User.findById(s.UserId).then(function (user){
-                models.Snippet.aggregate('avg', 'avg', { where : { UserId : user.id }, dataType: 'float' }).then(function (totalAvg){
-                  user.avg = totalAvg;
-                  user.save({ validate: false, logging: true});
+  var attributes = {
+    value: req.body.value,
+    UserId: userId,
+    SnippetId: snippetId
+  };
+  models.sequelize.transaction(function (t){
+    return models.Rating.findOne({ where : { SnippetId: snippetId, UserId: userId }, transaction: t }).then( function (rating) {
+      if (rating) {
+        return rating.update(attributes, {transaction: t}).then( function () {
+          return models.Rating.aggregate('value', 'avg', { where : { SnippetId : snippetId }, dataType: 'float', transaction: t }).then( function (avg) {
+            return models.Snippet.findById(snippetId, {transaction: t}).then( function (s) {
+              return s.update({avg: avg}, {transaction: t}).then( function () {
+                return models.User.findById(s.UserId, {transaction: t}).then( function (user) {
+                  return models.Snippet.aggregate('avg', 'avg', { where : { UserId : user.id }, dataType: 'float', transaction: t }).then(function (totalAvg){
+                    return user.update({avg: totalAvg}, {transaction: t}).then(function () {
+                      return new Promise(function (resolve) {
+                        resolve({rating: rating.toJson(), avg: avg.toFixed(2)});
+                      });
+                    });
+                  });
                 });
               });
             });
           });
-          res.status(200).send({rating: rating, avg: avg.toFixed(2)});
         });
-      }).catch(function () {
-        res.status(422).send('error');
-      });
-    } else {
-      var attributes = {
-        SnippetId: snippetId,
-        value: req.body.value,
-        UserId: userId
-      };
-      var new_rating = models.Rating.build(attributes);
-      new_rating.save({ validate: false, logging: true}).then(function (new_rating) {
-        models.Rating.aggregate('value', 'avg', { where : { SnippetId : snippetId }, dataType: 'float' }).then( function (avg) {
-          models.Snippet.findById(snippetId).then(function (s) {
-            s.avg = avg.toFixed(2);
-            s.save({ validate: false, logging: true}).then(function(){
-              models.User.findById(s.UserId).then(function (user){
-                models.Snippet.aggregate('avg', 'avg', { where : { UserId : user.id }, dataType: 'float' }).then(function (totalAvg){
-                  user.avg = totalAvg;
-                  user.save({ validate: false, logging: true});
+      } else {
+        return models.Rating.create(attributes, {transaction: t}).then( function (newRating) {
+          return models.Rating.aggregate('value', 'avg', { where : { SnippetId : snippetId }, dataType: 'float', transaction: t }).then( function (avg) {
+            return models.Snippet.findById(snippetId, {transaction: t}).then( function (s) {
+              return s.update({avg: avg}, {transaction: t}).then( function () {
+                return models.User.findById(s.UserId, {transaction: t}).then( function (user) {
+                  return models.Snippet.aggregate('avg', 'avg', { where : { UserId : user.id }, dataType: 'float', transaction: t }).then( function (totalAvg) {
+                    return user.update({avg: totalAvg}, {transaction: t}).then(function () {
+                      return new Promise(function (resolve) {
+                        resolve({rating: newRating.toJson(), avg: avg.toFixed(2)});
+                      });
+                    });
+                  });
                 });
               });
             });
           });
-          res.status(200).send({rating: new_rating, avg: avg.toFixed(2)});
         });
-      }).catch(function () {
-        res.status(422).send('error');
-      });
-    }
+      }
+    });
+  }).then( function (data) {
+    res.status(200).send(data);
+  }).catch( function (err) {
+    appLogger.debug(err.message);
+    res.status(422).send(err.message);
   });
 });
 
