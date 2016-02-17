@@ -23,46 +23,49 @@ router.post('/', function (req, res) {
     UserId: userId,
     SnippetId: snippetId
   };
+  var avg = 0;
+  var rating = null;
+  var authorId = null;
+  var author = null;
   models.sequelize.transaction(function (t){
-    return models.Rating.findOne({ where : { SnippetId: snippetId, UserId: userId }, transaction: t }).then( function (rating) {
-      if (rating) {
-        return rating.update(attributes, {transaction: t}).then( function () {
-          return models.Rating.aggregate('value', 'avg', { where : { SnippetId : snippetId }, dataType: 'float', transaction: t }).then( function (avg) {
-            return models.Snippet.findById(snippetId, {transaction: t}).then( function (s) {
-              return s.update({avg: avg}, {transaction: t}).then( function () {
-                return models.User.findById(s.UserId, {transaction: t}).then( function (user) {
-                  return models.Snippet.aggregate('avg', 'avg', { where : { UserId : user.id }, dataType: 'float', transaction: t }).then(function (totalAvg){
-                    return user.update({avg: totalAvg}, {transaction: t}).then(function () {
-                      return new Promise(function (resolve) {
-                        resolve({rating: rating.toJson(), avg: avg.toFixed(2)});
-                      });
-                    });
-                  });
-                });
-              });
-            });
+    return models.Rating.findOne({ where : { SnippetId: snippetId, UserId: userId }, transaction: t })
+      .then( function (foundRating) {
+        if (foundRating) {
+          rating = foundRating;
+          return foundRating.update(attributes, {transaction: t});
+        } else {
+          return models.Rating.create(attributes, {transaction: t})
+            .then(function (newRating) {
+              rating = newRating;
+              return new Promise(function (resolve) {resolve(null)});
           });
+        }
+      }).then( function () {
+        return models.Rating.aggregate('value', 'avg', { where : { SnippetId : snippetId }, dataType: 'float', transaction: t })
+      })
+      .then( function (snippetAvg) {
+        avg = snippetAvg;
+        return models.Snippet.findById(snippetId, {transaction: t})
+      })
+      .then( function (s) {
+        authorId = s.UserId;
+        return s.update({avg: avg}, {transaction: t});
+      })
+      .then( function () {
+        return models.User.findById(authorId, {transaction: t})
+      })
+      .then( function (user) {
+        author = user;
+        return models.Snippet.aggregate('avg', 'avg', { where : { UserId : user.id }, dataType: 'float', transaction: t })
+      })
+      .then(function (totalAvg){
+        return author.update({avg: totalAvg}, {transaction: t})
+      })
+      .then(function () {
+        return new Promise(function (resolve) {
+          resolve({rating: rating.toJson(), avg: avg.toFixed(2)});
         });
-      } else {
-        return models.Rating.create(attributes, {transaction: t}).then( function (newRating) {
-          return models.Rating.aggregate('value', 'avg', { where : { SnippetId : snippetId }, dataType: 'float', transaction: t }).then( function (avg) {
-            return models.Snippet.findById(snippetId, {transaction: t}).then( function (s) {
-              return s.update({avg: avg}, {transaction: t}).then( function () {
-                return models.User.findById(s.UserId, {transaction: t}).then( function (user) {
-                  return models.Snippet.aggregate('avg', 'avg', { where : { UserId : user.id }, dataType: 'float', transaction: t }).then( function (totalAvg) {
-                    return user.update({avg: totalAvg}, {transaction: t}).then(function () {
-                      return new Promise(function (resolve) {
-                        resolve({rating: newRating.toJson(), avg: avg.toFixed(2)});
-                      });
-                    });
-                  });
-                });
-              });
-            });
-          });
-        });
-      }
-    });
+      });
   }).then( function (data) {
     res.status(200).send(data);
   }).catch( function (err) {
