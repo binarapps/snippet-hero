@@ -12,31 +12,29 @@ export default class SnippetPage extends React.Component {
     super(props);
     this.state = this.getPropsFromStores();
     this._onChange = this._onChange.bind(this);
+    this._getSnippets = this._getSnippets.bind(this);
   }
 
   componentDidMount() {
     this.storeListeners = [];
     this.storeListeners.push(SnippetStore.listen(this._onChange));
-
+    this._getSnippets();
   }
 
-  // getSnippets(){
-  //   let foundSnippet = {};
-  //   let snippetId = this.props.params.id;
-  //   if(this.state.snippets.length == 0){
-  //     SnippetActions.getOneSnippet(this.props.params.id);
-  //   } 
-  //   foundSnippet = this.state.snippets.filter(function (el){
-  //     return el.id == snippetId;
-  //   });
-  //   if (foundSnippet.length > 0) {
-  //     this.setState({
-  //       foundSnippet: foundSnippet
-  //     });
-  //   } else{
-  //     SnippetActions.getOneSnippet(this.props.params.id);
-  //   }
-  // }
+  _getSnippets(){
+    let foundSnippet = [];
+    let snippetId = this.props.params.id;
+    if(this.state.snippets.length == 0){
+      SnippetActions.getOneSnippet(this.props.params.id);
+    } else {
+      foundSnippet = this.state.snippets.filter(function (el){
+        return el.id == snippetId;
+      }); 
+      if(foundSnippet.length == 0){
+        SnippetActions.getOneSnippet(this.props.params.id);
+      } 
+    }
+  }
 
   getCurrentUser(){
     return UserStore.state.currentUser;
@@ -45,12 +43,6 @@ export default class SnippetPage extends React.Component {
   getPropsFromStores() {
     return SnippetStore.getState();
   }
-
-  // componentWillUpdate() {
-  //   setTimeout(function(){
-  //     this.getSnippets();
-  //   }, 1000);
-  // }
 
   componentWillReceiveProps(nextProps) {
     this.setState(this.getPropsFromStores(nextProps, this.context));
@@ -66,37 +58,29 @@ export default class SnippetPage extends React.Component {
 
   render() {
     let s = this.state;
-    let snippets = {};
-
-    if(s.snippets.length == 0){
-      SnippetActions.getOneSnippet(this.props.params.id);
-    } else {
-      foundSnippet = s.snippets.filter(function (el){
-        return el.id == this.props.params.id;
-      });
-      if (foundSnippet.length > 0){
-        snippets = foundSnippet;
-      } else {
-        SnippetActions.getOneSnippet(this.props.params.id);
-      }
-    }
+    let snippets = s.snippets;
+    let foundSnippets = [];
+    let snippetId = this.props.params.id;
+    foundSnippets = snippets.filter(function (el){
+      return el.id == snippetId;
+    });
 
     return (
       <PageWrapper>
-        <h2 style={{fontSize: '24px', margin: '20px 0'}}>All snippets:</h2>
+        <h2 style={{fontSize: '24px', margin: '20px 0'}}>Snippet no. {snippetId}:</h2>
         <SearchBar label='Search by name:' onSearch={this._searchSnippets} />
         <div style={{clear: 'right'}}>
           {(() => {
-            if(snippets.length > 0){
+            if(foundSnippets.length > 0){
               return (
                 <div>
-                  <SnippetsList snippets={snippets} history={this.props.history}/>
+                  <SnippetsList snippets={foundSnippets} history={this.props.history}/>
                 </div>
               );
             } else {
               return (
                 <h2 style={{textAlign: 'center', fontWeight: 'normal'}}>
-                  Sorry, there are no snippets to display at this time.
+                  Please wait until we load the snippet you are looking for.
                 </h2>
               );
             }
