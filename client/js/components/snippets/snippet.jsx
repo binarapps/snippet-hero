@@ -53,7 +53,7 @@ export default class Snippet extends React.Component {
 
   _getUserProfile(){
     let userId = (this.props.user ? this.props.user.id : this.getCurrentUser().id);
-    this.props.history.pushState(null, '/profiles/'+userId);
+    this.props.history.pushState(null, '/users/'+userId);
   }
 
   getCurrentUser() {

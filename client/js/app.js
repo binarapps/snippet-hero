@@ -33,7 +33,7 @@ window.main = function (options) {
         <Route path="/logout" component={Logout}/>
         <Route path="/login" component={Login}/>
         <Route path="/register" component={Register}/>
-        <Route path="/profiles/:id" component={Profile}/>
+        <Route path="/users/:id" component={Profile}/>
       </Route>
     </Router>,
     app

@@ -25,8 +25,8 @@ router.post('/', function (req, res) {
   };
   var avg = 0;
   var rating = null;
-  var authorId = null;
   var author = null;
+  var snippet = null;
   models.sequelize.transaction(function (t){
     return models.Rating.findOne({ where : { SnippetId: snippetId, UserId: userId }, transaction: t })
       .then( function (foundRating) {
@@ -37,29 +37,29 @@ router.post('/', function (req, res) {
           return models.Rating.create(attributes, {transaction: t})
             .then(function (newRating) {
               rating = newRating;
-              return new Promise(function (resolve) {resolve(null)});
-          });
+              return new Promise(function (resolve) {resolve(null);});
+            });
         }
       }).then( function () {
-        return models.Rating.aggregate('value', 'avg', { where : { SnippetId : snippetId }, dataType: 'float', transaction: t })
+        return models.Rating.aggregate('value', 'avg', { where : { SnippetId : snippetId }, dataType: 'float', transaction: t });
       })
       .then( function (snippetAvg) {
         avg = snippetAvg;
-        return models.Snippet.findById(snippetId, {transaction: t})
+        return rating.getSnippet();
       })
       .then( function (s) {
-        authorId = s.UserId;
-        return s.update({avg: avg}, {transaction: t});
+        snippet = s;
+        return s.getUser();
+      })
+      .then( function (user){
+        author = user;
+        return snippet.update({avg: avg}, {transaction: t});
       })
       .then( function () {
-        return models.User.findById(authorId, {transaction: t})
-      })
-      .then( function (user) {
-        author = user;
-        return models.Snippet.aggregate('avg', 'avg', { where : { UserId : user.id }, dataType: 'float', transaction: t })
+        return models.Snippet.aggregate('avg', 'avg', { where : { UserId : author.id }, dataType: 'float', transaction: t });
       })
       .then(function (totalAvg){
-        return author.update({avg: totalAvg}, {transaction: t})
+        return author.update({avg: totalAvg}, {transaction: t});
       })
       .then(function () {
         return new Promise(function (resolve) {

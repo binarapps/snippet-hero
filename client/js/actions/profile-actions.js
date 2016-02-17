@@ -6,7 +6,7 @@ class ProfileActions {
   constructor() {}
 
   getProfile(userId) {
-    axios.get('/profiles/' + userId)
+    axios.get('/users/' + userId)
       .then((res) => {
         this.dispatch({ ok: true, profile: res.data });
       }).catch((err) => {
