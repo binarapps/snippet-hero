@@ -6,6 +6,7 @@ var path = require('path');
 var logger = require('morgan');
 var appLogger = require('./lib/logger');
 var dbConfig = require('./config/config.json');
+var schedule = require('./config/schedule');
 
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -29,6 +30,7 @@ if (env === 'production') {
 require('./config/passport_configuration');
 
 var app = express();
+schedule();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

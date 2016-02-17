@@ -1,4 +1,5 @@
 {
+  "host": "https://snippet-hero.herokuapp.com",
   "slack": {
     "defaultChannel": "#foodintegrator",
     "defaultUsername": "Chewie",
