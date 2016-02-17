@@ -1,8 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models');
-var slack = require('../services/slack-integration');
-
 
 var authChecker = function(req, res, next) {
   if (!req.user) {
@@ -39,7 +37,6 @@ router.post('/:snippetId/comments', authChecker, function (req, res) {
     return models.Comment.scope(['withUser']).findById(comment.id);
   }).then(function (c) {
     res.status(201).send(c.toJson());
-    slack.notify('New comment to snippet was added! ' + slack.link('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'See it!'));
   }).catch(function (err) {
     res.status(422).send(err.message);
   });

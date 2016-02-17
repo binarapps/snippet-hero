@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var models = require('../models');
-var slack = require('../services/slack-integration');
 var appLogger = require('../lib/logger');
 
 var authChecker = function(req, res, next) {
@@ -74,8 +73,6 @@ router.post('/', function (req, res) {
       });
     });
   }).then(function (data) {
-    // TODO: replace with correct link
-    slack.notify('New snippet was added! ' + slack.link('https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'See it!'));
     res.status(201).send(data);
   }).catch(function (err) {
     appLogger.debug(err.message);
