@@ -13,16 +13,6 @@ module.exports = {
         defaultValue: 0.0
       }
     );
-    models.User.findAll()
-    .then(function(users) { 
-      users.map(function(user) {
-        models.Snippet.aggregate('avg', 'avg', {where: {UserId: user.id}})
-        .then(function(average) {
-          user.avg = average;
-          user.save();
-        });
-      });
-    });
   },
 
   down: function (queryInterface) {
