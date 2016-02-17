@@ -78,7 +78,7 @@ export default class Snippet extends React.Component {
   }
 
   _getSnippet(){
-    let snippetId = this.props.id || 1;
+    let snippetId = this.props.id;
     this.props.history.pushState(null, '/snippets/'+snippetId);
   }
 

@@ -4,7 +4,6 @@ import SnippetsList from '../snippets/snippets-list';
 import SearchBar from '../search-bar';
 import SnippetActions from '../../actions/snippet-actions';
 import SnippetStore from '../../stores/snippet-store';
-import SnippetSearchStore from '../../stores/snippet-search-store';
 import UserStore from '../../stores/user-store';
 
 export default class SnippetPage extends React.Component {
@@ -12,16 +11,16 @@ export default class SnippetPage extends React.Component {
     super(props);
     this.state = this.getPropsFromStores();
     this._onChange = this._onChange.bind(this);
-    this._getSnippets = this._getSnippets.bind(this);
+    this.getSnippet = this.getSnippet.bind(this);
   }
 
   componentDidMount() {
     this.storeListeners = [];
     this.storeListeners.push(SnippetStore.listen(this._onChange));
-    this._getSnippets();
+    this.getSnippet();
   }
 
-  _getSnippets(){
+  getSnippet(){
     let foundSnippet = [];
     let snippetId = this.props.params.id;
     if(this.state.snippets.length == 0){
