@@ -9,7 +9,7 @@ Promise.all([
           return snippet.save();
         });
       });
-  }),
+    }),
 
   models.User.findAll()
     .then(function(users) { 
@@ -20,9 +20,13 @@ Promise.all([
           return user.save();
         });
       });
-  })
+    })
 ]).then(function(){
+  /*eslint-disable no-console*/
   console.log('all ok');
+  /*eslint-enable no-console*/
 }).catch(function(err){
+  /*eslint-disable no-console*/
   console.error(err);
+  /*eslint-enable no-console*/
 });
