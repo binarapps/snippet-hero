@@ -32,11 +32,11 @@ class Notifier {
   }
 
   textifySnippet(snippet) {
-    return `New ${ randomPositiveAdjs() } ${ snippet.get('language') } snippet named "${ snippet.get('name') }" was added by ${ snippet.User.get('name') }`;
+    return `New ${ randomPositiveAdjs() } ${ snippet.get('language') } snippet named "${ slack.link(pathsHelper.snippetUrl(snippet), snippet.get('name')) }" was added by ${ snippet.User.get('name') }`;
   }
 
   textifyComment(comment) {
-    return `"${ comment.Snippet.get('name') }" was commented by ${ comment.User.get('name') }`;
+    return `"${ slack.link(pathsHelper.snippetUrl(comment.Snippet), comment.Snippet.get('name')) }" was commented by ${ comment.User.get('name') }`;
   }
 
   execute() {
