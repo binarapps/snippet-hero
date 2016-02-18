@@ -13,6 +13,12 @@ class SnippetActions {
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
+  getBestSnippets(){
+    axios.get('/snippets/best')
+      .then(res => this.dispatch({ok: true, snippets: res.data}))
+      .catch(err => this.dispatch({ok: false, error: err}));
+  }
+
   search(name) {
     axios.get('/snippets/search', {params: { name: name }})
       .then(res => this.dispatch({ok: true, snippets: res.data}))

@@ -146,4 +146,18 @@ router.delete('/:id', function (req, res){
     });
 });
 
+/* GET snippets from this calendar month (sort by avg) */
+router.get('/best', function (req, res) {
+  var today = new Date(Date.now());
+  var firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings'])
+    .findAll({ where: { createdAt: { $gte: firstDayOfMonth } }, order: [ ['avg', 'DESC'], ['createdAt', 'DESC'] ], limit: 5 })
+    .then( function (snippets) {
+      var mappedSnippets = snippets.map( function (s) {
+        return s.toJson();
+      });
+      res.status(200).send({snippets: mappedSnippets});
+    }).catch();
+});
+
 module.exports = router;

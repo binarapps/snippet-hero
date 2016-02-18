@@ -13,7 +13,8 @@ class SnippetStore {
       snippets: [],
       snippetsAvg: {},
       usersRatings: {},
-      totalCount: 0
+      totalCount: 0,
+      bestSnippets: []
     };
   }
 
@@ -51,6 +52,15 @@ class SnippetStore {
         snippetsAvg: snippetsAverage,
         usersRatings: usersRatings
       });
+    }
+  }
+
+  getBestSnippets(data) {
+    if(data.ok){
+      const foundSnippets = data.snippets;
+      let currentBest = this.state.bestSnippets;
+    } else {
+      //TODO
     }
   }
 
