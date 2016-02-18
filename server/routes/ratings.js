@@ -27,7 +27,7 @@ router.post('/', function (req, res) {
   var rating = null;
   var author = null;
   var snippet = null;
-  models.Snippet.scope('withAutor').findById(snippetId).then(function(foundSnippet){
+  models.Snippet.scope('withAuthor').findById(snippetId).then(function(foundSnippet){
     snippet = foundSnippet;
     if(snippet.UserId != userId){
       models.sequelize.transaction(function (t){

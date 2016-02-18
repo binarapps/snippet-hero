@@ -13,9 +13,9 @@ class SnippetActions {
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
-  getBestSnippets(){
+  getBestSnippets(currentUserId){
     axios.get('/snippets/best')
-      .then(res => this.dispatch({ok: true, snippets: res.data}))
+      .then(res => this.dispatch({ok: true, snippets: res.data, currentUserId: currentUserId}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 

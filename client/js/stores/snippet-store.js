@@ -51,10 +51,27 @@ class SnippetStore {
 
   getBestSnippets(data) {
     if(data.ok){
-      const foundSnippets = data.snippets;
+      const foundSnippets = data.snippets.snippets;
+      const currentUserId = data.currentUserId;
       let currentBest = this.state.bestSnippets;
-    } else {
-      //TODO
+      let usersRatings = this.state.usersRatings;
+      let snippetRating = {};
+      //console.log(foundSnippets);
+
+
+      foundSnippets.forEach(function (snippet) {
+        let currentUserRating = snippet.currentUserRating;
+        if(usersRatings[currentUserId] !== undefined){
+          snippetRating = usersRatings[currentUserId];
+        }
+        snippetRating[snippet.id] = currentUserRating;
+        usersRatings[currentUserId] = snippetRating;
+      });
+
+      this.setState({
+        bestSnippets: foundSnippets,
+        usersRatings: usersRatings
+      });
     }
   }
 
