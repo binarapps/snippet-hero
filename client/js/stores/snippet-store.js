@@ -53,7 +53,6 @@ class SnippetStore {
     if(data.ok){
       const foundSnippets = data.snippets.snippets;
       const currentUserId = data.currentUserId;
-      let currentBest = this.state.bestSnippets;
       let usersRatings = this.state.usersRatings;
       let snippetRating = {};
       //console.log(foundSnippets);
