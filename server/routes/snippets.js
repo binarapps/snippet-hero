@@ -17,32 +17,13 @@ router.get('/', function (req, res) {
   var page = req.query.offset;
   var mappedSnippets;
 
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings'])
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }])
     .findAll({ limit: perPage, offset: page })
     .then(function (snippets) {
       mappedSnippets = snippets.map(function (s) {
         return s.toJson();
       });
       return models.Snippet.count();
-    }).then(function (c) {
-      res.status(200).send({ snippets: mappedSnippets, count: c });
-    });
-});
-
-/* GET current user's paginated snippets */
-router.get('/user', function (req, res) {
-  var perPage = req.query.results;
-  var page = req.query.offset;
-  var userId = req.user.get('id');
-  var mappedSnippets;
-
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings'])
-    .findAll({ where: { UserId: userId }, limit: perPage, offset: page })
-    .then(function (snippets) {
-      mappedSnippets = snippets.map(function (s){
-        return s.toJson();
-      });
-      return models.Snippet.count({ where: { UserId: userId }});
     }).then(function (c) {
       res.status(200).send({ snippets: mappedSnippets, count: c });
     });

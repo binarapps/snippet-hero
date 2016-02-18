@@ -11,7 +11,7 @@ import SnippetsIndex from './components/pages/snippets-index';
 import Logout from './components/pages/logout';
 import Login from './components/pages/login';
 import Register from './components/pages/register';
-import UserSnippets from './components/pages/user-snippets';
+import Profile from './components/pages/profile';
 import Dashboard from './components/pages/dashboard';
 
 window.main = function (options) {
@@ -30,10 +30,10 @@ window.main = function (options) {
       <Route path="" component={App}>
         <Route path="/" component={Dashboard}/>
         <Route path="/snippets" component={SnippetsIndex} perPage={10}/>
-        <Route path="/snippets/user" component={UserSnippets} perPage={10}/>
         <Route path="/logout" component={Logout}/>
         <Route path="/login" component={Login}/>
         <Route path="/register" component={Register}/>
+        <Route path="/users/:id" component={Profile}/>
       </Route>
     </Router>,
     app

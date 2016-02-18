@@ -27,7 +27,7 @@ describe('SnippetActions', function() {
 
   describe('Create snippet', function() {
     before( () => {
-      this.snippet = { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript'};
+      this.snippet = { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript', avg: 0.0};
       sinon.stub(axios, 'post', () => {
         return new Promise((resolve) => {
           resolve({data: this.snippet});
@@ -49,8 +49,8 @@ describe('SnippetActions', function() {
   describe('Get snippets collection', () => {
     before(() => {
       this.snippets = [
-        { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript'},
-        { id: 2, content: 'test', name: 'test', description: 'test', language: 'javascript'}
+        { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript', avg: 0.0},
+        { id: 2, content: 'test', name: 'test', description: 'test', language: 'javascript', avg: 0.0}
       ];
       this.sandbox = sinon.sandbox.create();
     });
@@ -87,7 +87,7 @@ describe('SnippetActions', function() {
 
   describe('Create snippet', function() {
     before(() => {
-      this.snippet = { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript'};
+      this.snippet = { id: 1, content: 'test', name: 'test', description: 'test', language: 'javascript', avg: 0.0};
     });
 
     it('should dispatch created snippet', (done) => {

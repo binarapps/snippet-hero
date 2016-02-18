@@ -73,7 +73,7 @@ export default class Rating extends React.Component {
           })()}
         </div>
         <br />
-        <span style={{float: 'right'}}>Total rating: {this.props.snippetsAvg[this.props.snippetId]}</span>
+        <span style={{float: 'right'}}>Total rating: {this.props.snippetsAvg[this.props.snippetId] || this.props.snippet.avg }</span>
       </div>
     );
   }
