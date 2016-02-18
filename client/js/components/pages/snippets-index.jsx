@@ -83,17 +83,6 @@ export default class SnippetsIndex extends React.Component {
                     totalCount={s.totalCount}
                     currentPage={s.currentPage}
                     onClickPage={(page) => this._goToPage(page)}/>);
-    // if(this.props.route.path == "/snippets/:id"){
-    //   let snippetId = this.props.params.id;
-    //   let foundSnippet = {};
-    //   snippets.forEach(function (snippet){
-    //     if (snippet.id == snippetId){
-    //       foundSnippet = snippet;
-    //     }
-    //   });
-    //   paginator = '';
-    //   snippets = [foundSnippet];
-    // }
 
     return (
       <PageWrapper>

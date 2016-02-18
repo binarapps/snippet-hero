@@ -4,10 +4,13 @@ import Snippet from './snippet';
 import CommentBox from '../comments/comment-box';
 
 class SnippetListItem extends React.Component{
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
       <li style={{position: 'relative', marginBottom: '25px'}}>
-        <Snippet {...this.props.snippet} withRatings={this.props.withRatings} style={{marginBottom: '5px'}} history={this.props.history}/>
+        <Snippet {...this.props.snippet} withRatings={this.props.withRatings} style={{marginBottom: '5px'}} history={this.props.history} />
         { (() => {
           if (this.props.withComments) {
             return (<CommentBox snippetId={this.props.snippet.id} comments={this.props.snippet.comments}/>);
@@ -25,8 +28,10 @@ export default class SnippetsList extends React.Component {
   }
 
   render() {
+
+    let history = this.props.history;
     let withComments = _.isUndefined(this.props.withComments) ? true : this.props.withComments;
-    let withRatings = _.isUndefined(this.props.withRatings) ? true : this.props.withComments;
+    let withRatings = _.isUndefined(this.props.withRatings) ? true : this.props.withRatings;
     let history = this.props.history;
 
     return (

@@ -23,6 +23,7 @@ export default class Snippet extends React.Component {
     super(props);
     this.state = {isEditing: false, name: props.name, description: props.description, content: props.content};
     this._deleteSnippet = this._deleteSnippet.bind(this);
+    this._getUserProfile = this._getUserProfile.bind(this);
     this._editSnippet = this._editSnippet.bind(this);
     this._updateSnippet = this._updateSnippet.bind(this);
     this._getShowSnippet = this._getShowSnippet.bind(this);
@@ -49,6 +50,11 @@ export default class Snippet extends React.Component {
     let confirmed = confirm('Are you sure?');
     if (!confirmed) return;
     SnippetActions.destroySnippet(this.props.id);
+  }
+
+  _getUserProfile(){
+    let userId = (this.props.user ? this.props.user.id : this.getCurrentUser().id);
+    this.props.history.pushState(null, '/users/'+userId);
   }
 
   getCurrentUser() {
@@ -130,22 +136,24 @@ export default class Snippet extends React.Component {
       mime: this.props.language
     };
     let { style } = this.props;
-    let author = this.props.user.name;
-
+    let currentUser = this.getCurrentUser();
+    let author = this.props.user || currentUser;
     let snippetActions = (
       <div style={{display: 'table', background: Colors.grey100, width: '100%'}}>
         <RaisedButton style={{float: 'right', margin: '0 10px 5px 0'}} onClick={this._editSnippet} label='Edit' secondary={true} />
         <RaisedButton style={{float: 'right', margin: '0 10px 5px 0'}} onClick={this._deleteSnippet} label='Delete' primary={true} />
       </div>
     );
-
     let ratings = this.props.id ? <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={this._checkRatingAbility()}/>: '';
 
     let avatar = (
       <Avatar
         color={generateColor()}
-        backgroundColor={generateColor()}>
-        {this.props.user.name.split('')[0].toUpperCase()}
+        backgroundColor={generateColor()}
+        onClick={this._getUserProfile}
+        style={{cursor: 'pointer'}}
+        title={('Click to see more ' + author.name + ' snippets')}>
+        {author.name.split('')[0].toUpperCase()}
       </Avatar>
     );
     let title = (<div onClick={this._getSnippet} style={{cursor: 'pointer'}}>{this.props.name || 'No title'}</div>);
@@ -155,7 +163,7 @@ export default class Snippet extends React.Component {
         <div style={{display: 'inline-flex', background: Colors.grey100, width: '100%'}}>
           <CardHeader
             title={title}
-            subtitle= {author}
+            subtitle= {author.name}
             avatar={avatar} />
           { (() => {
             if (this.props.withRatings) {
