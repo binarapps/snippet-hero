@@ -23,14 +23,15 @@ export default class SnippetPage extends React.Component {
   getSnippet(){
     let foundSnippet = [];
     let snippetId = this.props.params.id;
+    let currentUserId = this.getCurrentUser().id;
     if(this.state.snippets.length == 0){
-      SnippetActions.getOneSnippet(this.props.params.id);
+      SnippetActions.getOneSnippet(this.props.params.id, currentUserId);
     } else {
       foundSnippet = this.state.snippets.filter(function (el){
         return el.id == snippetId;
       }); 
       if(foundSnippet.length == 0){
-        SnippetActions.getOneSnippet(this.props.params.id);
+        SnippetActions.getOneSnippet(this.props.params.id, currentUserId);
       } 
     }
   }

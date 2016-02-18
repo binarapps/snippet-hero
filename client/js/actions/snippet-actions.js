@@ -7,9 +7,9 @@ import {buildUrl} from '../libs/paginate';
 class SnippetActions {
   constructor() {}
 
-  getOneSnippet(snippetId){
+  getOneSnippet(snippetId, currentUserId){
     axios.get('/snippets/'+snippetId)
-      .then(res => this.dispatch({ok: true, snippet: res.data}))
+      .then(res => this.dispatch({ok: true, snippet: res.data, currentUserId: currentUserId}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 

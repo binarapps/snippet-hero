@@ -51,15 +51,26 @@ class SnippetStore {
   getOneSnippet(data){
     if(data.ok){
       const addedSnippet = data.snippet;
+      const currentUserId = data.currentUserId;
       const snippets = this.state.snippets;
+      let usersRatings = this.state.usersRatings;
+      let snippetRating = {};
 
       let foundSnippet = snippets.filter(function (snippet){
         return snippet.id == addedSnippet.id;
       });
 
       if(foundSnippet.length == 0){
+        let currentUserRating = addedSnippet.currentUserRating;
+        if(usersRatings[currentUserId] !== undefined){
+          snippetRating = usersRatings[currentUserId];
+        }
+        snippetRating[addedSnippet.id] = currentUserRating;
+        usersRatings[currentUserId] = snippetRating;
+
         this.setState({
-          snippets: snippets.concat(addedSnippet)
+          snippets: snippets.concat(addedSnippet),
+          usersRatings: usersRatings
         });
       }
     }
