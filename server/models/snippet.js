@@ -20,7 +20,8 @@ module.exports = function(sequelize, DataTypes) {
       'text/x-sql',
       'text/x-yaml'
     ),
-    UserId: DataTypes.INTEGER
+    UserId: DataTypes.INTEGER,
+    avg: DataTypes.FLOAT
   }, {
     scopes: {
       withComments: function () {
@@ -55,11 +56,20 @@ module.exports = function(sequelize, DataTypes) {
           include: [sequelize.models.User]
         };
       },
-      withRatings: function () {
-        return {
-          include: [sequelize.models.Rating],
-          order: [['createdAt', 'DESC'], [sequelize.models.Rating, 'createdAt', 'ASC']]
-        };
+      withRatings: function (currentUserId) {
+        if (currentUserId) {
+          return {
+            include: [{
+              model: sequelize.models.Rating,
+              required: false,
+              where: {UserId: currentUserId}
+            }]
+          };
+        } else {
+          return {
+            include: [sequelize.models.Rating]
+          };
+        }
       }
     },
     instanceMethods: {
@@ -69,12 +79,12 @@ module.exports = function(sequelize, DataTypes) {
           name: this.get('name'),
           description: this.get('description'),
           language: this.get('language'),
+          avg: this.get('avg') && this.get('avg').toFixed(2),
           content: '',
           versions: [],
-          ratings: [],
           comments: [],
-          avg: 0,
-          createdAt: this.get('createdAt')
+          createdAt: this.get('createdAt'),
+          currentUserRating: 0
         };
 
         if (this.User) {
@@ -94,19 +104,9 @@ module.exports = function(sequelize, DataTypes) {
         }
 
         if (this.Ratings) {
-          json.ratings = this.Ratings.map(function (r) {
-            return r.toJson();
+          this.Ratings.map(function (r) {
+            json.currentUserRating = r.value;
           });
-
-          var sum = 0;
-          var index = 0;
-
-          this.Ratings.forEach(function (r){
-            sum += r.value;
-            index++;
-          });
-
-          json.avg = (sum==0 ? 0 : sum/index).toFixed(2);
         }
 
         return json;

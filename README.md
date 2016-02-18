@@ -29,6 +29,11 @@ To run migrations
 ```
 npm run sequelize -- db:migrate
 ```
+If you had Users in your database before migrations, make sure they have their ratings average updated by running:
+```
+node server/tasks/checkSnippetUserAvg.js
+```
+
 ### Secrets
 ```
 cp server/config/secrets.json.example server/config/secrets.json

@@ -3,8 +3,7 @@ import alt from '../libs/alt';
 
 // TODO create tests
 class RatingActions {
-  constructor() {
-  }
+  constructor() {}
 
   createRating(rating) {
     axios.post('/ratings', rating)

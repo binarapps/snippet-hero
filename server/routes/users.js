@@ -100,9 +100,13 @@ router.get('/:id/ratings', function (req, res) {
 
 /* GET user by id */
 router.get('/:id', function (req, res) {
-  models.User.findById(req.params.id).then(function (u){
-    res.send(u.toJson());
-  });
-});
+  var userId = req.params.id;
 
+  models.User.scope(['withSnippets', 'withComments', 'withRatings']).findById(userId)
+    .then(function (user) {
+      res.status(200).send(user.toJson());
+    }).catch(function (err){
+      res.send({err: err});
+    });
+});
 module.exports = router;
