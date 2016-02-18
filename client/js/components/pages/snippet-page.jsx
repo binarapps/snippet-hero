@@ -9,7 +9,7 @@ import UserStore from '../../stores/user-store';
 export default class SnippetPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = this.getPropsFromStores();
+    this.state = {foundSnippet: []};
     this._onChange = this._onChange.bind(this);
     this.getSnippet = this.getSnippet.bind(this);
   }
@@ -21,31 +21,16 @@ export default class SnippetPage extends React.Component {
   }
 
   getSnippet(){
-    let foundSnippet = [];
     let snippetId = this.props.params.id;
     let currentUserId = this.getCurrentUser().id;
-    if(this.state.snippets.length == 0){
-      SnippetActions.getOneSnippet(this.props.params.id, currentUserId);
-    } else {
-      foundSnippet = this.state.snippets.filter(function (el){
-        return el.id == snippetId;
-      }); 
-      if(foundSnippet.length == 0){
-        SnippetActions.getOneSnippet(this.props.params.id, currentUserId);
-      } 
-    }
+    let snippets = SnippetStore.getState().snippets;
+    let foundSnippet = snippets.filter(s => s.id == snippetId);
+
+    0 == foundSnippet.length ? SnippetActions.getSnippet(snippetId, currentUserId) : this.setState({ foundSnippet: foundSnippet });
   }
 
   getCurrentUser(){
     return UserStore.state.currentUser;
-  }
-
-  getPropsFromStores() {
-    return SnippetStore.getState();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState(this.getPropsFromStores(nextProps, this.context));
   }
 
   componentWillUnmount() {
@@ -53,17 +38,17 @@ export default class SnippetPage extends React.Component {
   }
 
   _onChange() {
-    this.setState(this.getPropsFromStores(this.state, this.context));
+    let snippets = SnippetStore.getState().snippets;
+    let snippetId = this.props.params.id;
+    let foundSnippet = snippets.filter(s => s.id == snippetId);
+
+    this.setState({ foundSnippet: foundSnippet });
   }
 
   render() {
     let s = this.state;
-    let snippets = s.snippets;
-    let foundSnippets = [];
+    let foundSnippets = s.foundSnippet;
     let snippetId = this.props.params.id;
-    foundSnippets = snippets.filter(function (el){
-      return el.id == snippetId;
-    });
 
     return (
       <PageWrapper>
@@ -79,8 +64,8 @@ export default class SnippetPage extends React.Component {
               );
             } else {
               return (
-                <h2 style={{textAlign: 'center', fontWeight: 'normal'}}>
-                  Please wait until we load the snippet you are looking for.
+                <h2 style={{textAlign: 'center', fontWeight: 'normal', paddingTop: '30px'}}>
+                  Sorry, didn't find a snippet you were looking for.
                 </h2>
               );
             }

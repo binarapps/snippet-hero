@@ -48,7 +48,7 @@ class SnippetStore {
     }
   }
 
-  getOneSnippet(data){
+  getSnippet(data){
     if(data.ok){
       const addedSnippet = data.snippet;
       const currentUserId = data.currentUserId;
