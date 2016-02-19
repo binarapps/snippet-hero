@@ -13,6 +13,12 @@ class SnippetActions {
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
+  getMonthSnippets(month, year) {
+    axios.get('/snippets/month?year=' + year + '&month=' + month)
+      .then(res => this.dispatch({ok: true, snippets: res.data}))
+      .catch(err => this.dispatch({ok: false, error: err}));
+  }
+
   search(name) {
     axios.get('/snippets/search', {params: { name: name }})
       .then(res => this.dispatch({ok: true, snippets: res.data}))

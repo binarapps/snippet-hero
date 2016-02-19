@@ -29,6 +29,25 @@ router.get('/', function (req, res) {
     });
 });
 
+/* GET snippets from specified month */
+router.get('/month', function (req, res) {
+  /* January is 0, December is 11 */
+  var month = req.query.month;
+  var year = req.query.year;
+  var first = new Date(year, month, 1);
+  var last = new Date(year, month+1, 0);
+  var mappedSnippets;
+
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }])
+    .findAll({ where: { createdAt: { $gte: first, $lte: last } } })
+    .then( function (snippets) {
+      mappedSnippets = snippets.map(function (snippet) {
+        return snippet.toJson();
+      });
+      res.status(200).send(mappedSnippets);
+    });
+});
+
 router.get('/search', function (req, res) {
   var options = {};
   if (req.query.name) {
