@@ -31,7 +31,6 @@ class SnippetStore {
     if(data.ok){
       const addedSnippet = data.snippet;
       let snippets = this.state.snippets;
-
       0 == snippets.filter(s => s.id === addedSnippet.id).length ? this.setState({ snippets: snippets.concat(addedSnippet)}) : null;
     }
   }
