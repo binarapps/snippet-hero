@@ -26,14 +26,11 @@ export default class Rating extends React.Component {
   }
 
   _handleMouseLeave(){
-    var user = UserStore.getState().currentUser;
-    var userRates = this.props.usersRatings[user.id];
-    var rating = (userRates !== undefined ? userRates[this.props.snippet.id] : 0);
+    var rating = this.props.snippet.currentUserRating;
     this.setState({
       grade: rating || 0
     });
   }
-
 
   _handleMouseOver(g) {
     this.setState({ grade: g });
@@ -73,7 +70,7 @@ export default class Rating extends React.Component {
           })()}
         </div>
         <br />
-        <span style={{float: 'right'}}>Total rating: {this.props.snippetsAvg[this.props.snippetId] || this.props.snippet.avg }</span>
+        <span style={{float: 'right'}}>Total rating: {this.props.snippet.avg}</span>
       </div>
     );
   }

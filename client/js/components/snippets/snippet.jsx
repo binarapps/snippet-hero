@@ -28,7 +28,6 @@ export default class Snippet extends React.Component {
     this._updateSnippet = this._updateSnippet.bind(this);
     this._getShowSnippet = this._getShowSnippet.bind(this);
     this._getEditableSnippet = this._getEditableSnippet.bind(this);
-    this._getSnippet = this._getSnippet.bind(this);
   }
 
   _editSnippet() {
@@ -81,11 +80,6 @@ export default class Snippet extends React.Component {
     } else {
       return false;
     }
-  }
-
-  _getSnippet(){
-    let snippetId = this.props.id;
-    this.props.history.pushState(null, '/snippets/'+snippetId);
   }
 
   _getEditableSnippet() {
@@ -156,7 +150,7 @@ export default class Snippet extends React.Component {
         {author.name.split('')[0].toUpperCase()}
       </Avatar>
     );
-    let title = (<div onClick={this._getSnippet} style={{cursor: 'pointer'}}>{this.props.name || 'No title'}</div>);
+    let title = (<a href={"/#/snippets/"+this.props.id} style={{cursor: 'pointer', color: 'black', textDecoration: 'none'}} title={"see snippet "+this.props.name}>{this.props.name || 'No title'}</a>);
 
     return (
       <Card style={style}>

@@ -30,7 +30,7 @@ export default class SnippetPage extends React.Component {
   }
 
   getCurrentUser(){
-    return UserStore.state.currentUser;
+    return UserStore.getState().currentUser;
   }
 
   componentWillUnmount() {

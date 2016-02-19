@@ -11,8 +11,6 @@ class SnippetStore {
     this.bindActions(RatingActions);
     this.state = {
       snippets: [],
-      snippetsAvg: {},
-      usersRatings: {},
       totalCount: 0
     };
   }
@@ -21,29 +19,10 @@ class SnippetStore {
     if (data.ok) {
       const pageSnippets = data.results.snippets;
       const count = data.results.count;
-      const currentUserId = data.currentUser.id;
-
-      let snippetsAverage = this.state.snippetsAvg;
-      let usersRatings = this.state.usersRatings;
-      let snippetRating = {};
-
-      pageSnippets.forEach(function (snippet) {
-        snippetsAverage[snippet.id] = snippet.avg;
-
-        let curentUserRating = snippet.currentUserRating;
-
-        if (usersRatings[currentUserId] !== undefined) {
-          snippetRating = usersRatings[currentUserId];
-        }
-        snippetRating[snippet.id] = curentUserRating;
-        usersRatings[currentUserId] = snippetRating;
-      });
-
+      
       this.setState({
         snippets: pageSnippets,
-        totalCount: count,
-        snippetsAvg: snippetsAverage,
-        usersRatings: usersRatings
+        totalCount: count
       });
     }
   }
@@ -51,45 +30,21 @@ class SnippetStore {
   getSnippet(data){
     if(data.ok){
       const addedSnippet = data.snippet;
-      const currentUserId = data.currentUserId;
-      const snippets = this.state.snippets;
-      let usersRatings = this.state.usersRatings;
-      let snippetRating = {};
+      let snippets = this.state.snippets;
 
-      let foundSnippet = snippets.filter(function (snippet){
-        return snippet.id == addedSnippet.id;
-      });
-
-      if(foundSnippet.length == 0){
-        let currentUserRating = addedSnippet.currentUserRating;
-        if(usersRatings[currentUserId] !== undefined){
-          snippetRating = usersRatings[currentUserId];
-        }
-        snippetRating[addedSnippet.id] = currentUserRating;
-        usersRatings[currentUserId] = snippetRating;
-
-        this.setState({
-          snippets: snippets.concat(addedSnippet),
-          usersRatings: usersRatings
-        });
-      }
+      0 == snippets.filter(s => s.id === addedSnippet.id).length ? this.setState({ snippets: snippets.concat(addedSnippet)}) : null;
     }
   }
 
   createRating(data) {
     if (data.ok) {
       const createdRating = data.rating.rating;
-      let snippetsAverage = this.state.snippetsAvg;
-      snippetsAverage[createdRating.SnippetId] = data.rating.avg;
-
-      let allRatings = this.state.usersRatings;
-      let userRating = allRatings[createdRating.UserId];
-      userRating[createdRating.SnippetId] = createdRating.value;
-      allRatings[createdRating.UserId] = userRating;
-
+      const snippetId = createdRating.SnippetId;
+      const {snippets} = this.state;
+      let snippetIndex = _.findIndex(snippets, 'id', snippetId);
+      let newSnippets = update(snippets, {[snippetIndex]: {$merge: {avg: data.rating.avg, currentUserRating: data.rating.rating.value}}});
       this.setState({
-        snippetsAvg: snippetsAverage,
-        usersRatings: allRatings
+        snippets: newSnippets
       });
     } 
   }
