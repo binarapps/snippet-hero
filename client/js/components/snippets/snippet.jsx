@@ -150,7 +150,7 @@ export default class Snippet extends React.Component {
         {author.name.split('')[0].toUpperCase()}
       </Avatar>
     );
-    let title = (<a href={"/#/snippets/"+this.props.id} style={{cursor: 'pointer', color: 'black', textDecoration: 'none'}} title={"see snippet "+this.props.name}>{this.props.name || 'No title'}</a>);
+    let title = (<a href={'/#/snippets/'+this.props.id} style={{cursor: 'pointer', color: 'black', textDecoration: 'none'}} title={'see snippet '+this.props.name}>{this.props.name || 'No title'}</a>);
 
     return (
       <Card style={style}>

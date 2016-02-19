@@ -1,7 +1,6 @@
 import React from 'react';
 import RatingActions from '../../actions/rating-actions';
 import Star from './star';
-import UserStore from '../../stores/user-store';
 
 export default class Rating extends React.Component {
   constructor(props) {
