@@ -7,15 +7,15 @@ import {buildUrl} from '../libs/paginate';
 class SnippetActions {
   constructor() {}
 
-  getSnippet(snippetId, currentUserId){
+  getSnippet(snippetId){
     axios.get('/snippets/'+snippetId)
-      .then(res => this.dispatch({ok: true, snippet: res.data, currentUserId: currentUserId}))
+      .then(res => this.dispatch({ok: true, snippet: res.data}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
-  getPaginatedSnippets(page, perPage, currentUser){
+  getPaginatedSnippets(page, perPage){
     axios.get('/snippets?'+ buildUrl(perPage, page))
-      .then(res => this.dispatch({ok: true, results: res.data, currentUser: currentUser}))
+      .then(res => this.dispatch({ok: true, results: res.data}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 

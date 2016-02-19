@@ -26,7 +26,7 @@ export default class SnippetsIndex extends React.Component {
   }
 
   _getPaginatedSnippets(page){
-    SnippetActions.getPaginatedSnippets(page, this.props.route.perPage, this.getCurrentUser());
+    SnippetActions.getPaginatedSnippets(page, this.props.route.perPage);
 
     this.setState({
       currentPage: page
