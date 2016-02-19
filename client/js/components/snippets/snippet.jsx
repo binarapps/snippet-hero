@@ -139,7 +139,6 @@ export default class Snippet extends React.Component {
       </div>
     );
     let ratings = this.props.id ? <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={this._checkRatingAbility()}/>: '';
-
     let avatar = (
       <Avatar
         color={generateColor()}
