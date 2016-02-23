@@ -26,7 +26,6 @@ class MonthPaginator extends React.Component {
     let prevButton = (
       <li><a onClick={this._handleClickYear.bind(this, currentYear-1)}> &laquo; {currentYear-1} Year </a></li>
     );
-
     if(currentYear != realDate.getFullYear()){
       nextButton = <li> <a onClick={this._handleClickYear.bind(this, currentYear+1)}>{currentYear+1} Year &raquo; </a></li>;
     }
