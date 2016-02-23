@@ -41,8 +41,8 @@ export default class SnippetsList extends React.Component {
                              withRatings={withRatings}
                              withComments={withComments}
                              snippet={snippet}
-                             index={index} 
-                             history={history}/>
+                             index={index}
+                             history={history} />
           );
         })}
       </ul>

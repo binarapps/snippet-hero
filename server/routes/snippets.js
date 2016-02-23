@@ -68,7 +68,7 @@ router.get('/search', function (req, res) {
 
 /* GET snippet by id */
 router.get('/:id', function (req, res) {
-  models.Snippet.scope('withVersions')
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }])
     .findById(req.params.id)
     .then(function (s) {
       res.send(s.toJson());
