@@ -21,7 +21,6 @@ export default class Dashboard extends React.Component {
   componentDidMount() {
     this.storeListeners = [];
     this.storeListeners.push(DashboardStore.listen(this._onChange));
-    this.storeListeners.push(SnippetStore.listen(this._onChange));
   }
 
   componentWillUnmount() {
@@ -29,15 +28,11 @@ export default class Dashboard extends React.Component {
   }
 
   componentWillMount () {
-    let currentUser = UserStore.getState().currentUser;
     DashboardActions.getDashboardFeed();
-    SnippetActions.getBestSnippets();
   }
 
   getPropsFromStores() {
-    let dashboard = DashboardStore.getState();
-    let snippets = SnippetStore.getState();
-    return {dashboard: dashboard, snippets: snippets};
+    return DashboardStore.getState();
   }
 
   _onChange () {
@@ -54,15 +49,15 @@ export default class Dashboard extends React.Component {
             <Card>
               <CardTitle title="Last comments for your snippets:" />
               <CardText>
-                <CommentsList comments={this.state.dashboard.lastComments} withSnippetName={true}></CommentsList>
+                <CommentsList comments={this.state.lastComments} withSnippetName={true}></CommentsList>
               </CardText>
             </Card>
           </div>
           <div className='col-xs-12 col-sm-6'>
             <Card>
-              <CardTitle title={'This month you\'ve posted ' + this.state.dashboard.thisMonthSnippetsCount + ' snippets' } subtitle='Showing last 3'/>
+              <CardTitle title={'This month you\'ve posted ' + this.state.thisMonthSnippetsCount + ' snippets' } subtitle='Showing last 3'/>
               <CardText>
-                <SnippetsList snippets={this.state.dashboard.lastSnippets} withComments={false} withRatings={false} ></SnippetsList>
+                <SnippetsList snippets={this.state.lastSnippets} withComments={false} withRatings={false} ></SnippetsList>
               </CardText>
             </Card>
           </div>
@@ -72,7 +67,7 @@ export default class Dashboard extends React.Component {
             <Card>
               <CardTitle title={'This month\'s best rated snippets' } subtitle='Showing best 5'/>
               <CardText>
-                <SnippetsList snippets={this.state.snippets.bestSnippets} withComments={false} withRatings={true} ></SnippetsList>
+                <SnippetsList snippets={this.state.bestSnippets} withComments={false} withRatings={true} ></SnippetsList>
               </CardText>
             </Card>
           </div>
