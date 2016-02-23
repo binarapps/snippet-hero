@@ -5,9 +5,7 @@ import CardText from 'material-ui/lib/card/card-text';
 import UserStore from '../../stores/user-store';
 import PageWrapper from '../page-wrapper';
 import DashboardStore from '../../stores/dashboard-store';
-import SnippetStore from '../../stores/snippet-store';
 import DashboardActions from '../../actions/dashboard-actions';
-import SnippetActions from '../../actions/snippet-actions';
 import CommentsList from '../comments/comment-list';
 import SnippetsList from '../snippets/snippets-list';
 

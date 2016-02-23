@@ -2,7 +2,7 @@ import alt from '../libs/alt';
 import update from 'react-addons-update';
 import _ from 'lodash';
 import DashboardActions from '../actions/dashboard-actions';
-import RatingActions from '../actions/rating-actions'
+import RatingActions from '../actions/rating-actions';
 
 // TODO create tests
 class DashboardStore {
