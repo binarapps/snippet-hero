@@ -11,34 +11,17 @@ var authChecker = function(req, res, next) {
   }
 };
 
-/* GET snippets listing. */
-router.get('/', function (req, res) {
-  var perPage = req.query.results;
-  var page = req.query.offset;
-  var mappedSnippets;
-
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }])
-    .findAll({ limit: perPage, offset: page })
-    .then(function (snippets) {
-      mappedSnippets = snippets.map(function (s) {
-        return s.toJson();
-      });
-      return models.Snippet.count();
-    }).then(function (c) {
-      res.status(200).send({ snippets: mappedSnippets, count: c });
-    });
-});
-
 /* GET snippets from specified month */
-router.get('/month', function (req, res) {
+router.get('/', function (req, res) {
   /* January is 0, December is 11 */
   var options = { where: {}, order: [] };
-  var month = req.query.month;
-  var year = req.query.year;
+  var now = new Date(Date.now());
+  var month = parseInt(req.query.month);
+  var year = parseInt(req.query.year);
   var first = new Date(year, month, 1);
   var last = new Date(year, month+1, 0);
   options.where = { createdAt: { $gte: first, $lte: last } };
-  var now = new Date(Date.now());
+  
   options.order = (now.getFullYear() == year && now.getMonth() == month) ? [['createdAt', 'DESC']] : [ ['avg', 'DESC'], ['createdAt', 'DESC'] ];
   var mappedSnippets;
 
@@ -47,7 +30,7 @@ router.get('/month', function (req, res) {
       mappedSnippets = snippets.map(function (snippet) {
         return snippet.toJson();
       });
-      res.status(200).send(mappedSnippets);
+      res.status(200).send({snippets: mappedSnippets});
     });
 });
 

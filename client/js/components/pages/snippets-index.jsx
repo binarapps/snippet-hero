@@ -6,7 +6,6 @@ import SnippetActions from '../../actions/snippet-actions';
 import SnippetStore from '../../stores/snippet-store';
 import SnippetSearchStore from '../../stores/snippet-search-store';
 import UserStore from '../../stores/user-store';
-import Paginator from './paginator';
 import MonthPaginator from './month-paginator';
 
 export default class SnippetsIndex extends React.Component {
@@ -16,35 +15,19 @@ export default class SnippetsIndex extends React.Component {
     this._searchSnippets = this._searchSnippets.bind(this);
     this._onChange = this._onChange.bind(this);
     this._onSearch = this._onSearch.bind(this);
-    this._goToPage = this._goToPage.bind(this);
+    this._goToMonth = this._goToMonth.bind(this);
   }
 
   componentDidMount() {
     this.storeListeners = [];
     this.storeListeners.push(SnippetStore.listen(this._onChange));
     this.storeListeners.push(SnippetSearchStore.listen(this._onSearch));
-    this._getPaginatedSnippets(1);
-  }
-
-  _getPaginatedSnippets(page){
-    SnippetActions.getPaginatedSnippets(page, this.props.route.perPage);
-
-    this.setState({
-      currentPage: page
-    });
+    let today = new Date(Date.now());
+    this._goToMonth(today.getMonth(), today.getFullYear());
   }
 
   getCurrentUser(){
     return UserStore.state.currentUser;
-  }
-
-  _goToPage(page){
-    var perPage = this.props.route.perPage;
-    var allPages = Math.ceil(this.state.totalCount/perPage);
-
-    if(page>0 && page <= allPages){
-      this._getPaginatedSnippets(page);
-    }
   }
 
   _goToMonth(month, year){
@@ -86,12 +69,7 @@ export default class SnippetsIndex extends React.Component {
   render() {
     let s = this.state;
     let snippets = s.snippets;
-    let perPage = this.props.route.perPage;
-    let paginator = (<Paginator
-                    perPage={perPage}
-                    totalCount={s.totalCount}
-                    currentPage={s.currentPage}
-                    onClickPage={(page) => this._goToPage(page)}/>);
+    let current = (<div><h3 style={{textAlign: 'center', fontWeight: 'normal'}}>Currently displaying: {s.currentYear}</h3></div>);
 
     return (
       <PageWrapper>
@@ -99,22 +77,32 @@ export default class SnippetsIndex extends React.Component {
         <SearchBar label='Search by name:' onSearch={this._searchSnippets} />
         <div style={{clear: 'right'}}>
           {(() => {
-            if(s.snippets.length > 0){
+            if(snippets.length > 0){
               return (
                 <div>
-                  <SnippetsList snippets={s.snippets} history={this.props.history}/>
+                  <SnippetsList snippets={snippets} history={this.props.history}/>
                   <MonthPaginator
                     currentMonth={s.currentMonth}
                     currentYear={s.currentYear}
-                    onCLickYear={(year) => this._goToMonth(s.currentMonth, year)}
+                    onClickYear={(year) => this._goToMonth(s.currentMonth, year)}
                     onClickMonth={(month, year) => this._goToMonth(month, year)}/>
+                  {current}
                 </div>
               );
             } else {
               return (
-                <h2 style={{textAlign: 'center', fontWeight: 'normal'}}>
-                  Sorry, there are no snippets to display at this time.
-                </h2>
+                <div>
+                  <h2 style={{textAlign: 'center', fontWeight: 'normal'}}>
+                    Sorry, there are no snippets to display at this time.
+                  </h2>
+                  <br />
+                  <MonthPaginator
+                    currentMonth={s.currentMonth}
+                    currentYear={s.currentYear}
+                    onClickYear={(year) => this._goToMonth(s.currentMonth, year)}
+                    onClickMonth={(month, year) => this._goToMonth(month, year)}/>
+                  {current}
+                </div>
               );
             }
           })()}

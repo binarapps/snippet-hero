@@ -13,12 +13,13 @@ class MonthPaginator extends React.Component {
 
   _handleClickYear(year, e){
     e.preventDefault();
-    this.prop.onCLickYear(year);
+    this.props.onClickYear(year);
   }
 
   render() {
+    let p = this.props;
     let pagesArray = Array.apply(null, Array(12)).map(function (x, i) { return i; });
-    let currentYear = this.props.currentYear;
+    let currentYear = p.currentYear;
     let monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     let realDate = new Date(Date.now());
     let nextButton = '';

@@ -13,15 +13,9 @@ class SnippetActions {
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
-  getPaginatedSnippets(page, perPage){
-    axios.get('/snippets?'+ buildUrl(perPage, page))
-      .then(res => this.dispatch({ok: true, results: res.data}))
-      .catch(err => this.dispatch({ok: false, error: err}));
-  }
-
   getMonthSnippets(month, year) {
-    axios.get('/snippets/month?year=' + year + '&month=' + month)
-      .then(res => this.dispatch({ok: true, snippets: res.data}))
+    axios.get('/snippets?year=' + year + '&month=' + month)
+      .then(res => this.dispatch({ok: true, results: res.data}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
