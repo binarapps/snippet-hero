@@ -1,7 +1,6 @@
 import axios from 'axios';
 import alt from '../libs/alt';
 import FlashMessages from './flash-messages-actions';
-import {buildUrl} from '../libs/paginate';
 
 // TODO create tests
 class SnippetActions {
