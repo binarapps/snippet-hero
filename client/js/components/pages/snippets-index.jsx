@@ -26,7 +26,7 @@ export default class SnippetsIndex extends React.Component {
   }
 
   _getPaginatedSnippets(page){
-    SnippetActions.getPaginatedSnippets(page, this.props.route.perPage, this.getCurrentUser());
+    SnippetActions.getPaginatedSnippets(page, this.props.route.perPage);
 
     this.setState({
       currentPage: page
@@ -76,7 +76,13 @@ export default class SnippetsIndex extends React.Component {
 
   render() {
     let s = this.state;
+    let snippets = s.snippets;
     let perPage = this.props.route.perPage;
+    let paginator = (<Paginator
+                    perPage={perPage}
+                    totalCount={s.totalCount}
+                    currentPage={s.currentPage}
+                    onClickPage={(page) => this._goToPage(page)}/>);
 
     return (
       <PageWrapper>
@@ -87,12 +93,8 @@ export default class SnippetsIndex extends React.Component {
             if(s.snippets.length > 0){
               return (
                 <div>
-                  <SnippetsList snippets={s.snippets} page={s.currentPage} perPage={perPage} history={this.props.history}/>
-                  <Paginator
-                    perPage={perPage}
-                    totalCount={s.totalCount}
-                    currentPage={s.currentPage}
-                    onClickPage={(page) => this._goToPage(page)}/>
+                  <SnippetsList snippets={snippets} page={s.currentPage} perPage={perPage} history={this.props.history}/>
+                  {paginator}
                 </div>
               );
             } else {
