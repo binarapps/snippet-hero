@@ -7,6 +7,7 @@ import SnippetStore from '../../stores/snippet-store';
 import SnippetSearchStore from '../../stores/snippet-search-store';
 import UserStore from '../../stores/user-store';
 import Paginator from './paginator';
+import MonthPaginator from './month-paginator';
 
 export default class SnippetsIndex extends React.Component {
   constructor(props) {
@@ -44,6 +45,14 @@ export default class SnippetsIndex extends React.Component {
     if(page>0 && page <= allPages){
       this._getPaginatedSnippets(page);
     }
+  }
+
+  _goToMonth(month, year){
+    SnippetActions.getMonthSnippets(month, year);
+    this.setState({
+      currentMonth: month,
+      currentYear: year
+    });
   }
 
   getPropsFromStores() {
@@ -87,12 +96,11 @@ export default class SnippetsIndex extends React.Component {
             if(s.snippets.length > 0){
               return (
                 <div>
-                  <SnippetsList snippets={s.snippets} page={s.currentPage} perPage={perPage} history={this.props.history}/>
-                  <Paginator
-                    perPage={perPage}
-                    totalCount={s.totalCount}
-                    currentPage={s.currentPage}
-                    onClickPage={(page) => this._goToPage(page)}/>
+                  <SnippetsList snippets={s.snippets} history={this.props.history}/>
+                  <MonthPaginator
+                    currentMonth={s.currentMonth}
+                    currentYear={s.currentYear}
+                    onClickMonth={(month, year) => this._goToMonth(month, year)}/>
                 </div>
               );
             } else {

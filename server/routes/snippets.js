@@ -32,15 +32,18 @@ router.get('/', function (req, res) {
 /* GET snippets from specified month */
 router.get('/month', function (req, res) {
   /* January is 0, December is 11 */
+  var options = { where: {}, order: [] };
   var month = req.query.month;
   var year = req.query.year;
   var first = new Date(year, month, 1);
   var last = new Date(year, month+1, 0);
+  options.where = { createdAt: { $gte: first, $lte: last } };
+  var now = new Date(Date.now());
+  options.order = (now.getFullYear() == year && now.getMonth() == month) ? [['createdAt', 'DESC']] : [ ['avg', 'DESC'], ['createdAt', 'DESC'] ];
   var mappedSnippets;
 
   models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }])
-    .findAll({ where: { createdAt: { $gte: first, $lte: last } } })
-    .then( function (snippets) {
+    .findAll(options).then( function (snippets) {
       mappedSnippets = snippets.map(function (snippet) {
         return snippet.toJson();
       });
