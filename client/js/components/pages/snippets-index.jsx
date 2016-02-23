@@ -106,6 +106,7 @@ export default class SnippetsIndex extends React.Component {
                   <MonthPaginator
                     currentMonth={s.currentMonth}
                     currentYear={s.currentYear}
+                    onCLickYear={(year) => this._goToMonth(s.currentMonth, year)}
                     onClickMonth={(month, year) => this._goToMonth(month, year)}/>
                 </div>
               );
