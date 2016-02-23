@@ -48,7 +48,7 @@ router.get('/search', function (req, res) {
 router.get('/best', function (req, res) {
   var today = new Date(Date.now());
   var firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }])
+  models.Snippet.scope(['withVersions', 'withAuthor', { method: ['withRatings', req.user.get('id')] }])
     .findAll({ where: { createdAt: { $gte: firstDayOfMonth } }, order: [ ['avg', 'DESC'], ['createdAt', 'DESC'] ], limit: 5 })
     .then( function (snippets) {
       var mappedSnippets = snippets.map( function (s) {
@@ -60,7 +60,7 @@ router.get('/best', function (req, res) {
 
 /* GET snippet by id */
 router.get('/:id', function (req, res) {
-  models.Snippet.scope('withVersions')
+  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }])
     .findById(req.params.id)
     .then(function (s) {
       res.send(s.toJson());

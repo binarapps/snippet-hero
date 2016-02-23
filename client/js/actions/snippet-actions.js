@@ -7,15 +7,21 @@ import {buildUrl} from '../libs/paginate';
 class SnippetActions {
   constructor() {}
 
-  getPaginatedSnippets(page, perPage, currentUser){
-    axios.get('/snippets?'+ buildUrl(perPage, page))
-      .then(res => this.dispatch({ok: true, results: res.data, currentUser: currentUser}))
+  getSnippet(snippetId){
+    axios.get('/snippets/'+snippetId)
+      .then(res => this.dispatch({ok: true, snippet: res.data}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
-  getBestSnippets(currentUserId){
+  getPaginatedSnippets(page, perPage){
+    axios.get('/snippets?'+ buildUrl(perPage, page))
+      .then(res => this.dispatch({ok: true, results: res.data}))
+      .catch(err => this.dispatch({ok: false, error: err}));
+  }
+
+  getBestSnippets(){
     axios.get('/snippets/best')
-      .then(res => this.dispatch({ok: true, snippets: res.data, currentUserId: currentUserId}))
+      .then(res => this.dispatch({ok: true, snippets: res.data}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 

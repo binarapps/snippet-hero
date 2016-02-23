@@ -132,7 +132,6 @@ export default class Snippet extends React.Component {
     let { style } = this.props;
     let currentUser = this.getCurrentUser();
     let author = this.props.user || currentUser;
-    let authorName = (author && author.name) || 'author';
     let snippetActions = (
       <div style={{display: 'table', background: Colors.grey100, width: '100%'}}>
         <RaisedButton style={{float: 'right', margin: '0 10px 5px 0'}} onClick={this._editSnippet} label='Edit' secondary={true} />
@@ -140,24 +139,24 @@ export default class Snippet extends React.Component {
       </div>
     );
     let ratings = this.props.id ? <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={this._checkRatingAbility()}/>: '';
-
     let avatar = (
       <Avatar
         color={generateColor()}
         backgroundColor={generateColor()}
         onClick={this._getUserProfile}
         style={{cursor: 'pointer'}}
-        title={('Click to see more ' + authorName + ' snippets')}>
-        {authorName.split('')[0].toUpperCase()}
+        title={('Click to see more ' + author.name + ' snippets')}>
+        {author.name.split('')[0].toUpperCase()}
       </Avatar>
     );
+    let title = (<a href={'/#/snippets/'+this.props.id} style={{cursor: 'pointer', color: 'black', textDecoration: 'none'}} title={'see snippet '+this.props.name}>{this.props.name || 'No title'}</a>);
 
     return (
       <Card style={style}>
         <div style={{display: 'inline-flex', background: Colors.grey100, width: '100%'}}>
           <CardHeader
-            title={this.props.name || 'No title'}
-            subtitle= {authorName}
+            title={title}
+            subtitle= {author.name}
             avatar={avatar} />
           { (() => {
             if (this.props.withRatings) {

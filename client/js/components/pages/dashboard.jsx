@@ -31,7 +31,7 @@ export default class Dashboard extends React.Component {
   componentWillMount () {
     let currentUser = UserStore.getState().currentUser;
     DashboardActions.getDashboardFeed();
-    SnippetActions.getBestSnippets(currentUser.id);
+    SnippetActions.getBestSnippets();
   }
 
   getPropsFromStores() {

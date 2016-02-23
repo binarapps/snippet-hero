@@ -58,12 +58,12 @@ describe('SnippetActions', function() {
     it('should dispatch all snippets list from server', (done) => {
       this.sandbox.stub(axios, 'get', () => {
         return new Promise((resolve) => {
-          resolve({data: { snippets: this.snippets, count: 3 }});
+          resolve({data: { snippets: this.snippets, count: 2 }});
         });
       });
       SnippetActions.getPaginatedSnippets();
       setTimeout( () => {
-        expect(alt.dispatch.calledTwice).to.be.true;
+        expect(alt.dispatch.calledOnce).to.be.true;
         expect(alt.dispatch.getCall(0).args[1].results.snippets).to.deep.equal(this.snippets);
         done();
       });
