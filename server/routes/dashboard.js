@@ -12,7 +12,7 @@ var authChecker = function(req, res, next) {
 
 /* GET dashboard stats. */
 router.get('/', authChecker, function(req, res) {
-  var mappedSnippets, count, mappedSnippetsId, mappedComments;
+  var mappedSnippets, count, mappedSnippetsId, mappedComments, bestSnippets;
   // TODO: fix to get only this month data
   // load currentUser last 3 snippets
   req.user.getSnippets({ scope: ['withVersions', 'withAuthor'], limit: 3 })
@@ -37,7 +37,14 @@ router.get('/', authChecker, function(req, res) {
       mappedComments = comments.map(function (c){
         return c.toJson();
       });
-      res.status(200).send({ count: count, comments: mappedComments, snippets: mappedSnippets });
+    }).then(function () {
+      return models.Snippet.scope(['fromCurrentMonth', 'withVersions', 'withAuthor', { method: ['withRatings', req.user.get('id')] }])
+        .findAll({order: [ ['avg', 'DESC'], ['createdAt', 'DESC'] ], limit: 5 });
+    }).then(function (bests) {
+      bestSnippets = bests.map( function (s) {
+        return s.toJson();
+      });
+      res.status(200).send({ count: count, comments: mappedComments, snippets: mappedSnippets, bestSnippets: bestSnippets });
     });
 });
 
