@@ -15,7 +15,6 @@ var authChecker = function(req, res, next) {
 router.get('/', function (req, res) {
   /* January is 0, December is 11 */
   var options = { where: {}, order: [] };
-  var now = new Date();
   var month = parseInt(req.query.month);
   var year = parseInt(req.query.year);
   var first = new Date(year, month, 1);
