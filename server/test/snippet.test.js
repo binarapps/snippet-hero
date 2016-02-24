@@ -75,7 +75,7 @@ describe('Snippets routes', function() {
 
     it('should return array of snippets', function (done) {
       request(app)
-        .get('/snippets?year='+year+'&month='+month)
+        .get(`/snippets?year=${year}&month=${month}`)
         .set('Accept', 'application/json')
         .expect(200)
         .end(function (err, res) {
