@@ -7,13 +7,13 @@ class SnippetActions {
   constructor() {}
 
   getSnippet(snippetId){
-    axios.get('/snippets/'+snippetId)
+    axios.get(`/snippets/${snippetId}`)
       .then(res => this.dispatch({ok: true, snippet: res.data}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
   getMonthSnippets(month, year) {
-    axios.get('/snippets?year=' + year + '&month=' + month)
+    axios.get(`/snippets?year=${year}&month=${month}`)
       .then(res => this.dispatch({ok: true, results: res.data}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
@@ -25,13 +25,13 @@ class SnippetActions {
   }
 
   getAllComments(snippetId) {
-    axios.get('/snippets/' + snippetId + '/comments')
+    axios.get(`/snippets/${snippetId}/comments`)
       .then(res => this.dispatch({ok: true, comments: res.data, snippetId: snippetId}))
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
   commentSnippet(comment, snippetId) {
-    axios.post('/snippets/' + snippetId + '/comments', comment)
+    axios.post(`/snippets/${snippetId}/comments`, comment)
       .then(res => {
         FlashMessages.pushMessage({ content: 'Comment added!' });
         this.dispatch({ok: true, comment: res.data});
@@ -54,7 +54,7 @@ class SnippetActions {
   }
 
   update(snippet) {
-    axios.put('/snippets/' + snippet.id, snippet)
+    axios.put(`/snippets/${snippet.id}`, snippet)
       .then(res => {
         FlashMessages.pushMessage({ content: 'Snippet updated successfully!' });
         this.dispatch({ ok: true, snippet: res.data });
@@ -66,7 +66,7 @@ class SnippetActions {
   }
 
   destroySnippet(snippetId) {
-    axios.delete('/snippets/' + snippetId)
+    axios.delete(`/snippets/${snippetId}`)
       .then(() => {
         FlashMessages.pushMessage({ content: 'Successfully deleted snippet!' });
         this.dispatch({ok: true, snippetId: snippetId});

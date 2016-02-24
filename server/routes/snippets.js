@@ -15,14 +15,13 @@ var authChecker = function(req, res, next) {
 router.get('/', function (req, res) {
   /* January is 0, December is 11 */
   var options = { where: {}, order: [] };
-  var now = new Date(Date.now());
+  var now = new Date();
   var month = parseInt(req.query.month);
   var year = parseInt(req.query.year);
   var first = new Date(year, month, 1);
   var last = new Date(year, month+1, 0);
   options.where = { createdAt: { $gte: first, $lte: last } };
-  
-  options.order = (now.getFullYear() == year && now.getMonth() == month) ? [['createdAt', 'DESC']] : [ ['avg', 'DESC'], ['createdAt', 'DESC'] ];
+  options.order = [ ['avg', 'DESC'], ['createdAt', 'DESC'] ];
   var mappedSnippets;
 
   models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }])

@@ -22,7 +22,7 @@ export default class SnippetsIndex extends React.Component {
     this.storeListeners = [];
     this.storeListeners.push(SnippetStore.listen(this._onChange));
     this.storeListeners.push(SnippetSearchStore.listen(this._onSearch));
-    let today = new Date(Date.now());
+    let today = new Date();
     this._goToMonth(today.getMonth(), today.getFullYear());
   }
 

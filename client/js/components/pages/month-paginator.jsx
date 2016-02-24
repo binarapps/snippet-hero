@@ -21,7 +21,7 @@ class MonthPaginator extends React.Component {
     let pagesArray = Array.apply(null, Array(12)).map(function (x, i) { return i; });
     let currentYear = p.currentYear;
     let monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    let realDate = new Date(Date.now());
+    let realDate = new Date();
     let nextButton = '';
     let prevButton = (
       <li><a onClick={this._handleClickYear.bind(this, currentYear-1)}> &laquo; {currentYear-1} Year </a></li>

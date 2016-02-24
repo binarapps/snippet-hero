@@ -56,7 +56,7 @@ describe('SnippetActions', function() {
     });
 
     it('should dispatch all snippets list from server', (done) => {
-      var today = new Date(Date.now());
+      var today = new Date();
       this.sandbox.stub(axios, 'get', () => {
         return new Promise((resolve) => {
           resolve({data: { snippets: this.snippets}});
