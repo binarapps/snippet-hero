@@ -38,10 +38,8 @@ router.get('/', authChecker, function(req, res) {
         return c.toJson();
       });
     }).then(function () {
-      var today = new Date(Date.now());
-      var firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-      return models.Snippet.scope(['withVersions', 'withAuthor', { method: ['withRatings', req.user.get('id')] }])
-        .findAll({ where: { createdAt: { $gte: firstDayOfMonth } }, order: [ ['avg', 'DESC'], ['createdAt', 'DESC'] ], limit: 5 });
+      return models.Snippet.scope(['fromCurrentMonth', 'withVersions', 'withAuthor', { method: ['withRatings', req.user.get('id')] }])
+        .findAll({order: [ ['avg', 'DESC'], ['createdAt', 'DESC'] ], limit: 5 });
     }).then(function (bests) {
       bestSnippets = bests.map( function (s) {
         return s.toJson();

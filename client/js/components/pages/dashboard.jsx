@@ -61,7 +61,7 @@ export default class Dashboard extends React.Component {
           </div>
         </div>
         <div className='row' style={{marginBottom: '15px'}}>
-          <div className='col-xs-12 col-sm-12'>
+          <div className='col-xs-12'>
             <Card>
               <CardTitle title={'This month\'s best rated snippets' } subtitle='Showing best 5'/>
               <CardText>

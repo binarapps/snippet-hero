@@ -61,7 +61,7 @@ export default class Snippet extends React.Component {
   }
 
   _checkRatingAbility() {
-    let today = new Date(Date.now());
+    let today = new Date();
     let dateCreated = new Date(Date.parse(this.props.createdAt));
     let currentUser = this.getCurrentUser();
 
