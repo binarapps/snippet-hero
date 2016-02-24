@@ -44,7 +44,7 @@ class UserActions {
         FlashMessages.pushMessage({ content: 'Successfully registered!' });
         this.dispatch({ ok: true, user: res.data.user });
       }).catch((err) => {
-        FlashMessages.pushMessage({ content: err.data });
+        err.data.forEach(e => FlashMessages.pushMessage({ content: e.message }));
         this.dispatch({ ok: false, error: err });
       });
   }

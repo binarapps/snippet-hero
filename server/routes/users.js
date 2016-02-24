@@ -70,7 +70,7 @@ router.post('/register', function(req, res) {
       res.status(201).send({ user: user.toJson() });
     });
   }).catch(function(err) {
-    res.status(422).send(err.message);
+    res.status(422).send(err.errors);
   });
 });
 
