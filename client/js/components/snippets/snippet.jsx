@@ -61,11 +61,11 @@ export default class Snippet extends React.Component {
   }
 
   _checkRatingAbility() {
-    let today = Date.now();
-    let dateCreated = Date.parse(this.props.createdAt);
+    let today = new Date();
+    let dateCreated = new Date(Date.parse(this.props.createdAt));
     let currentUser = this.getCurrentUser();
 
-    if (Math.ceil((today-dateCreated) / (1000*3600*24))<30) {
+    if (today.getFullYear() == dateCreated.getFullYear() && today.getMonth() == dateCreated.getMonth()) {
       if (currentUser && currentUser.id != this.props.user.id) {
         return true;
       }

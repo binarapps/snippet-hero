@@ -60,6 +60,16 @@ export default class Dashboard extends React.Component {
             </Card>
           </div>
         </div>
+        <div className='row' style={{marginBottom: '15px'}}>
+          <div className='col-xs-12'>
+            <Card>
+              <CardTitle title={'This month\'s best rated snippets' } subtitle='Showing best 5'/>
+              <CardText>
+                <SnippetsList snippets={this.state.bestSnippets} withComments={false} withRatings={true} ></SnippetsList>
+              </CardText>
+            </Card>
+          </div>
+        </div>
       </PageWrapper>
     );
   }

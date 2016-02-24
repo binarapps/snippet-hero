@@ -41,10 +41,12 @@ class SnippetStore {
       const snippetId = createdRating.SnippetId;
       const {snippets} = this.state;
       let snippetIndex = _.findIndex(snippets, 'id', snippetId);
-      let newSnippets = update(snippets, {[snippetIndex]: {$merge: {avg: data.rating.avg, currentUserRating: data.rating.rating.value}}});
-      this.setState({
-        snippets: newSnippets
-      });
+      if(snippetIndex >= 0){
+        let newSnippets = update(snippets, {[snippetIndex]: {$merge: {avg: data.rating.avg, currentUserRating: data.rating.rating.value}}});
+        this.setState({
+          snippets: newSnippets
+        });
+      }
     } 
   }
 
