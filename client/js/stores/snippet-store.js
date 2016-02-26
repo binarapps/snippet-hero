@@ -10,19 +10,15 @@ class SnippetStore {
     this.bindActions(SnippetActions);
     this.bindActions(RatingActions);
     this.state = {
-      snippets: [],
-      totalCount: 0
+      snippets: []
     };
   }
 
-  getPaginatedSnippets(data) {
+  getMonthSnippets(data) {
     if (data.ok) {
-      const pageSnippets = data.results.snippets;
-      const count = data.results.count;
-      
+      const monthSnippets = data.results.snippets;
       this.setState({
-        snippets: pageSnippets,
-        totalCount: count
+        snippets: monthSnippets
       });
     }
   }
@@ -54,8 +50,7 @@ class SnippetStore {
     if (data.ok) {
       const newSnippets = update(this.state.snippets, { $unshift: [data.snippet] });
       this.setState({
-        snippets: newSnippets,
-        totalCount: this.state.totalCount + 1
+        snippets: newSnippets
       });
     }
   }
