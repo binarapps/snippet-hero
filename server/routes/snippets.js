@@ -16,8 +16,9 @@ router.get('/', function (req, res) {
   var perPage = req.query.results;
   var page = req.query.offset;
   var mappedSnippets;
+  var scopes = req.user ? ['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }] : ['withVersions', 'lastComments', 'withAuthor', 'publicSnippets'];
 
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }])
+  models.Snippet.scope(scopes)
     .findAll({ limit: perPage, offset: page })
     .then(function (snippets) {
       mappedSnippets = snippets.map(function (s) {
@@ -34,7 +35,9 @@ router.get('/search', function (req, res) {
   if (req.query.name) {
     options.where = { name: req.query.name };
   }
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings'])
+  var scopes = req.user ? ['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }] : ['withVersions', 'lastComments', 'withAuthor', 'publicSnippets'];
+
+  models.Snippet.scope(scopes)
     .findAll(options)
     .then(function (snippets) {
       var mappedSnippets = snippets.map(function (s) {
@@ -46,7 +49,9 @@ router.get('/search', function (req, res) {
 
 /* GET snippet by id */
 router.get('/:id', function (req, res) {
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }])
+  var scopes = req.user ? ['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }] : ['withVersions', 'lastComments', 'withAuthor', 'publicSnippets'];
+
+  models.Snippet.scope(scopes)
     .findById(req.params.id)
     .then(function (s) {
       res.send(s.toJson());

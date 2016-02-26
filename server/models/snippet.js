@@ -21,7 +21,8 @@ module.exports = function(sequelize, DataTypes) {
       'text/x-yaml'
     ),
     UserId: DataTypes.INTEGER,
-    avg: DataTypes.FLOAT
+    avg: DataTypes.FLOAT,
+    isPublic: DataTypes.BOOLEAN
   }, {
     scopes: {
       withComments: function () {
@@ -81,6 +82,13 @@ module.exports = function(sequelize, DataTypes) {
             }
           }
         };
+      },
+      publicSnippets: function () {
+        return {
+          where: {
+            isPublic: true
+          }
+        };
       }
     },
     instanceMethods: {
@@ -95,7 +103,8 @@ module.exports = function(sequelize, DataTypes) {
           versions: [],
           comments: [],
           createdAt: this.get('createdAt'),
-          currentUserRating: 0
+          currentUserRating: 0,
+          isPublic: this.get('isPublic')
         };
 
         if (this.User) {

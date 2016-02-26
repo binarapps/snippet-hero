@@ -52,7 +52,7 @@ export default class Snippet extends React.Component {
   }
 
   _getUserProfile(){
-    let userId = (this.props.user ? this.props.user.id : this.getCurrentUser().id);
+    let userId = (this.props.user ? this.props.user.id : null);
     this.props.history.pushState(null, '/users/'+userId);
   }
 
@@ -132,6 +132,7 @@ export default class Snippet extends React.Component {
     let { style } = this.props;
     let currentUser = this.getCurrentUser();
     let author = this.props.user || currentUser;
+    let authorName = (author && author.name) || 'author';
     let snippetActions = (
       <div style={{display: 'table', background: Colors.grey100, width: '100%'}}>
         <RaisedButton style={{float: 'right', margin: '0 10px 5px 0'}} onClick={this._editSnippet} label='Edit' secondary={true} />
@@ -145,8 +146,8 @@ export default class Snippet extends React.Component {
         backgroundColor={generateColor()}
         onClick={this._getUserProfile}
         style={{cursor: 'pointer'}}
-        title={('Click to see more ' + author.name + ' snippets')}>
-        {author.name.split('')[0].toUpperCase()}
+        title={('Click to see more ' + authorName + ' snippets')}>
+        {authorName.split('')[0].toUpperCase()}
       </Avatar>
     );
     let title = (<a href={'/#/snippets/'+this.props.id} style={{cursor: 'pointer', color: 'black', textDecoration: 'none'}} title={'see snippet '+this.props.name}>{this.props.name || 'No title'}</a>);

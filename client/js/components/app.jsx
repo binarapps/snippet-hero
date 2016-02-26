@@ -14,7 +14,10 @@ export default class App extends React.Component {
     this.historyListtenerWasAttached = false;
 
     UserStore.listen(this._onChange);
-    setTimeout(() => { this._onChange(); });
+    setTimeout(() => { 
+      console.log('timeout');
+      this._onChange();
+    });
   }
 
   componentWillUnmount() {
@@ -22,19 +25,22 @@ export default class App extends React.Component {
   }
 
   componentWillReceiveProps() {
-    if(!this.historyListtenerWasAttached && this.props.history) {
-      this.props.history.listen(this._onChange);
-      this.historyListtenerWasAttached = true;
-    }
+    console.log('WILL RECEIVE PROPS')
+    // if(!this.historyListtenerWasAttached && this.props.history) {
+    //   this.props.history.listen(this._onChange);
+    //   this.historyListtenerWasAttached = true;
+    // }
   }
 
   _onChange() {
+    console.log('app on change');
     this.setState({ currentUser: UserStore.getState().currentUser });
     setTimeout(() => {
       var currentPath = this.props.location.pathname;
+      var currentParamPath = this.props.routes[1].path;
 
-      if(!this.state.currentUser && currentPath != '/login' && currentPath != '/register') {
-        this.props.history.pushState(null, '/login');
+      if(!this.state.currentUser && currentPath != '/login' && currentPath != '/register' && currentParamPath != '/snippets/:id') {
+        this.props.history.pushState(null, '/snippets');
       } else if(this.state.currentUser && (currentPath === '/login' || currentPath === '/register')) {
         this.props.history.pushState(null, '/');
       }

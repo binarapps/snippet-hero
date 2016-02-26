@@ -4,7 +4,6 @@ import SnippetsList from '../snippets/snippets-list';
 import SearchBar from '../search-bar';
 import SnippetActions from '../../actions/snippet-actions';
 import SnippetStore from '../../stores/snippet-store';
-import UserStore from '../../stores/user-store';
 
 export default class SnippetPage extends React.Component {
   constructor(props) {
@@ -26,10 +25,6 @@ export default class SnippetPage extends React.Component {
     let foundSnippet = snippets.filter(s => s.id == snippetId);
 
     0 == foundSnippet.length ? SnippetActions.getSnippet(snippetId) : this.setState({ foundSnippet: foundSnippet });
-  }
-
-  getCurrentUser(){
-    return UserStore.getState().currentUser;
   }
 
   componentWillUnmount() {
