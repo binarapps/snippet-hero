@@ -11,22 +11,25 @@ var authChecker = function(req, res, next) {
   }
 };
 
-/* GET snippets listing. */
+/* GET snippets from specified month */
 router.get('/', function (req, res) {
-  var perPage = req.query.results;
-  var page = req.query.offset;
+  /* January is 0, December is 11 */
+  var options = { where: {}, order: [] };
+  var month = parseInt(req.query.month);
+  var year = parseInt(req.query.year);
+  var first = new Date(year, month, 1);
+  var last = new Date(year, month+1, 0);
+  options.where = { createdAt: { $gte: first, $lte: last } };
+  options.order = [ ['avg', 'DESC'], ['createdAt', 'DESC'] ];
   var mappedSnippets;
   var scopes = req.user ? ['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }] : ['withVersions', 'lastComments', 'withAuthor', 'publicSnippets'];
 
   models.Snippet.scope(scopes)
-    .findAll({ limit: perPage, offset: page })
-    .then(function (snippets) {
+    .findAll(options).then(function (snippets) {
       mappedSnippets = snippets.map(function (s) {
         return s.toJson();
       });
-      return models.Snippet.count();
-    }).then(function (c) {
-      res.status(200).send({ snippets: mappedSnippets, count: c });
+      res.status(200).send({snippets: mappedSnippets});
     });
 });
 

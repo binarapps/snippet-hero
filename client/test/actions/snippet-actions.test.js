@@ -56,12 +56,13 @@ describe('SnippetActions', function() {
     });
 
     it('should dispatch all snippets list from server', (done) => {
+      var today = new Date();
       this.sandbox.stub(axios, 'get', () => {
         return new Promise((resolve) => {
-          resolve({data: { snippets: this.snippets, count: 2 }});
+          resolve({data: { snippets: this.snippets}});
         });
       });
-      SnippetActions.getPaginatedSnippets();
+      SnippetActions.getMonthSnippets(today.getMonth(), today.getFullYear());
       setTimeout( () => {
         expect(alt.dispatch.calledOnce).to.be.true;
         expect(alt.dispatch.getCall(0).args[1].results.snippets).to.deep.equal(this.snippets);

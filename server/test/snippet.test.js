@@ -21,6 +21,10 @@ var data = {
   description: 'some description'
 };
 
+var today = new Date();
+var month = today.getMonth();
+var year = today.getFullYear();
+
 factory.define('snippet', db.Snippet, data);
 
 describe('Snippets routes', function() {
@@ -71,7 +75,7 @@ describe('Snippets routes', function() {
 
     it('should return array of snippets', function (done) {
       request(app)
-        .get('/snippets')
+        .get(`/snippets?year=${year}&month=${month}`)
         .set('Accept', 'application/json')
         .expect(200)
         .end(function (err, res) {
