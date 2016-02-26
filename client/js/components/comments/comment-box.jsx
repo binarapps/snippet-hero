@@ -4,16 +4,18 @@ import SnippetActions from '../../actions/snippet-actions';
 import CommentForm from './comment-form';
 import CommentList from './comment-list';
 import SnippetStore from '../../stores/snippet-store';
+import UserStore from '../../stores/user-store';
 
 export default class CommentBox extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { comments: props.comments, content: '', createError: ''};
+    this.state = { comments: props.comments, content: '', createError: '', currentUser: UserStore.getState().currentUser };
     this.storeListeners = [];
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleFormChange = this._handleFormChange.bind(this);
     this._onChange = this._onChange.bind(this);
     this._loadMoreComments = this._loadMoreComments.bind(this);
+
   }
 
   componentDidMount() {
@@ -48,12 +50,16 @@ export default class CommentBox extends React.Component {
   }
 
   render() {
-    return (
-      <div style={{paddingLeft: '30px'}}>
-        <CommentForm
+    let commentForm = '';
+    if ( this.state.currentUser ) {
+      commentForm = (<CommentForm
           onChange={this._handleFormChange}
           content={this.state.content}
-          onSubmit={this._handleFormSubmit} />
+          onSubmit={this._handleFormSubmit} />);
+    }
+    return (
+      <div style={{paddingLeft: '30px'}}>
+        {commentForm}
         <CommentList comments={this.state.comments}/>
         {(() => {
           if (this.state.comments.length === 5) {

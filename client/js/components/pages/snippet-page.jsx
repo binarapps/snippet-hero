@@ -47,7 +47,6 @@ export default class SnippetPage extends React.Component {
     return (
       <PageWrapper>
         <h2 style={{fontSize: '24px', margin: '20px 0'}}>Snippet no. {snippetId}:</h2>
-        <SearchBar label='Search by name:' onSearch={this._searchSnippets} />
         <div style={{clear: 'right'}}>
           {(() => {
             if(foundSnippets.length > 0){

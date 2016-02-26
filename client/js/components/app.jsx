@@ -14,8 +14,7 @@ export default class App extends React.Component {
     this.historyListtenerWasAttached = false;
 
     UserStore.listen(this._onChange);
-    setTimeout(() => { 
-      console.log('timeout');
+    setTimeout(() => {
       this._onChange();
     });
   }
@@ -25,21 +24,19 @@ export default class App extends React.Component {
   }
 
   componentWillReceiveProps() {
-    console.log('WILL RECEIVE PROPS')
-    // if(!this.historyListtenerWasAttached && this.props.history) {
-    //   this.props.history.listen(this._onChange);
-    //   this.historyListtenerWasAttached = true;
-    // }
+    if(!this.historyListtenerWasAttached && this.props.history) {
+      this.props.history.listen(this._onChange);
+      this.historyListtenerWasAttached = true;
+    }
   }
 
   _onChange() {
-    console.log('app on change');
     this.setState({ currentUser: UserStore.getState().currentUser });
     setTimeout(() => {
       var currentPath = this.props.location.pathname;
       var currentParamPath = this.props.routes[1].path;
 
-      if(!this.state.currentUser && currentPath != '/login' && currentPath != '/register' && currentParamPath != '/snippets/:id') {
+      if(!this.state.currentUser && currentPath != '/login' && currentPath != '/register' && currentPath != '/snippets' && currentParamPath != '/snippets/:id') {
         this.props.history.pushState(null, '/snippets');
       } else if(this.state.currentUser && (currentPath === '/login' || currentPath === '/register')) {
         this.props.history.pushState(null, '/');
@@ -48,11 +45,20 @@ export default class App extends React.Component {
   }
 
   render() {
-    let menuItems = [
-      { route: '/', text: 'Dashboard' },
-      { route: '/snippets', text: 'All snippets' },
-      { route: '/logout', text: 'Sign Out' }
-    ];
+    let menuItems = [];
+    if (this.state.currentUser){
+      menuItems = [
+        { route: '/', text: 'Dashboard' },
+        { route: '/snippets', text: 'All snippets' },
+        { route: '/logout', text: 'Sign Out' }
+      ];
+    } else {
+      menuItems = [
+        { route: '/snippets', text: 'All snippets' },
+        { route: '/login', text: 'Sign In' },
+        { route: '/register', text: 'Sign Up' }
+      ];
+    }
 
     return (
       <div>
