@@ -169,7 +169,7 @@ export default class Snippet extends React.Component {
           })()}
 
         </div>
-        {this.checkOwner() ? snippetActions : ''}
+        { (this.checkOwner() && this.props.id) ? snippetActions : '' }
         <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300 }}>
           <Codemirror value={this.props.content} options={codeOptions} />
         </div>
