@@ -14,7 +14,11 @@ export default class SnippetForm extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {mode: '', mime: ''};
+    if (props.language) {
+      this.state = { mime: props.language, mode: modeFromMime(props.language) };
+    } else {
+      this.state = { mode: '', mime: '' };
+    }
 
     this._handleNameChange = this._handleNameChange.bind(this);
     this._handleContentChange = this._handleContentChange.bind(this);

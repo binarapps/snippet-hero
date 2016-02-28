@@ -22,8 +22,7 @@ export default class Profile extends React.Component {
   componentDidMount(){
     this.storeListeners = [];
     this.storeListeners.push(ProfileStore.listen(this._onChange));
-    var userId = (this.props.routeParams.id);
-    ProfileActions.getProfile(userId);
+    ProfileActions.getProfile(this.props.routeParams.id);
   }
 
   _onChange() {
@@ -72,12 +71,13 @@ export default class Profile extends React.Component {
     let numberAchievementEvenStyle = {color: '#FC2C7A', fontSize: '60px'};
     let numberAchievementOddStyle = {color: '#18B8D0', fontSize: '60px'};
     let subtitleAchievementStyle = {fontSize: '16px'};
-    let snippetListing = (<Card>
-          <CardTitle title="Snippets:" />
-          <CardText>
-            <SnippetsList snippets={snippets} withComments={true} withRatings={true} history={this.props.history}></SnippetsList>
-          </CardText>
-        </Card>);
+    let snippetListing = (
+      <Card>
+        <CardTitle title="Snippets:" />
+        <CardText>
+          <SnippetsList snippets={snippets} withComments={true} withRatings={true} history={this.props.history}></SnippetsList>
+        </CardText>
+      </Card> );
 
     return(
       <PageWrapper>

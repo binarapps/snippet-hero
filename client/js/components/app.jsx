@@ -48,6 +48,12 @@ export default class App extends React.Component {
       { route: '/logout', text: 'Sign Out' }
     ];
 
+    // append 'Your profile' link if user session exists
+    let currentUser = UserStore.getState().currentUser;
+    if (currentUser) {
+      menuItems.splice(2, 0, { route: `/users/${currentUser.id}`, text: 'Your profile' });
+    }
+
     return (
       <div>
         <Navbar history={this.props.history} menuItems={menuItems}/>
