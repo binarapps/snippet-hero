@@ -39,7 +39,7 @@ class Navbar extends React.Component {
     if ( this.state.currentUser ){
       iconElementRight = (<RaisedButton style={{marginTop: '6px'}} onClick={ () => this.refs.dialog.open()} label="Add new snippet" primary={true}/>);
     } else {
-      iconElementRight = (<a href={'/#/login'} ><RaisedButton style={{marginTop: '6px'}} label="Sign In" primary={true}/></a>)
+      iconElementRight = (<a href={'/#/login'} ><RaisedButton style={{marginTop: '6px'}} label="Sign In" primary={true}/></a>);
     }
     return (
       <div>

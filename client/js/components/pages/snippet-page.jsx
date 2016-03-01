@@ -1,7 +1,6 @@
 import React from 'react';
 import PageWrapper from '../page-wrapper';
 import SnippetsList from '../snippets/snippets-list';
-import SearchBar from '../search-bar';
 import SnippetActions from '../../actions/snippet-actions';
 import SnippetStore from '../../stores/snippet-store';
 
