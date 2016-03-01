@@ -35,7 +35,7 @@ class Navbar extends React.Component {
   }
 
   render() {
-    let iconElementRight = '';
+    let iconElementRight;
     if ( this.state.currentUser ){
       iconElementRight = (<RaisedButton style={{marginTop: '6px'}} onClick={ () => this.refs.dialog.open()} label="Add new snippet" primary={true}/>);
     } else {
