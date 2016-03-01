@@ -21,7 +21,7 @@ router.get('/', authChecker, function(req, res) {
         return s.toJson();
       });
       // load this month snippets count
-      return req.user.countSnippets();
+      return req.user.countSnippets({ scope: ['fromCurrentMonth'] });
     }).then(function (c) {
       count = c;
       return req.user.getSnippets({ attributes: ['id'], scope: ['fromCurrentMonth'] });
