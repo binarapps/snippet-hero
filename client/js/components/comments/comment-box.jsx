@@ -29,7 +29,7 @@ export default class CommentBox extends React.Component {
   _onChange() {
     let snippets = SnippetStore.getState().snippets;
     let snippet = _.findWhere(snippets, {id: this.props.snippetId});
-    this.setState({comments: snippet.comments});
+    this.setState({comments: snippet && snippet.comments});
   }
 
   _handleFormSubmit(e) {

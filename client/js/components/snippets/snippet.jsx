@@ -16,6 +16,9 @@ import UserStore from '../../stores/user-store';
 import SnippetActions from '../../actions/snippet-actions.js';
 import RaisedButton from 'material-ui/lib/raised-button';
 import TextField from 'material-ui/lib/text-field';
+import ActionLock from 'material-ui/lib/svg-icons/action/lock';
+import ActionLockOpen from 'material-ui/lib/svg-icons/action/lock-open';
+import Checkbox from 'material-ui/lib/checkbox';
 
 // TODO create tests
 export default class Snippet extends React.Component {
@@ -39,7 +42,8 @@ export default class Snippet extends React.Component {
       description: this.refs.description.getValue(),
       name: this.refs.name.getValue(),
       content: this.refs.editor.codeMirror.doc.getValue(),
-      id: this.props.id
+      id: this.props.id,
+      isPublic: !(this.refs.public.state.switched)
     };
     SnippetActions.update(data);
     this.setState({isEditing: false});
@@ -95,6 +99,18 @@ export default class Snippet extends React.Component {
               defaultValue={this.props.name}
               ref="name"
               type="text" />
+          </CardText>
+        </div>
+        <div style={{display: 'inline-flex', background: Colors.grey100, width: '100%'}}>
+          <CardText>
+            <Checkbox
+              checkedIcon={<ActionLock />}
+              unCheckedIcon={<ActionLockOpen />}
+              style={{block: {maxWidth: 250}}}
+              label="Make Private?"
+              ref="public"
+              defaultChecked={!this.props.isPublic}
+               />
           </CardText>
         </div>
         <div style={{display: 'table', background: Colors.grey100, width: '100%'}}>

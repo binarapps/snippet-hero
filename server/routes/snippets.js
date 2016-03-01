@@ -69,7 +69,8 @@ router.post('/', function (req, res) {
     description: body.description,
     language: body.language,
     name: body.name,
-    UserId: userId
+    UserId: userId,
+    isPublic: body.isPublic
   };
   models.sequelize.transaction(function (t) {
     return models.Snippet.create(attributes, {transaction: t}).then(function (snippet) {
@@ -94,7 +95,8 @@ router.put('/:id', authChecker, function (req, res) {
   var attributes = {
     description: body.description,
     language: body.language,
-    name: body.name
+    name: body.name,
+    isPublic: body.isPublic
   };
   models.Snippet.scope(['withAuthor']).findById(req.params.id).then(function (snippet) {
     if (!(snippet.UserId === req.user.id)) {
