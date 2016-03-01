@@ -15,6 +15,7 @@ class SnippetStore {
   }
 
   getMonthSnippets(data) {
+    console.log(data);
     if (data.ok) {
       const monthSnippets = data.results.snippets;
       this.setState({
