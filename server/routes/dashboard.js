@@ -40,7 +40,7 @@ router.get('/',  function(req, res) {
         res.status(200).send({ count: count, comments: mappedComments, snippets: mappedSnippets, bestSnippets: bestSnippets });
       });
   } else {
-    res.status(200).send({ count: 0, comments: [], snippets: [], bestSnippets: [] });
+    res.status(401).send('you cannot see dashboard if you are not logged in!');
   }
 });
 
