@@ -60,7 +60,7 @@ export default class App extends React.Component {
 
     return (
       <div>
-        <Navbar history={this.props.history} menuItems={menuItems}/>
+        <Navbar history={this.props.history} menuItems={menuItems} currentUser={this.state.currentUser}/>
         {this.props.children}
         <FlashMessages />
       </div>

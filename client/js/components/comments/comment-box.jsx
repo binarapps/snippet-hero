@@ -9,13 +9,12 @@ import UserStore from '../../stores/user-store';
 export default class CommentBox extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { comments: props.comments, content: '', createError: '', currentUser: UserStore.getState().currentUser };
+    this.state = { comments: props.comments, content: '', createError: ''};
     this.storeListeners = [];
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleFormChange = this._handleFormChange.bind(this);
     this._onChange = this._onChange.bind(this);
     this._loadMoreComments = this._loadMoreComments.bind(this);
-
   }
 
   componentDidMount() {
@@ -24,6 +23,10 @@ export default class CommentBox extends React.Component {
 
   componentWillUnmount() {
     this.storeListeners.forEach(unlisten => unlisten());
+  }
+
+  getCurrentUser() {
+    return UserStore.getState().currentUser;
   }
 
   _onChange() {
@@ -51,7 +54,7 @@ export default class CommentBox extends React.Component {
 
   render() {
     let commentForm = '';
-    if ( this.state.currentUser ) {
+    if ( this.getCurrentUser() ) {
       commentForm = (<CommentForm
           onChange={this._handleFormChange}
           content={this.state.content}
