@@ -17,8 +17,8 @@ router.get('/', function (req, res) {
   var options = { where: {}, order: [] };
   var month = parseInt(req.query.month);
   var year = parseInt(req.query.year);
-  var first = new Date(year, month, 1);
-  var last = new Date(year, month+1, 0);
+  var first = new Date(Date.UTC(year, month, 1, 0, 0, 0));
+  var last = new Date(Date.UTC(year, month+1, 0, 23, 59, 59, 999));
   options.where = { createdAt: { $gte: first, $lte: last } };
   options.order = [ ['avg', 'DESC'], ['createdAt', 'DESC'] ];
   var mappedSnippets;
