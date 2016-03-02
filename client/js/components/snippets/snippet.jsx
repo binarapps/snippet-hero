@@ -199,9 +199,10 @@ export default class Snippet extends React.Component {
     let title = (<a href={'/#/snippets/'+this.props.id} style={{cursor: 'pointer', color: 'black', textDecoration: 'none'}} title={'see snippet '+this.props.name}>{this.props.name || 'No title'}</a>);
     let showMoreBtn;
     let linesNumber = (this.props.content).split(/\r\n|\r|\n/).length;
+    let showMoreText = `Show more (${linesNumber-19} lines)`;
 
     if(linesNumber > 19){
-      showMoreBtn = (<div style={{textAlign: 'center'}} className={this.state.showMoreDisplay}><RaisedButton label='Show more' secondary={true} onClick={this._expandSnippet} /></div>);
+      showMoreBtn = (<div style={{textAlign: 'center'}} className={this.state.showMoreDisplay}><RaisedButton label={showMoreText} secondary={true} onClick={this._expandSnippet} /></div>);
     }
 
     return (
