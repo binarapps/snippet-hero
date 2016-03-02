@@ -21,17 +21,22 @@ import TextField from 'material-ui/lib/text-field';
 export default class Snippet extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {isEditing: false, name: props.name, description: props.description, content: props.content};
+    this.state = {isEditing: false, name: props.name, description: props.description, content: props.content, codemirrorClass: '', showMoreDisplay: ''};
     this._deleteSnippet = this._deleteSnippet.bind(this);
     this._getUserProfile = this._getUserProfile.bind(this);
     this._editSnippet = this._editSnippet.bind(this);
     this._updateSnippet = this._updateSnippet.bind(this);
     this._getShowSnippet = this._getShowSnippet.bind(this);
     this._getEditableSnippet = this._getEditableSnippet.bind(this);
+    this._expandSnippet = this._expandSnippet.bind(this);
   }
 
   _editSnippet() {
-    this.setState({isEditing: true});
+    this.setState({
+      isEditing: true,
+      codemirrorClass: 'code-editor',
+      showMoreDisplay: ''
+    });
   }
 
   _updateSnippet() {
@@ -42,7 +47,11 @@ export default class Snippet extends React.Component {
       id: this.props.id
     };
     SnippetActions.update(data);
-    this.setState({isEditing: false});
+    this.setState({
+      isEditing: false,
+      codemirrorClass: '',
+      showMoreDisplay: ''
+    });
   }
 
   _deleteSnippet() {
@@ -82,9 +91,28 @@ export default class Snippet extends React.Component {
     }
   }
 
+  _expandSnippet() {
+    let newClass;
+    if(this.state.codemirrorClass == 'code-editor'){
+      newClass = 'code-editor CodeMirror-long'
+    } else {
+      newClass = 'CodeMirror-long'
+    }
+    this.setState({
+      codemirrorClass: newClass,
+      showMoreDisplay: 'ShowMoreHidden'
+    });
+  }
+
   _getEditableSnippet() {
     let codeOptions = {readOnly: false, mode: modeFromMime(this.props.language), mime: this.props.language, lineNumbers: true};
     let { style } = this.props;
+    let showMoreBtn;
+    let linesNumber = (this.state.content).split(/\r\n|\r|\n/).length;
+
+    if(linesNumber > 19){
+      showMoreBtn = (<div style={{textAlign: 'center'}} className={this.state.showMoreDisplay}><RaisedButton label='Show more' secondary={true} onClick={this._expandSnippet} /></div>);
+    }
     return (
       <Card style={style}>
         <div style={{display: 'inline-flex', background: Colors.grey100, width: '100%'}}>
@@ -106,7 +134,8 @@ export default class Snippet extends React.Component {
             ref="editor"
             value={this.state.content}
             options={codeOptions}
-            className="code-editor" />
+            className={this.state.codemirrorClass} />
+          {showMoreBtn}
         </div>
         <CardText className="snippet-description" >
           <TextField
@@ -129,6 +158,7 @@ export default class Snippet extends React.Component {
       mode: modeFromMime(this.props.language),
       mime: this.props.language
     };
+
     let { style } = this.props;
     let currentUser = this.getCurrentUser();
     let author = this.props.user || currentUser;
@@ -150,6 +180,12 @@ export default class Snippet extends React.Component {
       </Avatar>
     );
     let title = (<a href={'/#/snippets/'+this.props.id} style={{cursor: 'pointer', color: 'black', textDecoration: 'none'}} title={'see snippet '+this.props.name}>{this.props.name || 'No title'}</a>);
+    let showMoreBtn;
+    let linesNumber = (this.props.content).split(/\r\n|\r|\n/).length;
+
+    if(linesNumber > 19){
+      showMoreBtn = (<div style={{textAlign: 'center'}} className={this.state.showMoreDisplay}><RaisedButton label='Show more' secondary={true} onClick={this._expandSnippet} /></div>);
+    }
 
     return (
       <Card style={style}>
@@ -170,8 +206,9 @@ export default class Snippet extends React.Component {
 
         </div>
         {this.checkOwner() ? snippetActions : ''}
-        <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300 }}>
-          <Codemirror value={this.props.content} options={codeOptions} />
+        <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300}}>
+          <Codemirror value={this.props.content} options={codeOptions} ref={'codemirror'} className={this.state.codemirrorClass}/>
+          {showMoreBtn}
         </div>
         <CardText className="snippet-description" >
           {this.props.description ? <Markdown text={this.props.description} className="markdown" /> : null}
