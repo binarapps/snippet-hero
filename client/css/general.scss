@@ -9,10 +9,20 @@ body {
   min-height: 100vh;
 }
 
-
 .CodeMirror {
   height: auto;
+  max-height: 300px;
 }
+.CodeMirror-long {
+  .CodeMirror {
+    max-height: none !important;
+  }
+}
+
+.ShowMoreHidden {
+  display: none;
+}
+
 .code-editor .CodeMirror {
   min-height: 53px;
 }
