@@ -15,16 +15,16 @@ router.get('/', authChecker, function(req, res) {
   var mappedSnippets, count, mappedSnippetsId, mappedComments, bestSnippets;
   // TODO: fix to get only this month data
   // load currentUser last 3 snippets
-  req.user.getSnippets({ scope: ['withVersions', 'withAuthor'], limit: 3 })
+  req.user.getSnippets({ scope: ['fromCurrentMonth', 'withVersions', 'withAuthor'], limit: 3 })
     .then(function (snippets) {
       mappedSnippets = snippets.map(function (s){
         return s.toJson();
       });
       // load this month snippets count
-      return req.user.countSnippets();
+      return req.user.countSnippets({ scope: ['fromCurrentMonth'] });
     }).then(function (c) {
       count = c;
-      return req.user.getSnippets({ attributes: ['id'] });
+      return req.user.getSnippets({ attributes: ['id'], scope: ['fromCurrentMonth'] });
     }).then(function (snippetsId) {
       // load user snippets id to find comments
       mappedSnippetsId = snippetsId.map(function (s){

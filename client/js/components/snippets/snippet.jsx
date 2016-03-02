@@ -84,7 +84,7 @@ export default class Snippet extends React.Component {
 
   checkOwner() {
     let currentUser = this.getCurrentUser();
-    if (currentUser) {
+    if (currentUser && this.props.user) {
       return currentUser.id === this.props.user.id;
     } else {
       return false;

@@ -73,7 +73,7 @@ module.exports = function(sequelize, DataTypes) {
       },
       fromCurrentMonth: function () {
         var today = new Date();
-        var firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        var firstDayOfMonth = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), 1, 0, 0 , 0));
         return {
           where: {
             createdAt: {
