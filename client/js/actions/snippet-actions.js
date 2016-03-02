@@ -12,6 +12,10 @@ class SnippetActions {
       .catch(err => this.dispatch({ok: false, error: err}));
   }
 
+  sortSnippets(method){
+    this.dispatch({ok: true, sortMethod: method});
+  }
+
   getMonthSnippets(month, year) {
     axios.get(`/snippets?year=${year}&month=${month}`)
       .then(res => this.dispatch({ok: true, results: res.data}))

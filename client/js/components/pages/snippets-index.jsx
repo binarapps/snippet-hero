@@ -7,6 +7,8 @@ import SnippetStore from '../../stores/snippet-store';
 import SnippetSearchStore from '../../stores/snippet-search-store';
 import UserStore from '../../stores/user-store';
 import MonthPaginator from './month-paginator';
+import SelectField from 'material-ui/lib/select-field';
+import MenuItem from 'material-ui/lib/menus/menu-item';
 
 export default class SnippetsIndex extends React.Component {
   constructor(props) {
@@ -16,6 +18,7 @@ export default class SnippetsIndex extends React.Component {
     this._onChange = this._onChange.bind(this);
     this._onSearch = this._onSearch.bind(this);
     this._goToMonth = this._goToMonth.bind(this);
+    this._sortSnippets = this._sortSnippets.bind(this);
   }
 
   componentDidMount() {
@@ -24,6 +27,7 @@ export default class SnippetsIndex extends React.Component {
     this.storeListeners.push(SnippetSearchStore.listen(this._onSearch));
     let today = new Date();
     this._goToMonth(today.getMonth(), today.getFullYear());
+    this.setState({selectedSort: ''});
   }
 
   getCurrentUser(){
@@ -36,6 +40,10 @@ export default class SnippetsIndex extends React.Component {
       currentMonth: month,
       currentYear: year
     });
+  }
+
+  _sortSnippets(event, index, value){
+    this.setState({selectedSort: value.sort});
   }
 
   getPropsFromStores() {
@@ -72,12 +80,24 @@ export default class SnippetsIndex extends React.Component {
     let current = (<div><h3 style={{textAlign: 'center', fontWeight: 'normal'}}>Currently displaying: {s.currentYear}</h3></div>);
     let title = this.getCurrentUser() ? 'All snippets: ' : 'All public snippets: ';
     let subtitle = this.getCurrentUser() ? '' : 'Log in to see all snippets';
+    let menuItems = ([
+      {name: 'avg', sort: 'avg'},
+      {name: 'date', sort: 'date'}
+    ]);
 
     return (
       <PageWrapper>
         <h2 style={{fontSize: '24px', marginBottom: '5px'}}>{title}</h2>
         <h3 style={{fontSize: '12px', marginBottom: '20px', marginTop: '0px'}}>{subtitle}</h3>
         <SearchBar label='Search by name:' onSearch={this._searchSnippets} />
+        <SelectField
+          value={this.state.selectedSort}
+          onChange={this._sortSnippets}
+          floatingLabelText="Sort snippets"
+          menuItems={menuItems}
+          valueMember="sort"
+          displayMember="name"/>
+
         <div style={{clear: 'right'}}>
           {(() => {
             if(snippets.length > 0){
