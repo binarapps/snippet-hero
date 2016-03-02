@@ -2,20 +2,30 @@ import React from 'react';
 import _ from 'lodash';
 import Snippet from './snippet';
 import CommentBox from '../comments/comment-box';
+import UserStore from '../../stores/user-store';
 
 class SnippetListItem extends React.Component{
   constructor(props) {
     super(props);
   }
+
+  getCurrentUser() {
+    return UserStore.getState().currentUser;
+  }
+
   render() {
+    let snippet = '';
+    let commentBox = '';
+    if ( this.getCurrentUser() || this.props.snippet.isPublic ) {
+      snippet = (<Snippet {...this.props.snippet} withRatings={this.props.withRatings} style={{marginBottom: '5px'}} history={this.props.history} />);
+      if ( this.props.withComments ){
+        commentBox = (<CommentBox snippetId={this.props.snippet.id} comments={this.props.snippet.comments}/>);
+      }
+    } 
     return (
       <li style={{position: 'relative', marginBottom: '25px'}}>
-        <Snippet {...this.props.snippet} withRatings={this.props.withRatings} style={{marginBottom: '5px'}} history={this.props.history} />
-        { (() => {
-          if (this.props.withComments) {
-            return (<CommentBox snippetId={this.props.snippet.id} comments={this.props.snippet.comments}/>);
-          }
-        })()}
+        {snippet}
+        {commentBox}
       </li>
     );
   }
