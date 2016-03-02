@@ -94,9 +94,9 @@ export default class Snippet extends React.Component {
   _expandSnippet() {
     let newClass;
     if(this.state.codemirrorClass == 'code-editor'){
-      newClass = 'code-editor CodeMirror-long'
+      newClass = 'code-editor CodeMirror-long';
     } else {
-      newClass = 'CodeMirror-long'
+      newClass = 'CodeMirror-long';
     }
     this.setState({
       codemirrorClass: newClass,
