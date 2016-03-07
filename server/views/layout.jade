@@ -4,8 +4,8 @@ html
     title= title
     link(rel='stylesheet', href='/app.css')
     link(rel='stylesheet', href='//cdn.jsdelivr.net/flexboxgrid/6.3.0/flexboxgrid.min.css')
-
-    script(src='//localhost:9091')
+    if env === 'development'
+      script(src='//localhost:9091')
   body
     block content
     script(src='/app.js')

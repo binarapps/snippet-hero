@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
   } else {
     user = null;
   }
-  res.render('index', { title: 'Express', currentUser: user });
+  res.render('index', { title: 'SnippetHero', env: process.env.NODE_ENV || 'development', currentUser: user });
 });
 
 module.exports = router;
