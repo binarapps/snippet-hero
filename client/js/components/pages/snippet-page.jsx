@@ -7,23 +7,31 @@ import SnippetStore from '../../stores/snippet-store';
 export default class SnippetPage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {foundSnippet: []};
+    this.state = { snippets: [] };
     this._onChange = this._onChange.bind(this);
-    this.getSnippet = this.getSnippet.bind(this);
+    this.fetchSnippet = this.fetchSnippet.bind(this);
   }
 
   componentDidMount() {
     this.storeListeners = [];
     this.storeListeners.push(SnippetStore.listen(this._onChange));
-    this.getSnippet();
+    this.fetchSnippet(this.props.params.id);
   }
 
-  getSnippet(){
-    let snippetId = this.props.params.id;
-    let snippets = SnippetStore.getState().snippets;
-    let foundSnippet = snippets.filter(s => s.id == snippetId);
+  componentWillReceiveProps(props) {
+    if(props.params && props.params.id) {
+      this.fetchSnippet(props.params.id);
+    }
+  }
 
-    0 == foundSnippet.length ? SnippetActions.getSnippet(snippetId) : this.setState({ foundSnippet: foundSnippet });
+  fetchSnippet(snippetId) {
+    if(!this.getSnippet(snippetId).length) {
+      SnippetActions.getSnippet(snippetId);
+    }
+  }
+
+  getSnippet(snippetId) {
+    return this.state.snippets.filter(s => s.id == snippetId);
   }
 
   componentWillUnmount() {
@@ -31,17 +39,12 @@ export default class SnippetPage extends React.Component {
   }
 
   _onChange() {
-    let snippets = SnippetStore.getState().snippets;
-    let snippetId = this.props.params.id;
-    let foundSnippet = snippets.filter(s => s.id == snippetId);
-
-    this.setState({ foundSnippet: foundSnippet });
+    this.setState({ snippets: SnippetStore.getState().snippets });
   }
 
   render() {
-    let s = this.state;
-    let foundSnippets = s.foundSnippet;
     let snippetId = this.props.params.id;
+    let foundSnippets = this.getSnippet(snippetId);
 
     return (
       <PageWrapper>
