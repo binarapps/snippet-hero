@@ -16,7 +16,7 @@ class SnippetListItem extends React.Component{
   render() {
     let snippet = '';
     let commentBox = '';
-    if ( this.getCurrentUser() || this.props.snippet.isPublic ) {
+    if ( this.props.currentUser || this.props.snippet.isPublic ) {
       snippet = (<Snippet {...this.props.snippet} withRatings={this.props.withRatings} style={{marginBottom: '5px'}} history={this.props.history} />);
       if ( this.props.withComments ){
         commentBox = (<CommentBox snippetId={this.props.snippet.id} comments={this.props.snippet.comments}/>);
@@ -52,6 +52,7 @@ export default class SnippetsList extends React.Component {
                              withRatings={withRatings}
                              withComments={withComments}
                              snippet={snippet}
+                             currentUser={currentUser}
                              index={index}
                              history={history} />
           );
