@@ -43,24 +43,9 @@ export default class App extends React.Component {
   }
 
   render() {
-    let menuItems = [];
-    if (this.state.currentUser){
-      menuItems = [
-        { route: '/', text: 'Dashboard' },
-        { route: '/snippets', text: 'All snippets' },
-        { route: '/logout', text: 'Sign Out' }
-      ];
-    } else {
-      menuItems = [
-        { route: '/snippets', text: 'All snippets' },
-        { route: '/login', text: 'Sign In' },
-        { route: '/register', text: 'Sign Up' }
-      ];
-    }
-
     return (
       <div>
-        <Navbar history={this.props.history} menuItems={menuItems} currentUser={this.state.currentUser}/>
+        <Navbar history={this.props.history} currentUser={this.state.currentUser}/>
         {this.props.children}
         <FlashMessages />
       </div>

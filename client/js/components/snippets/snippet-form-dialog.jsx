@@ -74,13 +74,12 @@ export default class SnippetFormDialog extends React.Component {
     ];
     return (
       <div>
-        <Dialog ref={(ref) => this.dialog = ref}
+        <Dialog open={this.state.isOpen}
+          ref={(ref) => this.dialog = ref}
           title={this.props.title || 'Snippet Form'}
           actions={actions}
           defaultOpen={this.props.defaultOpen}
-          autoScrollBodyContent={true}
-          open={this.state.isOpen}>
-
+          autoScrollBodyContent={true} >
           <Tabs>
             <Tab label="Form">
               <SnippetForm {...this.state} languages={this.props.languages} onChange={this._handleFormChange} ref="form" />

@@ -52,7 +52,7 @@
     "libpq": "1.8.0",
     "lodash": "3.10.1",
     "markdown-react-js": "0.3.0",
-    "material-ui": "0.13.4",
+    "material-ui": "0.14.4",
     "moment": "2.10.6",
     "morgan": "1.6.1",
     "node-sass": "3.4.2",

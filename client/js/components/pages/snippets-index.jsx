@@ -27,7 +27,7 @@ export default class SnippetsIndex extends React.Component {
     this.storeListeners.push(SnippetSearchStore.listen(this._onSearch));
     let today = new Date();
     this._goToMonth(today.getMonth(), today.getFullYear());
-    this.setState({selectedSort: ''});
+    this.setState({selectedSort: 'avg'});
   }
 
   getCurrentUser(){
@@ -43,7 +43,8 @@ export default class SnippetsIndex extends React.Component {
   }
 
   _sortSnippets(event, index, value){
-    this.setState({selectedSort: value.sort});
+    SnippetActions.sortSnippets(value);
+    this.setState({selectedSort: value});
   }
 
   getPropsFromStores() {
@@ -74,29 +75,23 @@ export default class SnippetsIndex extends React.Component {
     SnippetActions.search(value);
   }
 
+
   render() {
     let s = this.state;
     let snippets = s.snippets;
     let current = (<div><h3 style={{textAlign: 'center', fontWeight: 'normal'}}>Currently displaying: {s.currentYear}</h3></div>);
     let title = this.getCurrentUser() ? 'All snippets: ' : 'All public snippets: ';
     let subtitle = this.getCurrentUser() ? '' : 'Log in to see all snippets';
-    let menuItems = ([
-      {name: 'avg', sort: 'avg'},
-      {name: 'date', sort: 'date'}
-    ]);
 
     return (
       <PageWrapper>
         <h2 style={{fontSize: '24px', marginBottom: '5px'}}>{title}</h2>
         <h3 style={{fontSize: '12px', marginBottom: '20px', marginTop: '0px'}}>{subtitle}</h3>
         <SearchBar label='Search by name:' onSearch={this._searchSnippets} />
-        <SelectField
-          value={this.state.selectedSort}
-          onChange={this._sortSnippets}
-          floatingLabelText="Sort snippets"
-          menuItems={menuItems}
-          valueMember="sort"
-          displayMember="name"/>
+        <SelectField value={this.state.selectedSort} onChange={this._sortSnippets} floatingLabelText="Sort snippets">
+          <MenuItem value={'avg'} primaryText="Average"/>
+          <MenuItem value={'date'} primaryText="Date"/>
+        </SelectField>
 
         <div style={{clear: 'right'}}>
           {(() => {

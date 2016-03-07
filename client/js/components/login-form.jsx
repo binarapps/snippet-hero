@@ -7,13 +7,13 @@ import UserActions from '../actions/user-actions';
 export default class LoginForm extends React.Component {
   constructor(props) {
     super(props);
-
+    this.state = {open: true};
     this._onRequestClose = this._onRequestClose.bind(this);
     this._onSignInRequest = this._onSignInRequest.bind(this);
   }
 
   _onRequestClose() {
-    this.refs.dialog.setState({open: true});
+    this.setState({open: true});
   }
 
   _onSignInRequest() {
@@ -24,7 +24,7 @@ export default class LoginForm extends React.Component {
 
   render() {
     return (
-      <Dialog ref="dialog" defaultOpen={true} onRequestClose={this._onRequestClose}>
+      <Dialog ref="dialog" defaultOpen={true} open={this.state.open} onRequestClose={this._onRequestClose}>
         <form className="registration-form">
           <h1>Sign in</h1>
 

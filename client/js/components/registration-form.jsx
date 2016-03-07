@@ -8,13 +8,13 @@ import FlashMessages from '../actions/flash-messages-actions';
 export default class RegistrationForm extends React.Component {
   constructor(props) {
     super(props);
-
+    this.state = {open: true};
     this._onRequestClose = this._onRequestClose.bind(this);
     this._onSignUpRequest = this._onSignUpRequest.bind(this);
   }
 
   _onRequestClose() {
-    this.refs.dialog.setState({open: true});
+    this.setState({open: true});
   }
 
   _onSignUpRequest() {
@@ -55,7 +55,7 @@ export default class RegistrationForm extends React.Component {
 
   render() {
     return (
-      <Dialog ref="dialog" defaultOpen={true} onRequestClose={this._onRequestClose}>
+      <Dialog ref="dialog" defaultOpen={true} open={this.state.open} onRequestClose={this._onRequestClose}>
         <form className="registration-form" onSubmit={this._onSignUpRequest}>
           <h1>Sign up</h1>
 
