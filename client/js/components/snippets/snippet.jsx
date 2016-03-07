@@ -66,7 +66,7 @@ export default class Snippet extends React.Component {
 
   _getUserProfile(){
     let userId = (this.props.user ? this.props.user.id : null);
-    this.props.history.pushState(null, '/users/'+userId);
+    return '/#/users/' + userId;
   }
 
   getCurrentUser() {
@@ -187,14 +187,15 @@ export default class Snippet extends React.Component {
     );
     let ratings = this.props.id ? <RatingForm key={this.props.id} snippetId={this.props.id} snippet={this.props} style={{right: 0, margin: '10px'}} enabled={this._checkRatingAbility()}/>: '';
     let avatar = (
-      <Avatar
-        color={generateColor()}
-        backgroundColor={generateColor()}
-        onClick={this._getUserProfile}
-        style={{cursor: 'pointer'}}
-        title={('Click to see more ' + authorName + ' snippets')}>
-        {authorName.split('')[0].toUpperCase()}
-      </Avatar>
+      <a href={this._getUserProfile()}>
+        <Avatar
+          color={generateColor()}
+          backgroundColor={generateColor()}
+          style={{cursor: 'pointer'}}
+          title={('Click to see more ' + authorName + ' snippets')}>
+          {authorName.split('')[0].toUpperCase()}
+        </Avatar>
+      </a>
     );
     let title = (<a href={'/#/snippets/'+this.props.id} style={{cursor: 'pointer', color: 'black', textDecoration: 'none'}} title={'see snippet '+this.props.name}>{this.props.name || 'No title'}</a>);
     let showMoreBtn;
