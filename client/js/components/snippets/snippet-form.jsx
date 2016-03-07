@@ -17,11 +17,6 @@ export default class SnippetForm extends React.Component {
   constructor(props) {
     super(props);
 
-    if (props.language) {
-      this.state = { mime: props.language, mode: modeFromMime(props.language) };
-    } else {
-      this.state = { mode: '', mime: '' };
-    }
 
     this._handleCheckboxChange = this._handleCheckboxChange.bind(this);
     this._handleNameChange = this._handleNameChange.bind(this);
@@ -44,10 +39,6 @@ export default class SnippetForm extends React.Component {
   }
   _handleLanguageChange(e) {
     const mime = e.target.value;
-    this.setState({
-      mime: mime,
-      mode: modeFromMime(mime)
-    });
     this.props.onChange({language: mime});
   }
   showError() {
@@ -55,7 +46,7 @@ export default class SnippetForm extends React.Component {
     this.refs.error.show();
   }
   render() {
-    let codeOptions = {readOnly: false, mode: this.state.mode, mime: this.state.mime, lineNumbers: true};
+    let codeOptions = {readOnly: false, mode: modeFromMime(this.props.language), mime: this.props.language, lineNumbers: true};
     return (
       <Card>
         <form className="snippet-form">

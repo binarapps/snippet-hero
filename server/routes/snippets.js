@@ -77,12 +77,14 @@ router.post('/', function (req, res) {
       return snippet.createSnippetVersion({content: body.content}, {transaction: t}).then(function (v){
         return new Promise(function (resolve) {
           snippet.SnippetVersions = [v];
-          resolve(snippet.toJson());
+          resolve(snippet);
         });
       });
     });
+  }).then(function (snippet) {
+    return snippet.reload({include: [models.User]});
   }).then(function (data) {
-    res.status(201).send(data);
+    res.status(201).send(data.toJson());
   }).catch(function (err) {
     appLogger.debug(err.message);
     res.status(422).send(err.message);
