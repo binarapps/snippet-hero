@@ -15,27 +15,24 @@ import SnippetsList from '../snippets/snippets-list';
 export default class Profile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = this.getPropsFromStores();
     this._onChange = this._onChange.bind(this);
+    this.state = { profile: null }
   }
 
   componentDidMount(){
     this.storeListeners = [];
     this.storeListeners.push(ProfileStore.listen(this._onChange));
-    var userId = (this.props.routeParams.id);
-    ProfileActions.getProfile(userId);
+    ProfileActions.getProfile(this.props.params.id);
+    this.setState({ profile: null });
   }
 
   _onChange() {
-    this.setState(this.getPropsFromStores(this.state, this.context));
-  }
-
-  getPropsFromStores() {
-    return ProfileStore.getState();
+    this.setState(ProfileStore.getState());
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState(this.getPropsFromStores(nextProps, this.context));
+    ProfileActions.getProfile(nextProps.params.id);
+    this.setState({ profile: null });
   }
 
   componentWillUnmount() {
