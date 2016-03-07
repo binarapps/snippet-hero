@@ -16,7 +16,7 @@ export default class Profile extends React.Component {
   constructor(props) {
     super(props);
     this._onChange = this._onChange.bind(this);
-    this.state = { profile: null }
+    this.state = { profile: null };
   }
 
   componentDidMount(){
