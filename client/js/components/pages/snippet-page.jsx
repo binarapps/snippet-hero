@@ -1,10 +1,8 @@
 import React from 'react';
 import PageWrapper from '../page-wrapper';
 import SnippetsList from '../snippets/snippets-list';
-import SearchBar from '../search-bar';
 import SnippetActions from '../../actions/snippet-actions';
 import SnippetStore from '../../stores/snippet-store';
-import UserStore from '../../stores/user-store';
 
 export default class SnippetPage extends React.Component {
   constructor(props) {
@@ -28,10 +26,6 @@ export default class SnippetPage extends React.Component {
     0 == foundSnippet.length ? SnippetActions.getSnippet(snippetId) : this.setState({ foundSnippet: foundSnippet });
   }
 
-  getCurrentUser(){
-    return UserStore.getState().currentUser;
-  }
-
   componentWillUnmount() {
     this.storeListeners.forEach(unlisten => unlisten());
   }
@@ -52,7 +46,6 @@ export default class SnippetPage extends React.Component {
     return (
       <PageWrapper>
         <h2 style={{fontSize: '24px', margin: '20px 0'}}>Snippet no. {snippetId}:</h2>
-        <SearchBar label='Search by name:' onSearch={this._searchSnippets} />
         <div style={{clear: 'right'}}>
           {(() => {
             if(foundSnippets.length > 0){

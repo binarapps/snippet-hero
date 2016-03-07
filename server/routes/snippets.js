@@ -17,16 +17,17 @@ router.get('/', function (req, res) {
   var options = { where: {}, order: [] };
   var month = parseInt(req.query.month);
   var year = parseInt(req.query.year);
-  var first = new Date(year, month, 1);
-  var last = new Date(year, month+1, 0);
+  var first = new Date(Date.UTC(year, month, 1, 0, 0, 0));
+  var last = new Date(Date.UTC(year, month+1, 0, 23, 59, 59, 999));
   options.where = { createdAt: { $gte: first, $lte: last } };
   options.order = [ ['avg', 'DESC'], ['createdAt', 'DESC'] ];
   var mappedSnippets;
+  var scopes = req.user ? ['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }] : ['withVersions', 'lastComments', 'withAuthor', 'publicSnippets'];
 
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }])
-    .findAll(options).then( function (snippets) {
-      mappedSnippets = snippets.map(function (snippet) {
-        return snippet.toJson();
+  models.Snippet.scope(scopes)
+    .findAll(options).then(function (snippets) {
+      mappedSnippets = snippets.map(function (s) {
+        return s.toJson();
       });
       res.status(200).send({snippets: mappedSnippets});
     });
@@ -37,7 +38,9 @@ router.get('/search', function (req, res) {
   if (req.query.name) {
     options.where = { name: req.query.name };
   }
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', 'withRatings'])
+  var scopes = req.user ? ['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }] : ['withVersions', 'lastComments', 'withAuthor', 'publicSnippets'];
+
+  models.Snippet.scope(scopes)
     .findAll(options)
     .then(function (snippets) {
       var mappedSnippets = snippets.map(function (s) {
@@ -49,7 +52,9 @@ router.get('/search', function (req, res) {
 
 /* GET snippet by id */
 router.get('/:id', function (req, res) {
-  models.Snippet.scope(['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }])
+  var scopes = req.user ? ['withVersions', 'lastComments', 'withAuthor', { method: ['withRatings', req.user.get('id')] }] : ['withVersions', 'lastComments', 'withAuthor', 'publicSnippets'];
+
+  models.Snippet.scope(scopes)
     .findById(req.params.id)
     .then(function (s) {
       res.send(s.toJson());
@@ -64,7 +69,8 @@ router.post('/', function (req, res) {
     description: body.description,
     language: body.language,
     name: body.name,
-    UserId: userId
+    UserId: userId,
+    isPublic: body.isPublic
   };
   models.sequelize.transaction(function (t) {
     return models.Snippet.create(attributes, {transaction: t}).then(function (snippet) {
@@ -89,7 +95,8 @@ router.put('/:id', authChecker, function (req, res) {
   var attributes = {
     description: body.description,
     language: body.language,
-    name: body.name
+    name: body.name,
+    isPublic: body.isPublic
   };
   models.Snippet.scope(['withAuthor']).findById(req.params.id).then(function (snippet) {
     if (!(snippet.UserId === req.user.id)) {

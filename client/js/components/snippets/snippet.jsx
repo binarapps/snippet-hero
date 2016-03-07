@@ -16,22 +16,30 @@ import UserStore from '../../stores/user-store';
 import SnippetActions from '../../actions/snippet-actions.js';
 import RaisedButton from 'material-ui/lib/raised-button';
 import TextField from 'material-ui/lib/text-field';
+import ActionLock from 'material-ui/lib/svg-icons/action/lock';
+import ActionLockOpen from 'material-ui/lib/svg-icons/action/lock-open';
+import Checkbox from 'material-ui/lib/checkbox';
 
 // TODO create tests
 export default class Snippet extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {isEditing: false, name: props.name, description: props.description, content: props.content};
+    this.state = {isEditing: false, name: props.name, description: props.description, content: props.content, codemirrorClass: '', showMoreDisplay: ''};
     this._deleteSnippet = this._deleteSnippet.bind(this);
     this._getUserProfile = this._getUserProfile.bind(this);
     this._editSnippet = this._editSnippet.bind(this);
     this._updateSnippet = this._updateSnippet.bind(this);
     this._getShowSnippet = this._getShowSnippet.bind(this);
     this._getEditableSnippet = this._getEditableSnippet.bind(this);
+    this._expandSnippet = this._expandSnippet.bind(this);
   }
 
   _editSnippet() {
-    this.setState({isEditing: true});
+    this.setState({
+      isEditing: true,
+      codemirrorClass: 'code-editor',
+      showMoreDisplay: ''
+    });
   }
 
   _updateSnippet() {
@@ -39,10 +47,15 @@ export default class Snippet extends React.Component {
       description: this.refs.description.getValue(),
       name: this.refs.name.getValue(),
       content: this.refs.editor.codeMirror.doc.getValue(),
-      id: this.props.id
+      id: this.props.id,
+      isPublic: !(this.refs.public.state.switched)
     };
     SnippetActions.update(data);
-    this.setState({isEditing: false});
+    this.setState({
+      isEditing: false,
+      codemirrorClass: '',
+      showMoreDisplay: ''
+    });
   }
 
   _deleteSnippet() {
@@ -52,7 +65,7 @@ export default class Snippet extends React.Component {
   }
 
   _getUserProfile(){
-    let userId = (this.props.user ? this.props.user.id : this.getCurrentUser().id);
+    let userId = (this.props.user ? this.props.user.id : null);
     this.props.history.pushState(null, '/users/'+userId);
   }
 
@@ -75,16 +88,35 @@ export default class Snippet extends React.Component {
 
   checkOwner() {
     let currentUser = this.getCurrentUser();
-    if (currentUser) {
+    if (currentUser && this.props.user) {
       return currentUser.id === this.props.user.id;
     } else {
       return false;
     }
   }
 
+  _expandSnippet() {
+    let newClass;
+    if(this.state.codemirrorClass == 'code-editor'){
+      newClass = 'code-editor CodeMirror-long';
+    } else {
+      newClass = 'CodeMirror-long';
+    }
+    this.setState({
+      codemirrorClass: newClass,
+      showMoreDisplay: 'ShowMoreHidden'
+    });
+  }
+
   _getEditableSnippet() {
     let codeOptions = {readOnly: false, mode: modeFromMime(this.props.language), mime: this.props.language, lineNumbers: true};
     let { style } = this.props;
+    let showMoreBtn;
+    let linesNumber = (this.state.content).split(/\r\n|\r|\n/).length;
+
+    if(linesNumber > 19){
+      showMoreBtn = (<div style={{textAlign: 'center'}} className={this.state.showMoreDisplay}><RaisedButton label='Show more' secondary={true} onClick={this._expandSnippet} /></div>);
+    }
     return (
       <Card style={style}>
         <div style={{display: 'inline-flex', background: Colors.grey100, width: '100%'}}>
@@ -97,6 +129,18 @@ export default class Snippet extends React.Component {
               type="text" />
           </CardText>
         </div>
+        <div style={{display: 'inline-flex', background: Colors.grey100, width: '100%'}}>
+          <CardText>
+            <Checkbox
+              checkedIcon={<ActionLock />}
+              unCheckedIcon={<ActionLockOpen />}
+              style={{block: {maxWidth: 250}}}
+              label="Make Private?"
+              ref="public"
+              defaultChecked={!this.props.isPublic}
+               />
+          </CardText>
+        </div>
         <div style={{display: 'table', background: Colors.grey100, width: '100%'}}>
           <RaisedButton style={{float: 'right', margin: '0 10px 5px 0'}} onClick={this._updateSnippet} label='Update' secondary={true} />
           <RaisedButton style={{float: 'right', margin: '0 10px 5px 0'}} onClick={this._deleteSnippet} label='Delete' primary={true} />
@@ -106,7 +150,8 @@ export default class Snippet extends React.Component {
             ref="editor"
             value={this.state.content}
             options={codeOptions}
-            className="code-editor" />
+            className={this.state.codemirrorClass} />
+          {showMoreBtn}
         </div>
         <CardText className="snippet-description" >
           <TextField
@@ -129,9 +174,11 @@ export default class Snippet extends React.Component {
       mode: modeFromMime(this.props.language),
       mime: this.props.language
     };
+
     let { style } = this.props;
     let currentUser = this.getCurrentUser();
     let author = this.props.user || currentUser;
+    let authorName = (author && author.name) || 'author';
     let snippetActions = (
       <div style={{display: 'table', background: Colors.grey100, width: '100%'}}>
         <RaisedButton style={{float: 'right', margin: '0 10px 5px 0'}} onClick={this._editSnippet} label='Edit' secondary={true} />
@@ -145,11 +192,18 @@ export default class Snippet extends React.Component {
         backgroundColor={generateColor()}
         onClick={this._getUserProfile}
         style={{cursor: 'pointer'}}
-        title={('Click to see more ' + author.name + ' snippets')}>
-        {author.name.split('')[0].toUpperCase()}
+        title={('Click to see more ' + authorName + ' snippets')}>
+        {authorName.split('')[0].toUpperCase()}
       </Avatar>
     );
     let title = (<a href={'/#/snippets/'+this.props.id} style={{cursor: 'pointer', color: 'black', textDecoration: 'none'}} title={'see snippet '+this.props.name}>{this.props.name || 'No title'}</a>);
+    let showMoreBtn;
+    let linesNumber = (this.props.content).split(/\r\n|\r|\n/).length;
+    let showMoreText = `Show more (${linesNumber-19} lines)`;
+
+    if(linesNumber > 19){
+      showMoreBtn = (<div style={{textAlign: 'center'}} className={this.state.showMoreDisplay}><RaisedButton label={showMoreText} secondary={true} onClick={this._expandSnippet} /></div>);
+    }
 
     return (
       <Card style={style}>
@@ -169,9 +223,10 @@ export default class Snippet extends React.Component {
           })()}
 
         </div>
-        { (this.checkOwner() && this.props.id) ? snippetActions : '' }
-        <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300 }}>
-          <Codemirror value={this.props.content} options={codeOptions} />
+        {this.checkOwner() && this.props.id ? snippetActions : ''}
+        <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300}}>
+          <Codemirror value={this.props.content} options={codeOptions} ref={'codemirror'} className={this.state.codemirrorClass}/>
+          {showMoreBtn}
         </div>
         <CardText className="snippet-description" >
           {this.props.description ? <Markdown text={this.props.description} className="markdown" /> : null}

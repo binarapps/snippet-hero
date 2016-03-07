@@ -13,7 +13,7 @@ import UserStore from '../../stores/user-store';
 export default class SnippetFormDialog extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {name: '', content: '', description: '', language: 'text/plain', isOpen: props.dialogOpen};
+    this.state = {name: '', content: '', description: '', language: 'text/plain', isPublic: true, isOpen: props.dialogOpen};
     this.store = SnippetStore;
     this.listener = null;
 
@@ -32,7 +32,7 @@ export default class SnippetFormDialog extends React.Component {
   }
 
   _resetForm() {
-    this.setState({name: '', content: '', description: '', language: 0});
+    this.setState({name: '', content: '', description: '', language: 0, isPublic: true});
   }
 
   _handleSubmit() {
@@ -44,7 +44,8 @@ export default class SnippetFormDialog extends React.Component {
       name: this.state.name,
       content: this.state.content,
       description: this.state.description,
-      language: this.state.language
+      language: this.state.language,
+      isPublic: this.state.isPublic
     });
     this.setState({isOpen:false});
     this._resetForm();

@@ -46,10 +46,9 @@ class SnippetActions {
       .then(res => {
         FlashMessages.pushMessage({ content: 'Snippet created successfuly!' });
         this.dispatch({ ok: true, snippet: res.data });
-      })
-      .catch(err => {
+      }).catch(err => {
         FlashMessages.pushMessage({ content: 'There was an error while creating snippet.' });
-        this.actions.onCreateFail({ ok: false, err: err });
+        this.dispatch({ ok: false, err: err });
       });
   }
 

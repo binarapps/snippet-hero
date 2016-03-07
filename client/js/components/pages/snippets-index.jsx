@@ -27,7 +27,7 @@ export default class SnippetsIndex extends React.Component {
   }
 
   getCurrentUser(){
-    return UserStore.state.currentUser;
+    return UserStore.getState().currentUser;
   }
 
   _goToMonth(month, year){
@@ -70,10 +70,13 @@ export default class SnippetsIndex extends React.Component {
     let s = this.state;
     let snippets = s.snippets;
     let current = (<div><h3 style={{textAlign: 'center', fontWeight: 'normal'}}>Currently displaying: {s.currentYear}</h3></div>);
+    let title = this.getCurrentUser() ? 'All snippets: ' : 'All public snippets: ';
+    let subtitle = this.getCurrentUser() ? '' : 'Log in to see all snippets';
 
     return (
       <PageWrapper>
-        <h2 style={{fontSize: '24px', margin: '20px 0'}}>All snippets:</h2>
+        <h2 style={{fontSize: '24px', marginBottom: '5px'}}>{title}</h2>
+        <h3 style={{fontSize: '12px', marginBottom: '20px', marginTop: '0px'}}>{subtitle}</h3>
         <SearchBar label='Search by name:' onSearch={this._searchSnippets} />
         <div style={{clear: 'right'}}>
           {(() => {

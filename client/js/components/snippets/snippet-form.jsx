@@ -1,12 +1,15 @@
 import React from 'react';
 import TextField from 'material-ui/lib/text-field';
 import SelectField from 'material-ui/lib/select-field';
+import Checkbox from 'material-ui/lib/checkbox';
 import Snackbar from 'material-ui/lib/snackbar';
 import Card from 'material-ui/lib/card/card';
 import CardText from 'material-ui/lib/card/card-text';
 import Codemirror from 'react-codemirror';
 import Colors from 'material-ui/lib/styles/colors';
 import {modeFromMime} from '../../libs/languages';
+import ActionLock from 'material-ui/lib/svg-icons/action/lock';
+import ActionLockOpen from 'material-ui/lib/svg-icons/action/lock-open';
 
 
 // TODO create tests
@@ -20,10 +23,15 @@ export default class SnippetForm extends React.Component {
       this.state = { mode: '', mime: '' };
     }
 
+    this._handleCheckboxChange = this._handleCheckboxChange.bind(this);
     this._handleNameChange = this._handleNameChange.bind(this);
     this._handleContentChange = this._handleContentChange.bind(this);
     this._handleDescriptionChange = this._handleDescriptionChange.bind(this);
     this._handleLanguageChange = this._handleLanguageChange.bind(this);
+  }
+
+  _handleCheckboxChange(e) {
+    this.props.onChange({isPublic: !e.target.checked});
   }
   _handleNameChange(e) {
     this.props.onChange({name: e.target.value});
@@ -70,6 +78,16 @@ export default class SnippetForm extends React.Component {
               menuItems={this.props.languages}
               onChange={this._handleLanguageChange}
             />
+          </CardText>
+
+          <CardText>
+            <Checkbox
+              checkedIcon={<ActionLock />}
+              unCheckedIcon={<ActionLockOpen />}
+              style={{block: {maxWidth: 250}}}
+              label="Make Private?"
+              onCheck={this._handleCheckboxChange}
+               />
           </CardText>
 
           <div style={{borderBottom: '1px solid', borderTop: '1px solid', borderColor: Colors.grey300 }}>
