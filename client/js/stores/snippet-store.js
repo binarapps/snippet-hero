@@ -27,12 +27,21 @@ class SnippetStore {
     if(data.ok){
       let sortMethod = data.sortMethod;
       const {snippets} = this.state;
-      let newSnippets = _.extend({}, snippets);
+      let newSnippets = _.extend([], snippets);
       if(sortMethod == 'date'){
-        newSnippets =  sortHashTableByKey(newSnippets, 'avg');
+        newSnippets.sort( function(a,b) {
+          var aDate = new Date(a.createdAt).getTime();
+          var bDate = new Date(b.createdAt).getTime();
+          return (bDate > aDate) ? 1 : ((aDate > b) ? -1 : 0);
+        }); 
+      } else {
+        newSnippets.sort(function(a,b) {
+          return (b.avg > a.avg) ? 1 : ((a.avg > b.avg) ? -1 : 0);
+        });
       }
-      console.log('method', sortMethod);
-      console.log(newSnippets);
+      this.setState({
+        snippets: newSnippets
+      });
     }
   }
 
@@ -114,42 +123,6 @@ class SnippetStore {
         snippets: newSnippets
       });
     }
-  }
-
-  sortHashTableByKey(hash, key_order, remove_key){
-    var tmp = [],
-        end = [],
-        f_order = null;
-    remove_key = remove_key || false;
-    for (var key in hash) {
-      if (hash.hasOwnProperty(key)) {
-        tmp.push(hash[key][key_order]);
-      }
-    }
-    if (hash && hash[0] && typeof(hash[0][key_order]) === 'number') {
-      f_order = function (a, b) { return a - b; };
-    }
-    tmp.sort(f_order);
-    function getHash(hash, value) {
-      for (k in hash) {
-        if (hash[k] && hash[k][key_order] === value) {
-          return { key : k, hash : hash[k] };
-        }
-      }
-    }
-    for (var i = 0, l = tmp.length; i < l; i++) {
-      tmp[i] = getHash(hash, tmp[i]);
-      if (remove_key) {
-        delete tmp[i].hash[key_order];
-      }
-      if (!hash.length) {
-        end[tmp[i].key] = tmp[i].hash;
-      }
-      else {
-        end.push(tmp[i].hash);
-      }
-    }
-    return end;
   }
 }
 

@@ -38,7 +38,8 @@ export default class SnippetsIndex extends React.Component {
     SnippetActions.getMonthSnippets(month, year);
     this.setState({
       currentMonth: month,
-      currentYear: year
+      currentYear: year,
+      selectedSort: 'avg'
     });
   }
 
