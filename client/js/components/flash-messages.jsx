@@ -29,7 +29,7 @@ export default class FlashMessages extends React.Component {
     this.setState({
       open: false
     });
-  };
+  }
 
   render() {
     return (

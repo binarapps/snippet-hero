@@ -13,7 +13,7 @@ import UserStore from '../../stores/user-store';
 export default class SnippetFormDialog extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {name: '', content: '', description: '', language: 'text/plain', isPublic: true, isOpen: props.dialogOpen};
+    this.state = {name: '', content: '', description: '', language: 'text/plain', isPublic: true, isOpen: false};
     this.store = SnippetStore;
     this.listener = null;
 
@@ -74,12 +74,12 @@ export default class SnippetFormDialog extends React.Component {
     ];
     return (
       <div>
-        <Dialog open={this.state.isOpen}
-          ref={(ref) => this.dialog = ref}
+        <Dialog ref={(ref) => this.dialog = ref}
           title={this.props.title || 'Snippet Form'}
           actions={actions}
           defaultOpen={this.props.defaultOpen}
-          autoScrollBodyContent={true} >
+          autoScrollBodyContent={true} 
+          open={this.state.isOpen} >
           <Tabs>
             <Tab label="Form">
               <SnippetForm {...this.state} languages={this.props.languages} onChange={this._handleFormChange} ref="form" />
